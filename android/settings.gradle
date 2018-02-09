@@ -1,0 +1,3 @@
+rootProject.name = 'coinpusher'
+
+include ':app'
