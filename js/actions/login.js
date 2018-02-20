@@ -33,5 +33,11 @@ function logIn(username: ?string): Action {
   }
 }
 
+function skipLogin(username: ?string): Action {
+  return {
+    type: "SKIPPED_LOGIN",
+    username
+  };
+}
 
-module.exports = { logIn };
+module.exports = { logIn, skipLogin };

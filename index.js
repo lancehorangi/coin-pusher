@@ -1,5 +1,6 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
-import setup from "./js/setup";
+import AppRoot from "./js/app";
+import Root from "./js/setup";
 
-AppRegistry.registerComponent('coinpusher', setup());
+//AppRegistry.registerComponent('coinpusher', () => AppRoot);
+const app = new Root();

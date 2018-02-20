@@ -28,12 +28,12 @@ import promise from "./promise";
 import array from "./array";
 import analytics from "./analytics";
 import reducers from "../reducers";
-import createLogger from "redux-logger";
-import { persistStore, autoRehydrate } from "redux-persist";
+import { createLogger } from "redux-logger";
+import { persistStore, persistReducer } from "redux-persist";
 import { AsyncStorage } from "react-native";
 import { ensureCompatibility } from "./compatibility";
 
-const isDebuggingInChrome = false;
+const isDebuggingInChrome = true;
 
 const logger = createLogger({
   predicate: (getState, action) => isDebuggingInChrome,
@@ -41,19 +41,38 @@ const logger = createLogger({
   duration: true
 });
 
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+}
+
 const createF8Store = applyMiddleware(thunk, promise, array, analytics, logger)(
   createStore
 );
 
 async function configureStore(onComplete: ?() => void) {
   const didReset = await ensureCompatibility();
-  const store = autoRehydrate()(createF8Store)(reducers);
-  persistStore(store, { storage: AsyncStorage }, _ => onComplete(didReset));
+  const persistedReducer = persistReducer(persistConfig, reducers);
+  const store = createF8Store(persistedReducer);
+  let persistor = persistStore(store, null, _ => onComplete(didReset));
+  //persistStore(store, { storage: AsyncStorage }, _ => onComplete(didReset));
 
   if (isDebuggingInChrome) {
     window.store = store;
   }
   return store;
 }
+
+//  function configureStore() {
+//   //const didReset = await ensureCompatibility();
+//   const store = createF8Store(reducers);
+//   //const persistor = persistStore(store);
+//   //persistStore(store, { storage: AsyncStorage }, _ => onComplete(didReset));
+//
+//   if (isDebuggingInChrome) {
+//     window.store = store;
+//   }
+//   return store;
+// }
 
 module.exports = configureStore;

@@ -54,6 +54,12 @@ function user(state: State = initialState, action: Action): State {
       username
     };
   }
+  if (action.type === "SKIPPED_LOGIN") {
+    return {
+      ...state,
+      hasSkippedLogin: !state.hasSkippedLogin
+    };
+  }
 
   return state;
 }

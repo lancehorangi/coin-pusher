@@ -27,86 +27,82 @@ import React from "react";
 //import Parse from "parse/react-native";
 import configureStore from "./store/configureStore";
 import { Provider } from "react-redux";
-import registerScreens from ".screens.js"
+import registerScreens from "./screens.js"
 
 // Components
 import { Text } from "react-native";
 //import F8App from "./F8App";
-//import LaunchScreen from "./common/LaunchScreen";
+import LaunchScreen from "./common/LaunchScreen";
 import { Navigation } from 'react-native-navigation'
 
 // Config
 //import { serverURL, parseAppID } from "./env";
 
-function setup(): ReactClass<{}> {
-  console.disableYellowBox = true;
-  //Parse.initialize(parseAppID);
-  //Parse.serverURL = `${serverURL}/parse`;
-  //console.log("DEBUG!!! " + serverURL);
+//console.disableYellowBox = true;
+Text.defaultProps.allowFontScaling = false;
 
-  //FacebookSDK.init();
-  //Parse.FacebookUtils.init();
+export default class Root extends React.Component {
+  state: {
+    isLoading: boolean,
+    store: any
+  };
 
-  // TODO: Don't prevent fontScaling on iOS (currently breaks UI)
-  Text.defaultProps.allowFontScaling = false;
-
-  class Root extends React.Component {
-    state: {
-      isLoading: boolean,
-      store: any
+  constructor(props) {
+    super(props);
+    this.state = {
+      storeCreated: false,
+      storeRehydrated: false,
+      store: null
     };
 
-    constructor() {
-      super();
-      this.state = {
-        storeCreated: false,
-        storeRehydrated: false,
-        store: null
-      };
-    }
+    //const stores = configureStore()
+    //console.error('this.state:' + Object.values(stores))
+    //registerScreens(stores, Provider);
 
-    componentDidMount() {
-      configureStore(
-        // rehydration callback (after async compatibility and persistStore)
-        _ => this.setState({ storeRehydrated: true })
-      ).then(
-        // creation callback (after async compatibility)
-        store => this.setState({ store, storeCreated: true })
-        registerScreens(store, Provider)
+    configureStore(
+      // rehydration callback (after async compatibility and persistStore)
+      store => {
+            this.setState({ storeRehydrated: true });
+          }
+    ).then(
+      // creation callback (after async compatibility)
+      store => {
+        this.setState({ store, storeCreated: true });
+        registerScreens(store, Provider);
 
         Navigation.startTabBasedApp({
             tabs: [
             {
-                label: '大厅',
-                screen: 'CP.LaunchScreen',
-                icon: require('./img/checkmark.png'),
-                selectedIcon: require('./img/checkmark.png'),
-                title: '欢迎进入大厅',
+                label: 'LoginScreen',
+                screen: 'CP.LoginScreen',
+                icon: require('./common/img/messenger-app-icon.png'),
+                selectedIcon: require('./common/img/messenger-app-icon.png'),
+                title: '123进入大厅',
                 overrideBackPress: false,
                 navigatorStyle: {}
             },
 
             {
-                label: '个人资料',
+                label: 'LaunchScreen',
                 screen: 'CP.LaunchScreen',
-                icon: require('./img/checkmark.png'),
-                selectedIcon: require('./img/checkmark.png'),
+                icon: require('./common/img/logo.png'),
+                selectedIcon: require('./common/img/logo.png'),
                 title: '个人资料',
                 navigatorStyle: {}
             }
             ],
         });
-      );
-    }
-
-    render() {
-      if (!this.state.storeCreated || !this.state.storeRehydrated) {
-        return <LaunchScreen />;
-      }
-    }
+     }
+    );
   }
 
-  return Root;
-}
+  componentDidMount() {
 
-module.exports = setup;
+  }
+
+  // render() {
+  //   if (!this.state.storeCreated || !this.state.storeRehydrated) {
+  //     return <LaunchScreen />;
+  //   }
+  // }
+}
