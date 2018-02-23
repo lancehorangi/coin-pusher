@@ -1,0 +1,33 @@
+PODS:
+  - CocoaLumberjack (2.0.3):
+    - CocoaLumberjack/Default (= 2.0.3)
+    - CocoaLumberjack/Extensions (= 2.0.3)
+  - CocoaLumberjack/Core (2.0.3)
+  - CocoaLumberjack/Default (2.0.3):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.0.3):
+    - CocoaLumberjack/Default
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
+  - NIMSDK (4.4.0)
+  - Reachability (3.1.1)
+  - SSZipArchive (1.8.1)
+
+DEPENDENCIES:
+  - CocoaLumberjack (~> 2.0.0-rc2)
+  - FMDB (~> 2.5)
+  - NIMSDK (= 4.4.0)
+  - Reachability (~> 3.1.1)
+  - SSZipArchive (~> 1.2)
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: f58d8a19629f4d8379ae14bb3534def24161430e
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  NIMSDK: 670ac5de3069534b10e274e2db51eb47dab0d3f9
+  Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
+  SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
+
+PODFILE CHECKSUM: df02090e6b3f35b14d68f9c5b3735c84abf13b81
+
+COCOAPODS: 1.4.0
