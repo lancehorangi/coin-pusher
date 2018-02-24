@@ -13,4 +13,7 @@
 
 @property (nonatomic, strong) UIWindow *window;
 
+-(void)setupNIMSDK;
+-(void)registerAPNs;
+-(void)clickSendObserve:(NSDictionary *)dict;
 @end
