@@ -24,40 +24,31 @@
 
 "use strict";
 
+import { Alert } from 'react-native';
 import type { Action } from "../actions/types";
 
 export type State = {
   isLoggedIn: boolean,
   hasSkippedLogin: boolean,
-  sharedSchedule: ?boolean,
-  id: ?string,
-  name: ?string
+  token: ?string,
+  source: ?string
 };
 
 const initialState = {
   isLoggedIn: false,
   hasSkippedLogin: false,
-  sharedSchedule: null,
-  id: null,
-  name: null
+  token: null,
+  source: null
 };
 
 function user(state: State = initialState, action: Action): State {
-  if (action.type === "LOGIN_REQ") {
-    let { username } = action;
+  if (action.type === "LOGGED_IN") {
+    let { token } = action;
 
     return {
       isLoggedIn: true,
       hasSkippedLogin: false,
-      sharedSchedule,
-      id,
-      username
-    };
-  }
-  if (action.type === "SKIPPED_LOGIN") {
-    return {
-      ...state,
-      hasSkippedLogin: !state.hasSkippedLogin
+      token
     };
   }
 

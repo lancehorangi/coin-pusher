@@ -12,6 +12,8 @@ pod 'Reachability', '~> 3.1.1'
 pod 'CocoaLumberjack', '~> 2.0.0-rc2'
 pod 'FMDB', '~>2.5' 
 
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
   target 'coinpusherTests' do
     inherit! :search_paths
     # Pods for testing

@@ -21,6 +21,9 @@
   "dependencies": {
     "react": "16.2.0",
     "react-native": "0.52.0",
+    "react-native-code-push": "^5.2.1",
+    "react-native-linear-gradient": "^2.4.0",
+    "react-native-md5": "^1.0.0",
     "react-native-navigation": "^1.1.375",
     "react-native-netease-im": "file:../../react-native-netease-im-avchat",
     "react-redux": "^5.0.6",

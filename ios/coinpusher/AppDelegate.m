@@ -14,15 +14,33 @@
 #import <React/RCTRootView.h>
 
 #import <NIMSDK/NIMSDK.h>
+//#import <CodePush/CodePush.h>
 
 @implementation AppDelegate
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [self setupNIMSDK];
+  //[self registerAPNs];
+  if (launchOptions)
+  {
+    //未启动时，点击推送消息
+    NSDictionary * remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotification)
+    {
+      [self performSelector:@selector(clickSendObserve:) withObject:remoteNotification afterDelay:0.5];
+    }
+  }
+  
   NSURL *jsCodeLocation;
 
+//#ifdef DEBUG
+  //jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-
+//#else
+  //jsCodeLocation = [CodePush bundleURL];
+//#endif
+  
   // **********************************************
   // *** DON'T MISS: THIS IS HOW WE BOOTSTRAP *****
   // **********************************************
@@ -45,17 +63,6 @@
 //  self.window.rootViewController = rootViewController;
 //  [self.window makeKeyAndVisible];
   
-  [self setupNIMSDK];
-  //[self registerAPNs];
-  if (launchOptions)
-  {
-    //未启动时，点击推送消息
-    NSDictionary * remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (remoteNotification)
-    {
-      [self performSelector:@selector(clickSendObserve:) withObject:remoteNotification afterDelay:0.5];
-    }
-  }
   return YES;
 }
   
@@ -72,7 +79,7 @@
   [[NIMSDKConfig sharedConfig] setShouldSyncUnreadCount:YES];
   //appkey 是应用的标识，不同应用之间的数据（用户、消息、群组等）是完全隔离的。
   //注册APP，请将 NIMSDKAppKey 换成您自己申请的App Key
-  [[NIMSDK sharedSDK] registerWithAppID:@"appkey" cerName:@"证书名称"];
+  [[NIMSDK sharedSDK] registerWithAppID:@"987e760c6e964cd00ac892aaf2d64ffe" cerName:nil];
 }
 
 -(void)registerAPNs

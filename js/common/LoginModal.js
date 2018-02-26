@@ -63,7 +63,7 @@ Props:
 
 ============================================================================= */
 
-class LoginScreen extends React.Component {
+class LoginModal extends React.Component {
   state = {
     anim: new Animated.Value(0)
   };
@@ -74,6 +74,21 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
+      <F8Modal
+        renderContent={this.renderContent}
+        renderFooter={this.renderFooter}
+        bottomGradient={[
+          F8Colors.colorWithAlpha("tangaroa", 0),
+          F8Colors.colorWithAlpha("tangaroa", 1)
+        ]}
+        {...this.props}
+      />
+    );
+  }
+
+  renderContent() {
+    return (
+      <View>
       <View style={styles.container}>
         <StatusBar barStyle="default" />
         <View style={styles.header}>
@@ -113,29 +128,35 @@ class LoginScreen extends React.Component {
               onPress={_ => this.props.dispatch(skipLogin())}
               style={styles.skipButton}
             >
-              {this.renderSkipLogin()}
               <Text style={styles.skipText}>SKIP FOR NOW</Text>
+              {this.renderSkipLogin()}
             </TouchableOpacity>
           </Animated.View>
         </View>
       </View>
     );
-  }
+  };
 
   renderArrowSection() {
-    // if (RENDER_ARROW_SECTION) {
-    //   return (
-    //     <Animated.View style={[styles.arrowSection, this.fadeIn(1500, 15)]}>
-    //       <Image source={require("./img/arrow.png")} />
-    //     </Animated.View>
-    //   );
-    // } else {
-    //   return null;
-    // }
+    if (RENDER_ARROW_SECTION) {
+      return (
+        <Animated.View style={[styles.arrowSection, this.fadeIn(1500, 15)]}>
+          <Image source={require("./img/arrow.png")} />
+        </Animated.View>
+      );
+    } else {
+      return null;
+    }
   }
 
   renderSkipLogin() {
-      return (<Text style={styles.skipText}>token:{this.props.token}</Text>)
+    if (this.props.hasSkippedLogin)
+    {
+      return (<Text style={styles.skipText}>ALREADY SKIP</Text>)
+    }
+    else {
+      return (<Text style={styles.skipText}>NOT SKIP</Text>)
+    }
   }
 
   fadeIn(delay, from = 0) {
@@ -237,10 +258,10 @@ const styles = StyleSheet.create({
 
 function select(store) {
   return {
-    token: store.user.token
+    hasSkippedLogin: store.user.hasSkippedLogin
   };
 }
 
 /* Export
 ============================================================================= */
-module.exports = connect(select)(LoginScreen);
+module.exports = connect(select)(LoginModal);

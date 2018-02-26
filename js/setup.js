@@ -69,14 +69,14 @@ export default class Root extends React.Component {
       store => {
         this.setState({ store, storeCreated: true });
         registerScreens(store, Provider);
-
+        
         Navigation.startTabBasedApp({
             tabs: [
             {
                 label: 'LoginScreen',
                 screen: 'CP.LoginScreen',
-                icon: require('./common/img/messenger-app-icon.png'),
-                selectedIcon: require('./common/img/messenger-app-icon.png'),
+                icon: require('./common/img/logo.png'),
+                selectedIcon: require('./common/img/logo.png'),
                 title: '123进入大厅',
                 overrideBackPress: false,
                 navigatorStyle: {}

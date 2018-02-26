@@ -27,7 +27,11 @@
 type ParseObject = Object;
 
 export type Action =
-  | { type: "LOGIN_REQ", username: string }
+  | {
+      type: "LOGGED_IN",
+      token: string,
+      source: ?string,
+    }
 ;
 
 export type Dispatch = (
