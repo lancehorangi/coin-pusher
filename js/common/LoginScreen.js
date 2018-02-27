@@ -135,7 +135,8 @@ class LoginScreen extends React.Component {
   }
 
   renderSkipLogin() {
-      return (<Text style={styles.skipText}>token:{this.props.token}</Text>)
+      return (<Text style={styles.skipText}>token:{this.props.token}
+        account:{this.props.account}</Text>)
   }
 
   fadeIn(delay, from = 0) {
@@ -237,7 +238,8 @@ const styles = StyleSheet.create({
 
 function select(store) {
   return {
-    token: store.user.token
+    token: store.user.token,
+    account: store.user.account
   };
 }
 

@@ -30,6 +30,7 @@ export type Action =
   | {
       type: "LOGGED_IN",
       token: string,
+      account: string,
       source: ?string,
     }
 ;

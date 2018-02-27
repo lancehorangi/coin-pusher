@@ -50,7 +50,7 @@ class LaunchScreen extends React.Component {
           source={require("./img/launchscreen.png")}
           style={styles.image}
         />
-        <NTESGLView style={styles.image}/>
+        <NTESGLView style={styles.video}/>
         <F8Button
           theme="bordered"
           type="default"
@@ -63,6 +63,24 @@ class LaunchScreen extends React.Component {
           caption="登录"
           onPress={() => this.logIn()}
         />
+        <F8Button
+          theme="bordered"
+          type="default"
+          caption="连接IM"
+          onPress={() => this.logInIM()}
+        />
+        <F8Button
+          theme="bordered"
+          type="default"
+          caption="连接视频"
+          onPress={() => this.connectAVChat()}
+        />
+        <F8Button
+          theme="bordered"
+          type="default"
+          caption="断开视频"
+          onPress={() => this.disconnectAVChat()}
+        />
       </View>
     );
   }
@@ -70,7 +88,7 @@ class LaunchScreen extends React.Component {
   async logIn()
   {
     //NimUtils.getCacheSize().then(size => Alert.alert(size))
-    NimSession.login("test001", "340045a515dc689897ad77adf3c06346").then(size => Alert.alert(size), e => Alert.alert(e.message));
+    //NimSession.login("test001", "340045a515dc689897ad77adf3c06346").then(size => Alert.alert(size), e => Alert.alert(e.message));
 
     // let response = await fetch(serverURL + 'account/getToken',{
     //   method: 'post',
@@ -80,7 +98,28 @@ class LaunchScreen extends React.Component {
     //   body: JSON.stringify({account:'test124', password:'test124'})
     //   });
 
-    //await this.props.dispatch(logIn('test126', 'test126'));
+    await this.props.dispatch(logIn('test130', 'test130'));
+  }
+
+  async logInIM()
+  {
+    NimSession.login(this.props.account, this.props.token).then(size => Alert.alert(size), e => Alert.alert(e.message));
+  }
+
+  async connectAVChat()
+  {
+    try{
+      let v = await NimUtils.joinMeeting('test_room_1');
+      Alert.alert(v);
+    }
+    catch(e){
+      Alert.alert(e.message);
+    }
+  }
+
+  async disconnectAVChat()
+  {
+    let v = await NimUtils.leaveMeeting();
   }
 
   async reg()
@@ -101,8 +140,8 @@ class LaunchScreen extends React.Component {
       //   let resJson = await response.json();
       //   Alert.alert(resJson);
 
-        let response = await APIRequest('account/getToken', {
-          account:'test124', password:'test124'});
+        let response = await APIRequest('account/regist', {
+          account:'test130', password:'test130'});
         this.props.navigator.showInAppNotification({
             screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
             passProps: {text:response.ReasonPhrase}, // simple serializable object that will pass as props to the in-app notification (optional)
@@ -128,8 +167,23 @@ const styles = StyleSheet.create({
     width: WIN_WIDTH,
     height: WIN_HEIGHT,
     resizeMode: "cover"
+  },
+  video: {
+    position: "absolute",
+    left: 0,
+    top: WIN_HEIGHT / 4,
+    width: WIN_WIDTH,
+    height: WIN_WIDTH / 4 * 3,
+    resizeMode: "cover"
   }
 });
 
+function select(store) {
+  return {
+    token: store.user.token,
+    account: store.user.account
+  };
+}
+
 /* exports ================================================================== */
-module.exports = connect()(LaunchScreen);
+module.exports = connect(select)(LaunchScreen);

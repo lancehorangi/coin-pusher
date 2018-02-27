@@ -27,10 +27,10 @@ import React from "react";
 //import Parse from "parse/react-native";
 import configureStore from "./store/configureStore";
 import { Provider } from "react-redux";
-import registerScreens from "./screens.js"
-
+import registerScreens from "./screens";
+import configureListener from "./configureListener";
 // Components
-import { Text } from "react-native";
+import { Text, Alert } from "react-native";
 //import F8App from "./F8App";
 import LaunchScreen from "./common/LaunchScreen";
 import { Navigation } from 'react-native-navigation'
@@ -61,39 +61,97 @@ export default class Root extends React.Component {
 
     configureStore(
       // rehydration callback (after async compatibility and persistStore)
-      store => {
+      (store, didReset) => {
             this.setState({ storeRehydrated: true });
-          }
-    ).then(
-      // creation callback (after async compatibility)
-      store => {
-        this.setState({ store, storeCreated: true });
-        registerScreens(store, Provider);
-        
-        Navigation.startTabBasedApp({
-            tabs: [
-            {
-                label: 'LoginScreen',
-                screen: 'CP.LoginScreen',
-                icon: require('./common/img/logo.png'),
-                selectedIcon: require('./common/img/logo.png'),
-                title: '123进入大厅',
-                overrideBackPress: false,
-                navigatorStyle: {}
-            },
+            this.setState({ store, storeCreated: true });
+            registerScreens(store, Provider);
 
+            //init native event listener
+            configureListener(store);
+            
+            let bLogin = store.getState().user.token && store.getState().user.token.length != 0;
+            if(bLogin)
             {
-                label: 'LaunchScreen',
-                screen: 'CP.LaunchScreen',
-                icon: require('./common/img/logo.png'),
-                selectedIcon: require('./common/img/logo.png'),
-                title: '个人资料',
-                navigatorStyle: {}
+              Navigation.startTabBasedApp({
+                  tabs: [
+                  {
+                      label: 'LoginScreen',
+                      screen: 'CP.LoginScreen',
+                      icon: require('./common/img/logo.png'),
+                      selectedIcon: require('./common/img/logo.png'),
+                      title: '123进入大厅',
+                      overrideBackPress: false,
+                      navigatorStyle: {}
+                  },
+
+                  {
+                      label: 'LaunchScreen',
+                      screen: 'CP.LaunchScreen',
+                      icon: require('./common/img/logo.png'),
+                      selectedIcon: require('./common/img/logo.png'),
+                      title: '个人资料',
+                      navigatorStyle: {}
+                  }
+                  ],
+              });
             }
-            ],
-        });
-     }
-    );
+            else {
+              Navigation.startSingleScreenApp({
+                screen: {
+                  screen: 'CP.LaunchScreen', // unique ID registered with Navigation.registerScreen
+                  //title: '请登录', // title of the screen as appears in the nav bar (optional)
+                  navigatorStyle: {navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+                  navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+                }
+              });
+            }
+          }
+    )
+    // .then(
+    //   // creation callback (after async compatibility)
+    //   store => {
+    //     this.setState({ store, storeCreated: true });
+    //     registerScreens(store, Provider);
+    //
+    //     Alert.alert(JSON.stringify(store.getState()));
+    //     //let bLogin = this.getState().store.user.token && this.getState().store.user.token.length != 0;
+    //     if(bLogin)
+    //     {
+    //       Navigation.startTabBasedApp({
+    //           tabs: [
+    //           {
+    //               label: 'LoginScreen',
+    //               screen: 'CP.LoginScreen',
+    //               icon: require('./common/img/logo.png'),
+    //               selectedIcon: require('./common/img/logo.png'),
+    //               title: '123进入大厅',
+    //               overrideBackPress: false,
+    //               navigatorStyle: {}
+    //           },
+    //
+    //           {
+    //               label: 'LaunchScreen',
+    //               screen: 'CP.LaunchScreen',
+    //               icon: require('./common/img/logo.png'),
+    //               selectedIcon: require('./common/img/logo.png'),
+    //               title: '个人资料',
+    //               navigatorStyle: {}
+    //           }
+    //           ],
+    //       });
+    //     }
+    //     else {
+    //       Navigation.startSingleScreenApp({
+    //         screen: {
+    //           screen: 'CP.LaunchScreen', // unique ID registered with Navigation.registerScreen
+    //           //title: '请登录', // title of the screen as appears in the nav bar (optional)
+    //           navigatorStyle: {navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+    //           navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+    //         }
+    //       });
+    //     }
+    //  }
+    // );
   }
 
   componentDidMount() {

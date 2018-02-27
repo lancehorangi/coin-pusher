@@ -29,26 +29,26 @@ import type { Action } from "../actions/types";
 
 export type State = {
   isLoggedIn: boolean,
-  hasSkippedLogin: boolean,
-  token: ?string,
+  token: string,
+  account: string,
   source: ?string
 };
 
 const initialState = {
   isLoggedIn: false,
-  hasSkippedLogin: false,
   token: null,
+  account: null,
   source: null
 };
 
 function user(state: State = initialState, action: Action): State {
   if (action.type === "LOGGED_IN") {
-    let { token } = action;
+    let { token, account } = action;
 
     return {
       isLoggedIn: true,
-      hasSkippedLogin: false,
-      token
+      token,
+      account
     };
   }
 

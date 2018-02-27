@@ -54,7 +54,7 @@ async function configureStore(onComplete: ?() => void) {
   const didReset = await ensureCompatibility();
   const persistedReducer = persistReducer(persistConfig, reducers);
   const store = createF8Store(persistedReducer);
-  let persistor = persistStore(store, null, _ => onComplete(didReset));
+  let persistor = persistStore(store, null, _ => onComplete(store, didReset));
   //persistStore(store, { storage: AsyncStorage }, _ => onComplete(didReset));
 
   if (isDebuggingInChrome) {

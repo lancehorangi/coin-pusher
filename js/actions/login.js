@@ -25,12 +25,13 @@
 import { Platform, Alert } from "react-native";
 import { Navigation } from 'react-native-navigation';
 import APIRequest from '../api';
+import { STATUS_OK } from '../env';
 
 import type { Action, ThunkAction } from "./types";
 
 async function _logIn(username: string, pwd: string) : Promise<Action> {
   try {
-    let response = await APIRequest('account/regist', {
+    let response = await APIRequest('account/getToken', {
         account:username, password:pwd
        });
 
@@ -40,9 +41,13 @@ async function _logIn(username: string, pwd: string) : Promise<Action> {
         autoDismissTimerSec: 1 // auto dismiss notification in seconds
       });
 
-      return response;
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
   } catch(e) {
-    Alert.alert(e.message);
+    throw Error(e.message);
   };
 }
 
@@ -54,8 +59,9 @@ function logIn(username: string, pwd: string, source: ?string): ThunkAction {
     const response = _logIn(username, pwd);
     response.then(result => dispatch({
       type: "LOGGED_IN",
-      token: result.token
-    }));
+      token: result.token,
+      account: result.account
+    }), err => {Alert.alert(err.message)});
   };
 }
 
