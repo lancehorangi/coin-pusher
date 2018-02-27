@@ -24,6 +24,17 @@ function parseJSON(response) {
 export default function APIRequest(path, json)
 {
   return new Promise((resolve, reject) => {
+    let propList = Object.keys(json);
+    let checkStr = '';
+    propList.sort();
+    for(let keyVal of propList)
+    {
+      checkStr += json[keyVal];
+    }
+    checkStr += 'shuzhu1305';
+    let authStr = md5.hex_md5(checkStr).toUpperCase();
+    json['auth'] = authStr;
+
     fetch(serverURL + path, {
       body:JSON.stringify(json),
       method: 'post',
