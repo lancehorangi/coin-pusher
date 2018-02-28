@@ -33,6 +33,10 @@ export type Action =
       account: string,
       source: ?string,
     }
+  | {
+      type: "ROOM_LIST",
+      list: Array<Object>,
+    }
 ;
 
 export type Dispatch = (

@@ -25,7 +25,9 @@
 "use strict";
 
 import * as loginActions from "./login";
+import * as lobbyActions from "./lobby";
 
 module.exports = {
-  ...loginActions
+  ...loginActions,
+  ...lobbyActions
 };

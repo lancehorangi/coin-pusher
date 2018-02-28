@@ -123,6 +123,7 @@ class LoginScreen extends React.Component {
   }
 
   renderArrowSection() {
+    return (<Text style={styles.skipText}> {JSON.stringify(this.props.list)} </Text>)
     // if (RENDER_ARROW_SECTION) {
     //   return (
     //     <Animated.View style={[styles.arrowSection, this.fadeIn(1500, 15)]}>
@@ -239,7 +240,8 @@ const styles = StyleSheet.create({
 function select(store) {
   return {
     token: store.user.token,
-    account: store.user.account
+    account: store.user.account,
+    list: store.lobby.list
   };
 }
 

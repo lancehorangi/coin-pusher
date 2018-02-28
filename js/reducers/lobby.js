@@ -26,36 +26,19 @@
 
 import { Alert } from 'react-native';
 import type { Action } from "../actions/types";
-import { configureAPIToken } from '../api';
 
 export type State = {
-  isLoggedIn: boolean,
-  token: string,
-  account: string,
-  source: ?string
+  list: Array<Object>
 };
 
-const initialState = {
-  isLoggedIn: false,
-  token: null,
-  account: null,
-  source: null
-};
-
-function user(state: State = initialState, action: Action): State {
-  if (action.type === "LOGGED_IN") {
-    let { token, account } = action;
-
-    configureAPIToken(token);
-
+function lobby(state: State = {}, action: Action): State {
+  if (action.type === "ROOM_LIST") {
     return {
-      isLoggedIn: true,
-      token,
-      account
+      list: action.list,
     };
   }
 
   return state;
 }
 
-module.exports = user;
+module.exports = lobby;

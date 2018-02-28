@@ -24,7 +24,7 @@
 
 import { Platform, Alert } from "react-native";
 import { Navigation } from 'react-native-navigation';
-import APIRequest from '../api';
+import { APIRequest } from '../api';
 import { STATUS_OK } from '../env';
 
 import type { Action, ThunkAction } from "./types";
@@ -35,16 +35,17 @@ async function _logIn(username: string, pwd: string) : Promise<Action> {
         account:username, password:pwd
        });
 
-    Navigation.showInAppNotification({
-        screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
-        passProps: {text:response.ReasonPhrase}, // simple serializable object that will pass as props to the in-app notification (optional)
-        autoDismissTimerSec: 1 // auto dismiss notification in seconds
-      });
+    // Navigation.showInAppNotification({
+    //     screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
+    //     passProps: {text:response.ReasonPhrase}, // simple serializable object that will pass as props to the in-app notification (optional)
+    //     autoDismissTimerSec: 1 // auto dismiss notification in seconds
+    //   });
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
+    Alert.alert(response.account);
     return response;
   } catch(e) {
     throw Error(e.message);

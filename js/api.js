@@ -21,9 +21,19 @@ function parseJSON(response) {
     }));
 }
 
-export default function APIRequest(path, json)
+let _token = null;
+
+export function configureAPIToken(token: string)
+{
+  _token = token;
+}
+
+export function APIRequest(path, json, bToken = false)
 {
   return new Promise((resolve, reject) => {
+    if (bToken) {
+      json['token'] = _token;
+    }
     let propList = Object.keys(json);
     let checkStr = '';
     propList.sort();

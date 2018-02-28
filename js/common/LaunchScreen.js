@@ -28,8 +28,8 @@ import F8Button from "./F8Button";
 import { Dimensions, StyleSheet, View, Image, Alert } from "react-native";
 import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 import { serverURL } from '../env';
-import APIRequest from '../api';
-import { logIn } from '../actions'
+import { APIRequest } from '../api';
+import { logIn, showRoomList, enterRoom } from '../actions'
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -50,7 +50,6 @@ class LaunchScreen extends React.Component {
           source={require("./img/launchscreen.png")}
           style={styles.image}
         />
-        <NTESGLView style={styles.video}/>
         <F8Button
           theme="bordered"
           type="default"
@@ -81,6 +80,18 @@ class LaunchScreen extends React.Component {
           caption="断开视频"
           onPress={() => this.disconnectAVChat()}
         />
+        <F8Button
+          theme="bordered"
+          type="default"
+          caption="请求房间列表"
+          onPress={() => this.roomList()}
+        />
+        <F8Button
+          theme="bordered"
+          type="default"
+          caption="进入房间"
+          onPress={() => this.enterRoom()}
+        />
       </View>
     );
   }
@@ -98,12 +109,35 @@ class LaunchScreen extends React.Component {
     //   body: JSON.stringify({account:'test124', password:'test124'})
     //   });
 
-    await this.props.dispatch(logIn('test130', 'test130'));
+    await this.props.dispatch(logIn('test132', 'test132'));
   }
 
   async logInIM()
   {
     NimSession.login(this.props.account, this.props.token).then(size => Alert.alert(size), e => Alert.alert(e.message));
+  }
+
+  async roomList()
+  {
+    await this.props.dispatch(showRoomList());
+  }
+
+  async enterRoom()
+  {
+    if(this.props.roomList.length != 0)
+    {
+      this.props.navigator.push({
+        screen: 'CP.GameScreen', // unique ID registered with Navigation.registerScreen
+        title: "游戏",
+        passProps:{
+          roomID: this.props.roomList[0].roomID,
+          meetingName: this.props.roomList[0].meetingName
+        }
+      });
+    }
+    else {
+      Alert.alert('房间列表为空');
+    }
   }
 
   async connectAVChat()
@@ -141,7 +175,7 @@ class LaunchScreen extends React.Component {
       //   Alert.alert(resJson);
 
         let response = await APIRequest('account/regist', {
-          account:'test130', password:'test130'});
+          account:'test132', password:'test132'});
         this.props.navigator.showInAppNotification({
             screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
             passProps: {text:response.ReasonPhrase}, // simple serializable object that will pass as props to the in-app notification (optional)
@@ -181,7 +215,8 @@ const styles = StyleSheet.create({
 function select(store) {
   return {
     token: store.user.token,
-    account: store.user.account
+    account: store.user.account,
+    roomList: store.lobby.list
   };
 }
 

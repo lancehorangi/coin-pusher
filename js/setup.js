@@ -34,6 +34,7 @@ import { Text, Alert } from "react-native";
 //import F8App from "./F8App";
 import LaunchScreen from "./common/LaunchScreen";
 import { Navigation } from 'react-native-navigation'
+import { APIRequest, configureAPIToken } from './api';
 
 // Config
 //import { serverURL, parseAppID } from "./env";
@@ -68,7 +69,8 @@ export default class Root extends React.Component {
 
             //init native event listener
             configureListener(store);
-            
+            configureAPIToken(store.getState().user.token);
+
             let bLogin = store.getState().user.token && store.getState().user.token.length != 0;
             if(bLogin)
             {
