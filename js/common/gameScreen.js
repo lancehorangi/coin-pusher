@@ -4,7 +4,7 @@ import React from "react";
 import { connect } from "react-redux";
 import F8Colors from "./F8Colors";
 import F8Button from "./F8Button";
-import { Dimensions, StyleSheet, View, Image, Alert } from "react-native";
+import { Dimensions, StyleSheet, View, Image, Alert, PixelRatio } from "react-native";
 import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 import { serverURL } from '../env';
 import { APIRequest } from '../api';
@@ -99,11 +99,10 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
+    width: WIN_WIDTH
   },
   video: {
     position: "absolute",
-    left: 0,
-    top: WIN_HEIGHT / 4,
     width: WIN_WIDTH,
     height: WIN_WIDTH / 4 * 3,
     resizeMode: "cover"

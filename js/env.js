@@ -26,7 +26,7 @@ module.exports = {
   version: 1,
   testMenuEnabled: false,
   //parseAppID: "oss-f8-app-2017",
-  serverURL: "http://192.168.50.249:7001/1.0/",
+  serverURL: "http://192.168.2.10:7001/1.0/",
   //graphqlURL: "http://localhost:4000/graphql",
   STATUS_OK: '0',
   compatibleStoreVersion: "0.10",

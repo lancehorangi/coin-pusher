@@ -85,7 +85,6 @@ export default class Root extends React.Component {
                       overrideBackPress: false,
                       navigatorStyle: {}
                   },
-
                   {
                       label: 'LaunchScreen',
                       screen: 'CP.LaunchScreen',
@@ -93,6 +92,16 @@ export default class Root extends React.Component {
                       selectedIcon: require('./common/img/logo.png'),
                       title: '个人资料',
                       navigatorStyle: {}
+                  },
+                  {
+                    label: '大厅',
+                    screen: 'CP.MainScreen',
+                    icon: require('./common/img/logo.png'),
+                    selectedIcon: require('./common/img/logo.png'),
+                    title: '大厅',
+                    navigatorStyle: {
+                      navBarHidden: false
+                    }
                   }
                   ],
               });

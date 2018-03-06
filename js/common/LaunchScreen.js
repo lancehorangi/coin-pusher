@@ -109,7 +109,7 @@ class LaunchScreen extends React.Component {
     //   body: JSON.stringify({account:'test124', password:'test124'})
     //   });
 
-    await this.props.dispatch(logIn('test132', 'test132'));
+    await this.props.dispatch(logIn('test135', 'test135'));
   }
 
   async logInIM()
@@ -124,7 +124,7 @@ class LaunchScreen extends React.Component {
 
   async enterRoom()
   {
-    if(this.props.roomList.length != 0)
+    if(this.props.roomList && this.props.roomList.length != 0)
     {
       this.props.navigator.push({
         screen: 'CP.GameScreen', // unique ID registered with Navigation.registerScreen
@@ -175,7 +175,7 @@ class LaunchScreen extends React.Component {
       //   Alert.alert(resJson);
 
         let response = await APIRequest('account/regist', {
-          account:'test132', password:'test132'});
+          account:'test135', password:'test135'});
         this.props.navigator.showInAppNotification({
             screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
             passProps: {text:response.ReasonPhrase}, // simple serializable object that will pass as props to the in-app notification (optional)
@@ -198,8 +198,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     top: 0,
-    width: WIN_WIDTH,
-    height: WIN_HEIGHT,
+    // width: WIN_WIDTH,
+    // height: WIN_HEIGHT,
+    right:0,
+    bottom:0,
     resizeMode: "cover"
   },
   video: {
