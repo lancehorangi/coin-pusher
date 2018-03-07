@@ -4,8 +4,21 @@
 import { NativeAppEventEmitter, Alert } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { NIMLoginDescrib, NIMAVChatDescrib } from './nativeEventDescribe';
+import type { Action, ThunkAction } from "./actions/types";
+
+let _dispatch = null;
+
+function getStoreDispatch(): void {
+  if(_dispatch) {
+    return _dispatch;
+  }
+
+  return null;
+}
 
 function configureListener(store): void {
+  _dispatch = store.getState().dispatch;
+
   //NIM 用户相关事件
   NativeAppEventEmitter.addListener("observeOnlineStatus",(data)=>{
     //store.getState().dispatch();
@@ -42,4 +55,4 @@ function configureListener(store): void {
   });
 }
 
-module.exports = configureListener;
+module.exports = {configureListener, getStoreDispatch};

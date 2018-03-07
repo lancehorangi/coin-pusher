@@ -34,8 +34,21 @@ export type State = {
 function lobby(state: State = {}, action: Action): State {
   if (action.type === "ROOM_LIST") {
     return {
+      ...state,
       list: action.list,
+      roomType: action.roomType
     };
+  }
+
+  if(action.type === "CLEAR_ROOM_LIST"){
+    return {
+      list: null,
+      roomType: null
+    }
+  }
+
+  if(action.type === "LOGGED_OUT"){
+    return {}
   }
 
   return state;

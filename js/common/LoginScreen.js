@@ -28,6 +28,7 @@ import { connect } from "react-redux";
 import { skipLogin } from "../actions";
 import F8Colors from "../common/F8Colors";
 import F8Fonts from "../common/F8Fonts";
+import F8Button from "./F8Button";
 import { Text, Heading1 } from "../common/F8Text";
 import {
   Animated,
@@ -36,9 +37,15 @@ import {
   StatusBar,
   View,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  TextInput,
+  Alert
 } from "react-native";
 import LoginButton from "../common/LoginButton";
+import { serverURL } from '../env';
+import { APIRequest } from '../api';
+import { logIn } from '../actions';
+import Toast from 'react-native-root-toast';
 
 /* Config/Constants
 ============================================================================= */
@@ -48,9 +55,6 @@ const SKIP_BTN_HEIGHT = 24,
   WINDOW_HEIGHT = Dimensions.get("window").height,
   VERTICAL_BREAKPOINT = WINDOW_HEIGHT <= 600,
   HEADER_HEIGHT = VERTICAL_BREAKPOINT ? 220 : 285,
-  SKIP_BTN_MARGIN_TOP = VERTICAL_BREAKPOINT ? 15 : 23,
-  WHENWHERE_PADDING_TOP = VERTICAL_BREAKPOINT ? 12 : 18,
-  RENDER_ARROW_SECTION = VERTICAL_BREAKPOINT ? false : true,
   LOGIN_PADDING_BOTTOM = VERTICAL_BREAKPOINT ? 20 : 33,
   CONTENT_PADDING_H = VERTICAL_BREAKPOINT ? 15 : 20;
 
@@ -76,68 +80,30 @@ class LoginScreen extends React.Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="default" />
-        <View style={styles.header}>
-          <Image
-            source={require("../common/img/pattern-dots.png")}
-            style={styles.headerPattern}
-          />
-          <Image
-            resizeMode="cover"
-            source={require("./img/illustration.png")}
-            style={styles.headerIllustration}
-          />
-          <Image source={require("./img/logo.png")} />
-        </View>
         <View style={styles.content}>
-          <View style={styles.mainHeadingSection}>
-            <Animated.View style={this.fadeIn(500, 5)}>
-              <Heading1 style={styles.h1}>
-                Facebook Developer Conference
-              </Heading1>
-            </Animated.View>
-            <Animated.Text
-              style={[styles.whenWhereText, this.fadeIn(1200, 10)]}
-            >
-              APRIL 18 + 19 / SAN JOSE, CALIFORNIA
-            </Animated.Text>
-          </View>
-
-          {this.renderArrowSection()}
-
-          <Animated.View style={[styles.loginSection, this.fadeIn(1900, 20)]}>
-            <Text style={styles.loginComment}>
-              Use Facebook to find your friends at F8.
-            </Text>
-            <LoginButton source="First screen" />
-            <TouchableOpacity
-              onPress={_ => this.props.dispatch(skipLogin())}
-              style={styles.skipButton}
-            >
-              {this.renderSkipLogin()}
-              <Text style={styles.skipText}>SKIP FOR NOW</Text>
-            </TouchableOpacity>
-          </Animated.View>
+            <TextInput
+              style={styles.account}
+              onChangeText={(account) => this.setState({account})}
+            />
+            <TextInput
+              style={styles.account}
+              onChangeText={(pwd) => this.setState({pwd})}
+            />
+            <F8Button
+              theme="bordered"
+              type="default"
+              caption="注册"
+              onPress={() => this.reg()}
+            />
+            <F8Button
+              theme="bordered"
+              type="default"
+              caption="登录"
+              onPress={() => this.login()}
+            />
         </View>
       </View>
     );
-  }
-
-  renderArrowSection() {
-    return (<Text style={styles.skipText}> {JSON.stringify(this.props.list)} </Text>)
-    // if (RENDER_ARROW_SECTION) {
-    //   return (
-    //     <Animated.View style={[styles.arrowSection, this.fadeIn(1500, 15)]}>
-    //       <Image source={require("./img/arrow.png")} />
-    //     </Animated.View>
-    //   );
-    // } else {
-    //   return null;
-    // }
-  }
-
-  renderSkipLogin() {
-      return (<Text style={styles.skipText}>token:{this.props.token}
-        account:{this.props.account}</Text>)
   }
 
   fadeIn(delay, from = 0) {
@@ -159,6 +125,24 @@ class LoginScreen extends React.Component {
       ]
     };
   }
+
+  async login() {
+    this.props.dispatch(logIn(this.state.account, this.state.pwd));
+  }
+
+  async reg() {
+    let url = serverURL + 'account/regist';
+    try {
+        let response = await APIRequest('account/regist', {
+          account:this.state.account, password:this.state.pwd});
+
+        Toast.show(response.ReasonPhrase);
+
+    } catch(e) {
+      Alert.alert(e.message);
+    };
+  }
+
 }
 
 /* StyleSheet
@@ -170,78 +154,26 @@ const styles = StyleSheet.create({
     backgroundColor: F8Colors.bianca
   },
 
-  //header styles
-  header: {
-    height: HEADER_HEIGHT,
-    alignItems: "center",
-    justifyContent: "flex-end"
-  },
-  headerPattern: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    right: 0,
-    //height: HEADER_HEIGHT
-  },
-  headerIllustration: {
-    position: "absolute",
-    left: 0,
-    width: WINDOW_WIDTH,
-    bottom: 80
-  },
-
   content: {
     flex: 1,
-    //justifyContent: "space-around",
-    paddingHorizontal: CONTENT_PADDING_H
+  },
+
+  account: {
+    height: 48,
+    borderWidth: 1
   },
 
   h1: {
     marginTop: 16,
     textAlign: "center"
   },
-  whenWhereText: {
-    //marginTop: WHENWHERE_PADDING_TOP,
-    textAlign: "center",
-    color: F8Colors.tangaroa,
-    fontFamily: F8Fonts.helvetica
-  },
 
-  arrowSection: {
-    alignItems: "center",
-    justifyContent: "center"
-  },
-
-  loginSection: {
-    //paddingBottom: LOGIN_PADDING_BOTTOM,
-    alignItems: "center",
-    paddingHorizontal: 20
-  },
-  loginComment: {
-    textAlign: "center",
-    fontSize: 15,
-    color: F8Colors.pink,
-    fontFamily: F8Fonts.fontWithWeight("helvetica", "semibold"),
-    marginBottom: 23
-  },
-  skipButton: {
-    marginTop: SKIP_BTN_MARGIN_TOP,
-    height: SKIP_BTN_HEIGHT,
-    alignSelf: "stretch",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  skipText: {
-    color: F8Colors.colorWithAlpha("tangaroa", 0.5),
-    fontFamily: F8Fonts.helvetica
-  }
 });
 
 function select(store) {
   return {
-    token: store.user.token,
-    account: store.user.account,
-    list: store.lobby.list
+    // token: store.user.token,
+    // account: store.user.account,
   };
 }
 

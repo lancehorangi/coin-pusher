@@ -185,6 +185,9 @@ class LaunchScreen extends React.Component {
       Alert.alert(e.message);
     };
   }
+
+  componentDidMount() {
+  }
 }
 
 /* StyleSheet =============================================================== */

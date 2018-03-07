@@ -9,6 +9,7 @@ import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 import { serverURL } from '../env';
 import { APIRequest } from '../api';
 import { logIn, showRoomList, enterRoom, pushCoin } from '../actions'
+import { Navigation } from 'react-native-navigation';
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -50,10 +51,23 @@ class GameScreen extends React.Component {
     this.props.dispatch(enterRoom(roomID, meetingName));
   }
 
+  onPress = _ => {
+    Navigation.dismissModal({
+      animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+    });
+  }
+
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
         <NTESGLView style={styles.image}/>
+        <F8Button
+          style={styles.btn}
+          theme="bordered"
+          type="round"
+          icon={require("../common/img/buttons/icon-x.png")}
+          onPress={this.onPress}
+        />
         <F8Button
           theme="bordered"
           type="default"
@@ -106,6 +120,11 @@ const styles = StyleSheet.create({
     width: WIN_WIDTH,
     height: WIN_WIDTH / 4 * 3,
     resizeMode: "cover"
+  },
+  btn: {
+    position: "absolute",
+    top: 20,
+    left: 20
   }
 });
 

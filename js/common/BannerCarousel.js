@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
-const BANNER_HEIGHT = 75;
+const BANNER_HEIGHT = WIN_WIDTH / 4;
 
 class BannerCarousel extends Component {
     props: {

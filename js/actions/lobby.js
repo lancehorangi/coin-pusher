@@ -34,41 +34,33 @@ async function _roomList() : Promise<Action> {
   try {
     let response = await APIRequest('room/list', {}, true);
 
-    Navigation.showInAppNotification({
-        screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
-        passProps: {text:response.ReasonPhrase}, // simple serializable object that will pass as props to the in-app notification (optional)
-        autoDismissTimerSec: 1 // auto dismiss notification in seconds
-      });
-
     if(response.StatusCode != STATUS_OK){
-      throw Error(response.ReasonPhrase);
+      throw Error("room/list failed reason=" + response.ReasonPhrase);
     }
 
     return response;
   } catch(e) {
-    throw Error(e.message);
+    console.warn("_roomList failed=" + e);
+    throw e;
   };
 }
 
-function showRoomList(): ThunkAction {
+function showRoomList(roomType: number): ThunkAction {
   return (dispatch, getState) => {
     const response = _roomList();
     response.then(result => dispatch({
       type: "ROOM_LIST",
       list: result.list,
-    }), err => {Alert.alert(err.message)});
+      roomType: roomType
+    }), err => {
+      console.warn("showRoomList failed=" + err.message);
+    });
   };
 }
 
 async function _enterRoom(roomID: string, meetingName: string) : Promise<Action> {
   try {
     let response = await APIRequest('room/enter', {roomid: roomID}, true);
-
-    Navigation.showInAppNotification({
-        screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
-        passProps: {text:response.ReasonPhrase}, // simple serializable object that will pass as props to the in-app notification (optional)
-        autoDismissTimerSec: 1 // auto dismiss notification in seconds
-      });
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -85,7 +77,7 @@ function enterRoom(roomID: string, meetingName: string): ThunkAction {
   return (dispatch, getState) => {
     const response = _enterRoom(roomID, meetingName);
     response.then(result => {
-      
+
     }, err => {Alert.alert('进入房间失败:' + err.message)});
   };
 }
@@ -93,12 +85,6 @@ function enterRoom(roomID: string, meetingName: string): ThunkAction {
 async function _pushCoin() : Promise<Action> {
   try {
     let response = await APIRequest('room/pushCoin', {}, true);
-
-    Navigation.showInAppNotification({
-        screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
-        passProps: {text:response.ReasonPhrase}, // simple serializable object that will pass as props to the in-app notification (optional)
-        autoDismissTimerSec: 1 // auto dismiss notification in seconds
-      });
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);

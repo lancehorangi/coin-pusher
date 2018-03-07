@@ -24,10 +24,11 @@
 
 import { Platform, Alert } from "react-native";
 import { Navigation } from 'react-native-navigation';
-import { APIRequest } from '../api';
+import { APIRequest, configureAPIToken } from '../api';
 import { STATUS_OK } from '../env';
-
+import { NimUtils, NimSession } from 'react-native-netease-im';
 import type { Action, ThunkAction } from "./types";
+import Toast from 'react-native-root-toast';
 
 async function _logIn(username: string, pwd: string) : Promise<Action> {
   try {
@@ -45,33 +46,96 @@ async function _logIn(username: string, pwd: string) : Promise<Action> {
       throw Error(response.ReasonPhrase);
     }
 
-    Alert.alert(response.account);
     return response;
   } catch(e) {
     throw Error(e.message);
   };
 }
 
-function logIn(username: string, pwd: string, source: ?string): ThunkAction {
+function logIn(account: string, pwd: string, source: ?string): ThunkAction {
   return (dispatch, getState) => {
     //let name = getState().user.name || "there";
     //dispatch(logOut())
 
-    const response = _logIn(username, pwd);
-    response.then(result => dispatch({
-      type: "LOGGED_IN",
-      token: result.token,
-      account: result.account
-    }), err => {Alert.alert(err.message)});
+    const response = _logIn(account, pwd);
+    response.then(result => dispatch(loggedIn(result.account, result.token)),
+      err => {
+        Alert.alert("登录失败(" + err.message + ")");
+      });
   };
 }
 
-function loggedIn(token: string, source: ?string): Action {
+function loggedIn(account: string, token: string, source: ?string): Action {
+  NimSession.logout();
+  NimSession.login(account, token).then(size => {
+    console.log("Netease IM login succ")
+  }, e => {
+    console.warn("Netease IM login failed=" + e.message);
+  });
+
+  Navigation.dismissModal({
+    animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+  });
+
+  Toast.show('登录成功');
+
   return {
     type: "LOGGED_IN",
+    account,
     token,
     source
   };
 }
 
-module.exports = { logIn, loggedIn };
+function loggedOut(): Action {
+  configureAPIToken(null);
+  NimSession.logout();
+
+  Navigation.dismissModal({
+    animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+  });
+
+  Navigation.showModal({
+    screen: 'CP.LoginScreen', // unique ID registered with Navigation.registerScreen
+    //title: '游戏', // title of the screen as appears in the nav bar (optional)
+    passProps: {}, // simple serializable object that will pass as props to the modal (optional)
+    navigatorStyle: { navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+    navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+    animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+  });
+
+  return {
+    type: "LOGGED_OUT"
+  }
+}
+
+async function _reg(account: string, pwd: string) : Promise<Action> {
+  try {
+    let response = await APIRequest('account/regist', {
+        account:account, password:pwd
+       });
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function reg(account: string, pwd: string): ThunkAction {
+  // return (dispatch, getState) => {
+  //   //let name = getState().user.name || "there";
+  //   //dispatch(logOut())
+  //
+  //   const response = _reg(account, pwd);
+  //   response.then(result => {
+  //     Toast.show('注册成功');
+  //     dispatch(loggedIn(result.account, result.token))
+  //   },  err => {Alert.alert(err.message)});
+  // };
+}
+
+module.exports = { logIn, loggedIn, loggedOut };

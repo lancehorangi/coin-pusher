@@ -36,7 +36,13 @@ export type Action =
   | {
       type: "ROOM_LIST",
       list: Array<Object>,
+      roomType: number,
     }
+  | {
+      type: "CLEAR_ROOM_LIST",
+      roomType: number,
+    }
+  | { type: "LOGGED_OUT" }
 ;
 
 export type Dispatch = (

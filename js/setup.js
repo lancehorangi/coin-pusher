@@ -28,12 +28,12 @@ import React from "react";
 import configureStore from "./store/configureStore";
 import { Provider } from "react-redux";
 import registerScreens from "./screens";
-import configureListener from "./configureListener";
+import { configureListener } from "./configureListener";
 // Components
 import { Text, Alert } from "react-native";
 //import F8App from "./F8App";
 import LaunchScreen from "./common/LaunchScreen";
-import { Navigation } from 'react-native-navigation'
+import { Navigation } from 'react-native-navigation';
 import { APIRequest, configureAPIToken } from './api';
 
 // Config
@@ -72,106 +72,54 @@ export default class Root extends React.Component {
             configureAPIToken(store.getState().user.token);
 
             let bLogin = store.getState().user.token && store.getState().user.token.length != 0;
-            if(bLogin)
-            {
+
               Navigation.startTabBasedApp({
                   tabs: [
                   {
-                      label: 'LoginScreen',
-                      screen: 'CP.LoginScreen',
-                      icon: require('./common/img/logo.png'),
-                      selectedIcon: require('./common/img/logo.png'),
-                      title: '123进入大厅',
-                      overrideBackPress: false,
-                      navigatorStyle: {}
-                  },
-                  {
-                      label: 'LaunchScreen',
-                      screen: 'CP.LaunchScreen',
-                      icon: require('./common/img/logo.png'),
-                      selectedIcon: require('./common/img/logo.png'),
-                      title: '个人资料',
-                      navigatorStyle: {}
-                  },
-                  {
                     label: '大厅',
                     screen: 'CP.MainScreen',
-                    icon: require('./common/img/logo.png'),
-                    selectedIcon: require('./common/img/logo.png'),
-                    title: '大厅',
+                    icon: require('./common/img/buttons/hall.png'),
+                    selectedIcon: require('./common/img/buttons/hall_2.png'),
+                    title: '欢乐马戏城',
                     navigatorStyle: {
                       navBarHidden: false
                     }
-                  }
+                  },
+                  {
+                      label: '商城',
+                      screen: 'CP.LaunchScreen',
+                      icon: require('./common/img/buttons/shop.png'),
+                      selectedIcon: require('./common/img/buttons/shop_2.png'),
+                      title: '商城',
+                      navigatorStyle: {
+                        navBarHidden: true
+                      }
+                  },
+                  {
+                      label: '我的',
+                      screen: 'CP.LaunchScreen',
+                      icon: require('./common/img/buttons/my.png'),
+                      selectedIcon: require('./common/img/buttons/my_2.png'),
+                      title: '个人资料',
+                      navigatorStyle: {
+                        navBarHidden: true
+                      }
+                  },
                   ],
+                  passProps: {loggedIn: bLogin}, // simple serializable object that will pass as props to all top screens (optional)
+                  animationType: 'fade',
+                  tabsStyle: { // optional, **iOS Only** add this if you want to style the tab bar beyond the defaults
+                    tabBarBackgroundColor: '#373a41',
+                    //tabBarLabelColor: '#ffffff',
+                    //tabBarButtonColor: '#ffffff', // change the color of the tab icons and text (also unselected)
+                    tabBarSelectedButtonColor: '#ffffff',
+                  }
               });
-            }
-            else {
-              Navigation.startSingleScreenApp({
-                screen: {
-                  screen: 'CP.LaunchScreen', // unique ID registered with Navigation.registerScreen
-                  //title: '请登录', // title of the screen as appears in the nav bar (optional)
-                  navigatorStyle: {navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-                  navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-                }
-              });
-            }
           }
-    )
-    // .then(
-    //   // creation callback (after async compatibility)
-    //   store => {
-    //     this.setState({ store, storeCreated: true });
-    //     registerScreens(store, Provider);
-    //
-    //     Alert.alert(JSON.stringify(store.getState()));
-    //     //let bLogin = this.getState().store.user.token && this.getState().store.user.token.length != 0;
-    //     if(bLogin)
-    //     {
-    //       Navigation.startTabBasedApp({
-    //           tabs: [
-    //           {
-    //               label: 'LoginScreen',
-    //               screen: 'CP.LoginScreen',
-    //               icon: require('./common/img/logo.png'),
-    //               selectedIcon: require('./common/img/logo.png'),
-    //               title: '123进入大厅',
-    //               overrideBackPress: false,
-    //               navigatorStyle: {}
-    //           },
-    //
-    //           {
-    //               label: 'LaunchScreen',
-    //               screen: 'CP.LaunchScreen',
-    //               icon: require('./common/img/logo.png'),
-    //               selectedIcon: require('./common/img/logo.png'),
-    //               title: '个人资料',
-    //               navigatorStyle: {}
-    //           }
-    //           ],
-    //       });
-    //     }
-    //     else {
-    //       Navigation.startSingleScreenApp({
-    //         screen: {
-    //           screen: 'CP.LaunchScreen', // unique ID registered with Navigation.registerScreen
-    //           //title: '请登录', // title of the screen as appears in the nav bar (optional)
-    //           navigatorStyle: {navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-    //           navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-    //         }
-    //       });
-    //     }
-    //  }
-    // );
+        )
   }
 
   componentDidMount() {
 
   }
-
-  // render() {
-  //   if (!this.state.storeCreated || !this.state.storeRehydrated) {
-  //     return <LaunchScreen />;
-  //   }
-  // }
 }

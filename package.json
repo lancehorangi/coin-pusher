@@ -27,6 +27,7 @@
     "react-native-md5": "^1.0.0",
     "react-native-navigation": "^1.1.375",
     "react-native-netease-im": "file:../../react-native-netease-im-avchat",
+    "react-native-root-toast": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-snap-carousel": "^3.6.0",
     "react-native-tab-view": "^0.0.74",

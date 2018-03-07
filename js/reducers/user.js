@@ -55,6 +55,10 @@ function user(state: State = initialState, action: Action): State {
     };
   }
 
+  if(action.type === "LOGGED_OUT"){
+    return initialState;
+  }
+
   return state;
 }
 

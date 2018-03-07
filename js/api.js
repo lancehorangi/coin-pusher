@@ -2,7 +2,17 @@
 import { serverURL } from './env';
 import { Alert } from 'react-native';
 import md5 from "react-native-md5";
+import { getStoreDispatch } from "./configureListener";
+import { loggedOut } from "./actions";
 
+const APICode = {
+  TokenDisabled: '8',
+}
+
+let APICodeDescrib = { }
+APICodeDescrib[APICode.TokenDisabled] = '登录失效'
+
+const LOG_API = false;
 /**
  * Parses the JSON returned by a network request
  *
@@ -11,26 +21,32 @@ import md5 from "react-native-md5";
  * @return {object}          The parsed JSON, status from the response
  */
 function parseJSON(response) {
-  return new Promise((resolve) => response.json()
+  return new Promise((resolve, reject) => response.json()
     .then((json) => resolve({
       status: response.status,
       ok: response.ok,
       json,
-    }), e => {
-        Alert.alert('JSON Parse Error:' + e.message);
+    }), (e) => {
+        console.error('JSON Parse Error:' + e.message);
+        reject(e);
     }));
 }
 
 let _token = null;
 
-export function configureAPIToken(token: string)
+export function configureAPIToken(token: string | null)
 {
   _token = token;
 }
 
 export function APIRequest(path, json, bToken = false)
 {
+  console.log('Start api req: path=' + path + ', json' + JSON.stringify(json));
   return new Promise((resolve, reject) => {
+    if(bToken && _token == null){
+      return reject(Error("Already logged out."));
+    }
+
     if (bToken) {
       json['token'] = _token;
     }
@@ -52,11 +68,23 @@ export function APIRequest(path, json, bToken = false)
         'Content-Type': 'application/x-www-form-urlencoded',
       }}).then(parseJSON)
       .then((response) => {
+        if (LOG_API) {console.log("API response=" + JSON.stringify(response))}
+
         if (response.ok) {
-          return resolve(response.json);
+          if (response.status === APICode.TokenDisabled) {
+            console.warn('Account Token check failed, loggout');
+            getStoreDispatch()(loggedOut());
+          }
+          else {
+            return resolve(response.json);
+          }
         }
-        return reject(response.status);
+        console.error('API Request HTTP failed, response=' + response.ok);
+        return reject(Error("API:" + path + ", status code=" + response.status));
+      }, (e) => {
+        console.warn('API Request Json failed, response=' + e.message);
+        return reject(Error(e.message));
       })
-      .catch((error) => reject(error.message));
+      .catch((error) => reject(error));
   });
 }
