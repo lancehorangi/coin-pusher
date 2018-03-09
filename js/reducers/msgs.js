@@ -24,37 +24,53 @@
 
 "use strict";
 
-type ParseObject = Object;
+import { Alert } from 'react-native';
+import type { Action } from "../actions/types";
+import { configureAPIToken } from '../api';
 
-export type Action =
-  | {
-      type: "LOGGED_IN",
-      token: string,
-      account: string,
-      source: ?string,
-    }
-  | {
-      type: "ROOM_LIST",
-      list: Array<Object>,
-      roomType: number,
-    }
-  | {
-      type: "CLEAR_ROOM_LIST",
-      roomType: number,
-    }
-  | { type: "LOGGED_OUT" }
-  | { type: "MSG_LIST" }
-  | { type: "MSG_LIST_SUCC", msgs:Object, unreadNum: number }
-  | { type: "MSG_LIST_FAILED" }
-  | {
-      type: "MSG_TAG_READ",
-      msgID: number
-    }
-;
+export type State = {
+  msgs: Object,
+  bLoading: boolean,
+  unreadNum: ?number
+};
 
-export type Dispatch = (
-  action: Action | ThunkAction | PromiseAction | Array<Action>
-) => any;
-export type GetState = () => Object;
-export type ThunkAction = (dispatch: Dispatch, getState: GetState) => any;
-export type PromiseAction = Promise<Action>;
+const initialState = {
+  msgs: null,
+  bLoading: false,
+  unreadNum: 0
+};
+
+function msgs(state: State = initialState, action: Action): State {
+  if (action.type === "MSG_LIST") {
+    let bLoading = true;
+    return {
+      ...state,
+      bLoading
+    };
+  }
+
+  if(action.type === "MSG_LIST_SUCC"){
+    let { msgs, unreadNum } = action;
+    return {
+      ...state,
+      msgs,
+      unreadNum,
+      bLoading: false
+    };
+  }
+
+  if(action.type === "MSG_LIST_FAILED"){
+    return {
+      ...state,
+      bLoading: false
+    };
+  }
+
+  if(action.type === "LOGGED_OUT"){
+    return initialState;
+  }
+
+  return state;
+}
+
+module.exports = msgs;

@@ -26,8 +26,10 @@
 
 import * as loginActions from "./login";
 import * as lobbyActions from "./lobby";
+import * as msgsActions from "./msgs";
 
 module.exports = {
   ...loginActions,
-  ...lobbyActions
+  ...lobbyActions,
+  ...msgsActions,
 };

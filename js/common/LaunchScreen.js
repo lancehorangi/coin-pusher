@@ -92,6 +92,12 @@ class LaunchScreen extends React.Component {
           caption="进入房间"
           onPress={() => this.enterRoom()}
         />
+        <F8Button
+          theme="bordered"
+          type="default"
+          caption="登录失效"
+          onPress={() => this.logout()}
+        />
       </View>
     );
   }
@@ -156,23 +162,20 @@ class LaunchScreen extends React.Component {
     let v = await NimUtils.leaveMeeting();
   }
 
+  async logout()
+  {
+    try {
+        let response = await APIRequest('test', { });
+
+    } catch(e) {
+      Alert.alert(e.message);
+    };
+  }
+
   async reg()
   {
     let url = serverURL + 'account/regist';
     try {
-      // let response = await fetch(url,{
-      //   method: 'post',
-      //   headers: {
-      //     'Content-Type': 'application/x-www-form-urlencoded',
-      //   },
-      //   body: JSON.stringify({account:'test123', password:'test123'})
-      //   });
-      //
-      //   let responseTxt = await response.text();
-      //   Alert.alert(responseTxt);
-      //
-      //   let resJson = await response.json();
-      //   Alert.alert(resJson);
 
         let response = await APIRequest('account/regist', {
           account:'test135', password:'test135'});

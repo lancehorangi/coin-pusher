@@ -9,6 +9,7 @@ import BannerCarousel from './BannerCarousel';
 import RoomList from './RoomList';
 import { loggedOut } from './../actions';
 import GridButton from './GridButton';
+import { showRoomList } from "./../actions";
 
 const initialLayout = {
   height: 0,
@@ -61,6 +62,7 @@ export class MainScreen extends React.Component {
         //buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
         //buttonFontWeight: '600', // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
         icon: require('./img/header/add.png'),
+        //component: 'CP.CustomMainScreenTabButton',
         disableIconTint: true,
       }
     ],
@@ -94,13 +96,17 @@ export class MainScreen extends React.Component {
         Alert.alert('充值');
       }
       if (event.id == 'message') {
-        Alert.alert('消息');
+        this.props.navigator.push({
+          screen: 'CP.MsgHistoryScreen', // unique ID registered with Navigation.registerScreen
+          title: "邮件",
+        });
       }
     }
   }
 
   _handleIndexChange = index => {
     this.setState({ index });
+    this.props.dispatch(showRoomList());
   }
 
   _renderHeader = props => {
@@ -131,7 +137,11 @@ export class MainScreen extends React.Component {
   }
 
   componentDidMount() {
-    if(this.props.loggedIn === false){
+    //Alert.alert("MainScreen componentDidMount loggedIn:" + this.props.loggedIn)
+    if(this.props.loggedIn){
+      this.props.dispatch(showRoomList());
+    }
+    else {
       this.props.dispatch(loggedOut());
     }
   }

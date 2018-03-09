@@ -31,7 +31,7 @@ class RoomList extends Component {
 
     componentDidMount() {
       //Alert.alert('componentDidMount');
-      this.props.dispatch(showRoomList());
+      //this.props.dispatch(showRoomList());
     }
 
     _renderRoomThumbnail() {

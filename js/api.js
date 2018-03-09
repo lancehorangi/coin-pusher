@@ -12,7 +12,7 @@ const APICode = {
 let APICodeDescrib = { }
 APICodeDescrib[APICode.TokenDisabled] = '登录失效'
 
-const LOG_API = false;
+const LOG_API = true;
 /**
  * Parses the JSON returned by a network request
  *
@@ -22,11 +22,14 @@ const LOG_API = false;
  */
 function parseJSON(response) {
   return new Promise((resolve, reject) => response.json()
-    .then((json) => resolve({
+    .then((json) => {
+      if (LOG_API) {console.log('api status=' + response.status);}
+
+      resolve({
       status: response.status,
       ok: response.ok,
       json,
-    }), (e) => {
+    })}, (e) => {
         console.error('JSON Parse Error:' + e.message);
         reject(e);
     }));
@@ -41,7 +44,6 @@ export function configureAPIToken(token: string | null)
 
 export function APIRequest(path, json, bToken = false)
 {
-  console.log('Start api req: path=' + path + ', json' + JSON.stringify(json));
   return new Promise((resolve, reject) => {
     if(bToken && _token == null){
       return reject(Error("Already logged out."));
@@ -61,6 +63,8 @@ export function APIRequest(path, json, bToken = false)
     let authStr = md5.hex_md5(checkStr).toUpperCase();
     json['auth'] = authStr;
 
+    if (LOG_API) {console.log('Start api req: path=' + path + ', json' + JSON.stringify(json));}
+    
     fetch(serverURL + path, {
       body:JSON.stringify(json),
       method: 'post',
@@ -71,15 +75,17 @@ export function APIRequest(path, json, bToken = false)
         if (LOG_API) {console.log("API response=" + JSON.stringify(response))}
 
         if (response.ok) {
-          if (response.status === APICode.TokenDisabled) {
+          if (response.json.StatusCode === APICode.TokenDisabled) {
             console.warn('Account Token check failed, loggout');
             getStoreDispatch()(loggedOut());
+            return resolve(response.json);
           }
           else {
             return resolve(response.json);
           }
         }
-        console.error('API Request HTTP failed, response=' + response.ok);
+
+        console.warn('API Request HTTP failed, response=' + response.ok);
         return reject(Error("API:" + path + ", status code=" + response.status));
       }, (e) => {
         console.warn('API Request Json failed, response=' + e.message);

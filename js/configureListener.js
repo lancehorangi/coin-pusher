@@ -6,18 +6,19 @@ import { Navigation } from 'react-native-navigation';
 import { NIMLoginDescrib, NIMAVChatDescrib } from './nativeEventDescribe';
 import type { Action, ThunkAction } from "./actions/types";
 
-let _dispatch = null;
+let _store = null;
 
 function getStoreDispatch(): void {
-  if(_dispatch) {
-    return _dispatch;
+  console.log("getStoreDispatch store=" + _store);
+  if(_store && _store.dispatch) {
+    return _store.dispatch;
   }
 
   return null;
 }
 
 function configureListener(store): void {
-  _dispatch = store.getState().dispatch;
+  _store = store;
 
   //NIM 用户相关事件
   NativeAppEventEmitter.addListener("observeOnlineStatus",(data)=>{

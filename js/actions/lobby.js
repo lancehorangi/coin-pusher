@@ -32,7 +32,7 @@ import type { Action, ThunkAction } from "./types";
 
 async function _roomList() : Promise<Action> {
   try {
-    let response = await APIRequest('room/list', {}, true);
+    let response = await APIRequest('room/list', {type:0}, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error("room/list failed reason=" + response.ReasonPhrase);

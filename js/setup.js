@@ -73,7 +73,7 @@ export default class Root extends React.Component {
 
             let bLogin = store.getState().user.token && store.getState().user.token.length != 0;
 
-              Navigation.startTabBasedApp({
+            Navigation.startTabBasedApp({
                   tabs: [
                   {
                     label: '大厅',
@@ -97,7 +97,7 @@ export default class Root extends React.Component {
                   },
                   {
                       label: '我的',
-                      screen: 'CP.LaunchScreen',
+                      screen: 'CP.MineScreen',
                       icon: require('./common/img/buttons/my.png'),
                       selectedIcon: require('./common/img/buttons/my_2.png'),
                       title: '个人资料',

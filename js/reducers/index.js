@@ -28,5 +28,6 @@ import { combineReducers } from "redux";
 
 module.exports = combineReducers({
   user: require("./user"),
-  lobby: require("./lobby")
+  lobby: require("./lobby"),
+  msgs: require("./msgs"),
 });

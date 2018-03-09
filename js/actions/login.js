@@ -67,6 +67,7 @@ function logIn(account: string, pwd: string, source: ?string): ThunkAction {
 
 function loggedIn(account: string, token: string, source: ?string): Action {
   NimSession.logout();
+  console.log("Netease IM login account=" + account + ", token=" + token);
   NimSession.login(account, token).then(size => {
     console.log("Netease IM login succ")
   }, e => {
