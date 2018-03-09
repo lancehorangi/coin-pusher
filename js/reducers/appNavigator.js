@@ -24,11 +24,26 @@
 
 "use strict";
 
-import { combineReducers } from "redux";
+import { Alert } from 'react-native';
+import type { Action } from "../actions/types";
+import { configureAPIToken } from '../api';
 
-module.exports = combineReducers({
-  user: require("./user"),
-  lobby: require("./lobby"),
-  msgs: require("./msgs"),
-  appNavigator: require("./appNavigator"),
-});
+export type State = {
+  navigator: Object,
+};
+
+const initialState = {
+  navigator: null,
+};
+
+function appNavigator(state: State = initialState, action: Action): State {
+  if (action.type === "APP_SWITCH_TAB") {
+    return {
+      navigator: action.navigator
+    };
+  }
+
+  return state;
+}
+
+module.exports = appNavigator;

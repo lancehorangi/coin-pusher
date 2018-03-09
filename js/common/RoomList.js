@@ -64,8 +64,6 @@ class RoomList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //width: WIN_WIDTH,
-        backgroundColor: 'white',
         justifyContent: 'space-around',
         //alignItems: 'flex-start',
         //alignContent: 'space-around',

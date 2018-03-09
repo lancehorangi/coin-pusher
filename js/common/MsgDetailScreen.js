@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, ScrollView } from "react-native";
 import { List, ListItem, SearchBar, Button, Avatar } from "react-native-elements";
-import { refreshMsgs } from "../actions";
+import { refreshMsgs, setNavigator } from "../actions";
 import { connect } from "react-redux";
 import dateFormat from 'dateformat';
+import ScreenComponent from './ScreenComponent';
 
-class MsgDetailScreen extends Component {
+class MsgDetailScreen extends ScreenComponent {
   props:{
     id: number,
     sendTime: number,

@@ -44,7 +44,7 @@ const logger = createLogger({
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['lobby']
+  blacklist: ['lobby', 'appNavigator']
 }
 
 const createF8Store = applyMiddleware(thunk, promise, array, analytics, logger)(

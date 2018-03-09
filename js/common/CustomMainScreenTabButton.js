@@ -1,31 +1,61 @@
-import { View, Image, StyleSheet, Dimensions, Text, TouchableOpacity} from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Text, TouchableOpacity, Alert} from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { getStore } from '../configureListener';
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 const BANNER_HEIGHT = WIN_WIDTH / 4;
 
+function select(state) {
+  return {
+    gold: state.user.account,
+    navigator: state.appNavigator.navigator,
+  }
+}
+
 class CustomMainScreenTabButton extends Component {
     props: {
-      dispatch: (action: any) => Promise,
+      store: ?Object,
+      onPress: () => mixed,
     };
     state: {
+      gold: number,
     };
 
     constructor() {
       super();
+      this.state = {
+        gold: 0,
+      }
     }
 
     onPress = () => {
-      console.log('pressed me!')
+      let {navigator} = select(store.getState());
+
+      navigator.push({
+        screen: 'CP.IAPScreen', // unique ID registered with Navigation.registerScreen
+        title: "商城",
+      });
+    }
+
+    handleChange = () => {
+      let {gold} = select(store.getState());
+      this.setState( { gold } );
+    }
+
+    componentDidMount() {
+      let store = getStore();
+      if (store) {
+        store.subscribe(this.handleChange);
+      }
     }
 
     render () {
         return (
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: 'tomato' }]}
+            style={[styles.button]}
             onPress={this.onPress}
           >
             <View style={styles.button}>
@@ -34,7 +64,7 @@ class CustomMainScreenTabButton extends Component {
                 style={styles.img}
                 />
               <Text style={styles.label}>
-                {this.props.gold}
+                {this.state.gold}
               </Text>
             </View>
           </TouchableOpacity>
@@ -51,9 +81,10 @@ const styles = StyleSheet.create({
     },
     button: {
       overflow: 'hidden',
-      width: 34,
-      height: 34,
+      width: 80,
+      height: 27,
       //borderRadius: 34 / 2,
+      backgroundColor: 'transparent',
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -64,15 +95,11 @@ const styles = StyleSheet.create({
     },
     label: {
       position: "absolute",
-      top: 5,
-      left: 20
+      color: 'white',
+      fontSize: 12,
+      top: 6,
+      left: 25
     }
 });
 
-function select(store) {
-  return {
-    gold: store.user.account
-  };
-}
-
-module.exports = connect(select)(CustomMainScreenTabButton);
+module.exports = CustomMainScreenTabButton;

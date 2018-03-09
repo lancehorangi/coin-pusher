@@ -7,9 +7,11 @@ import { Text, HeaderTitle } from "./F8Text";
 import LaunchScreen from './LaunchScreen';
 import BannerCarousel from './BannerCarousel';
 import RoomList from './RoomList';
-import { loggedOut } from './../actions';
+import { loggedOut, setNavigator } from './../actions';
 import GridButton from './GridButton';
 import { showRoomList } from "./../actions";
+import { Navigation } from 'react-native-navigation';
+import CustomMainScreenTabButton from './CustomMainScreenTabButton';
 
 const initialLayout = {
   height: 0,
@@ -39,6 +41,8 @@ const HeadComponent = () => (
             </View>
           );
 
+Navigation.registerComponent('CP.CustomMainScreenTabButton', () => CustomMainScreenTabButton);
+
 export class MainScreen extends React.Component {
   nScroll = new Animated.Value(0);
   _refs = {}
@@ -56,23 +60,18 @@ export class MainScreen extends React.Component {
   static navigatorButtons = {
     rightButtons: [
       {
-        //title: '金币', // for a textual button, provide the button title (label)
         id: 'add', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
         buttonColor: '#ffffff', // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
-        //buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
-        //buttonFontWeight: '600', // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
-        icon: require('./img/header/add.png'),
-        //component: 'CP.CustomMainScreenTabButton',
+        //icon: require('./img/header/add.png'),
+        component: 'CP.CustomMainScreenTabButton',
         disableIconTint: true,
+        passProps: {}
       }
     ],
     leftButtons: [
       {
-        //title: '消息', // for a textual button, provide the button title (label)
         id: 'message', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
         buttonColor: '#ffffff', // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
-        //buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
-        //buttonFontWeight: '600', // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
         icon: require('./img/header/news.png'),
         disableIconTint: true,
       }
@@ -90,10 +89,28 @@ export class MainScreen extends React.Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
-  onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
+  onNavigatorEvent(event) { 
+    console.log('MainScreen:' + JSON.stringify(event));
+    switch(event.id) {
+      case 'willAppear':
+       break;
+      case 'didAppear':
+        this.props.dispatch(setNavigator(this.props.navigator));
+        break;
+      case 'willDisappear':
+        break;
+      case 'didDisappear':
+        break;
+      case 'willCommitPreview':
+        break;
+    }
+
     if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
       if (event.id == 'add') { // this is the same id field from the static navigatorButtons definition
-        Alert.alert('充值');
+        this.props.navigator.push({
+          screen: 'CP.IAPScreen', // unique ID registered with Navigation.registerScreen
+          title: "商城",
+        });
       }
       if (event.id == 'message') {
         this.props.navigator.push({

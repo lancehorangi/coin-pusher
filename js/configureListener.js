@@ -8,10 +8,18 @@ import type { Action, ThunkAction } from "./actions/types";
 
 let _store = null;
 
-function getStoreDispatch(): void {
+function getStoreDispatch() {
   console.log("getStoreDispatch store=" + _store);
   if(_store && _store.dispatch) {
     return _store.dispatch;
+  }
+
+  return null;
+}
+
+function getStore() {
+  if(_store) {
+    return _store;
   }
 
   return null;
@@ -56,4 +64,4 @@ function configureListener(store): void {
   });
 }
 
-module.exports = {configureListener, getStoreDispatch};
+module.exports = {configureListener, getStoreDispatch, getStore};

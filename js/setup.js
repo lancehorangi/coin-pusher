@@ -35,91 +35,91 @@ import { Text, Alert } from "react-native";
 import LaunchScreen from "./common/LaunchScreen";
 import { Navigation } from 'react-native-navigation';
 import { APIRequest, configureAPIToken } from './api';
+import CustomMainScreenTabButton from './common/CustomMainScreenTabButton';
 
 // Config
 //import { serverURL, parseAppID } from "./env";
 
 //console.disableYellowBox = true;
 Text.defaultProps.allowFontScaling = false;
+console.disableYellowBox = true;
+
+configureStore(
+  // rehydration callback (after async compatibility and persistStore)
+  (store, didReset) => {
+        //this.setState({ storeRehydrated: true });
+        //this.setState({ store, storeCreated: true });
+        registerScreens(store, Provider);
+
+        //init native event listener
+        configureListener(store);
+        configureAPIToken(store.getState().user.token);
+
+        let bLogin = store.getState().user.token && store.getState().user.token.length != 0;
+
+        Navigation.startTabBasedApp({
+              tabs: [
+              {
+                label: '大厅',
+                screen: 'CP.MainScreen',
+                icon: require('./common/img/buttons/hall.png'),
+                selectedIcon: require('./common/img/buttons/hall_2.png'),
+                title: '欢乐马戏城',
+                navigatorStyle: {
+                  navBarHidden: false
+                },
+                // navigatorButtons: {
+                //   rightButtons: [
+                //     {
+                //       id: 'add', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
+                //       buttonColor: '#ffffff', // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
+                //       //icon: require('./img/header/add.png'),
+                //       component: 'CP.CustomMainScreenTabButton',
+                //       disableIconTint: true,
+                //     }
+                //   ],
+                //   leftButtons: [
+                //     {
+                //       id: 'message', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
+                //       buttonColor: '#ffffff', // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
+                //       icon: require('./common/img/header/news.png'),
+                //       disableIconTint: true,
+                //     }
+                //   ]
+                // }
+              },
+              {
+                  label: '商城',
+                  screen: 'CP.LaunchScreen',
+                  icon: require('./common/img/buttons/shop.png'),
+                  selectedIcon: require('./common/img/buttons/shop_2.png'),
+                  title: '商城',
+                  navigatorStyle: {
+                    navBarHidden: true
+                  }
+              },
+              {
+                  label: '我的',
+                  screen: 'CP.MineScreen',
+                  icon: require('./common/img/buttons/my.png'),
+                  selectedIcon: require('./common/img/buttons/my_2.png'),
+                  title: '个人资料',
+                  navigatorStyle: {
+                    navBarHidden: true
+                  }
+              },
+              ],
+              passProps: {loggedIn: bLogin}, // simple serializable object that will pass as props to all top screens (optional)
+              animationType: 'fade',
+              tabsStyle: { // optional, **iOS Only** add this if you want to style the tab bar beyond the defaults
+                tabBarBackgroundColor: '#373a41',
+                //tabBarLabelColor: '#ffffff',
+                //tabBarButtonColor: '#ffffff', // change the color of the tab icons and text (also unselected)
+                tabBarSelectedButtonColor: '#ffffff',
+              }
+          });
+      }
+    )
 
 export default class Root extends React.Component {
-  state: {
-    isLoading: boolean,
-    store: any
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      storeCreated: false,
-      storeRehydrated: false,
-      store: null
-    };
-
-    //const stores = configureStore()
-    //console.error('this.state:' + Object.values(stores))
-    //registerScreens(stores, Provider);
-
-    configureStore(
-      // rehydration callback (after async compatibility and persistStore)
-      (store, didReset) => {
-            this.setState({ storeRehydrated: true });
-            this.setState({ store, storeCreated: true });
-            registerScreens(store, Provider);
-
-            //init native event listener
-            configureListener(store);
-            configureAPIToken(store.getState().user.token);
-
-            let bLogin = store.getState().user.token && store.getState().user.token.length != 0;
-
-            Navigation.startTabBasedApp({
-                  tabs: [
-                  {
-                    label: '大厅',
-                    screen: 'CP.MainScreen',
-                    icon: require('./common/img/buttons/hall.png'),
-                    selectedIcon: require('./common/img/buttons/hall_2.png'),
-                    title: '欢乐马戏城',
-                    navigatorStyle: {
-                      navBarHidden: false
-                    }
-                  },
-                  {
-                      label: '商城',
-                      screen: 'CP.LaunchScreen',
-                      icon: require('./common/img/buttons/shop.png'),
-                      selectedIcon: require('./common/img/buttons/shop_2.png'),
-                      title: '商城',
-                      navigatorStyle: {
-                        navBarHidden: true
-                      }
-                  },
-                  {
-                      label: '我的',
-                      screen: 'CP.MineScreen',
-                      icon: require('./common/img/buttons/my.png'),
-                      selectedIcon: require('./common/img/buttons/my_2.png'),
-                      title: '个人资料',
-                      navigatorStyle: {
-                        navBarHidden: true
-                      }
-                  },
-                  ],
-                  passProps: {loggedIn: bLogin}, // simple serializable object that will pass as props to all top screens (optional)
-                  animationType: 'fade',
-                  tabsStyle: { // optional, **iOS Only** add this if you want to style the tab bar beyond the defaults
-                    tabBarBackgroundColor: '#373a41',
-                    //tabBarLabelColor: '#ffffff',
-                    //tabBarButtonColor: '#ffffff', // change the color of the tab icons and text (also unselected)
-                    tabBarSelectedButtonColor: '#ffffff',
-                  }
-              });
-          }
-        )
-  }
-
-  componentDidMount() {
-
-  }
 }

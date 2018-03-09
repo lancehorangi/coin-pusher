@@ -18,17 +18,21 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE
- *
- * @flow
  */
 
 "use strict";
 
-import { combineReducers } from "redux";
+import { Platform, Alert } from "react-native";
+import { Navigation } from 'react-native-navigation';
+import { APIRequest, configureAPIToken } from '../api';
+import { STATUS_OK } from '../env';
+import type { Action, ThunkAction } from "./types";
 
-module.exports = combineReducers({
-  user: require("./user"),
-  lobby: require("./lobby"),
-  msgs: require("./msgs"),
-  appNavigator: require("./appNavigator"),
-});
+function setNavigator(navigator: Object): Action {
+  return {
+    type: "APP_SWITCH_TAB",
+    navigator
+  }
+}
+
+module.exports = { setNavigator };

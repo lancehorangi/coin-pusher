@@ -9,7 +9,7 @@ import RoomThumbnail from './common/RoomThumbnail';
 import MsgHistoryScreen from './common/MsgHistoryScreen';
 import MsgDetailScreen from './common/MsgDetailScreen';
 import MineScreen from './common/MineScreen';
-import CustomMainScreenTabButton from './common/CustomMainScreenTabButton';
+import IAPScreen from './common/IAPScreen';
 
 // register all screens of the app (including internal ones)
 export default (store, Provider) => {
@@ -20,8 +20,8 @@ export default (store, Provider) => {
   Navigation.registerComponent('CP.MsgHistoryScreen', () => MsgHistoryScreen, store, Provider);
   Navigation.registerComponent('CP.MsgDetailScreen', () => MsgDetailScreen, store, Provider);
   Navigation.registerComponent('CP.MineScreen', () => MineScreen, store, Provider);
+  Navigation.registerComponent('CP.IAPScreen', () => IAPScreen, store, Provider);
   Navigation.registerComponent('CP.Notification', () => Notification);
-  //Navigation.registerComponent('CP.CustomMainScreenTabButton', () => CustomMainScreenTabButton, store, Provider);
 
   Navigation.registerComponent('CP.Sub.RoomThumbnail', () => RoomThumbnail);
 }

@@ -50,6 +50,10 @@ export type Action =
       type: "MSG_TAG_READ",
       msgID: number
     }
+  | {
+      type: "APP_SWITCH_TAB",
+      navigator: Object
+    }
 ;
 
 export type Dispatch = (

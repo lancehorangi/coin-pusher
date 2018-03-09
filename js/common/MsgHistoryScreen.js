@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { View, Text, FlatList, ActivityIndicator, StyleSheet } from "react-native";
 import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
-import { refreshMsgs } from "../actions";
+import { refreshMsgs, setNavigator } from "../actions";
 import { connect } from "react-redux";
 import dateFormat from 'dateformat';
+import ScreenComponent from './ScreenComponent';
 
-class MsgHistoryScreen extends Component {
+class MsgHistoryScreen extends ScreenComponent {
   constructor(props) {
     super(props);
 

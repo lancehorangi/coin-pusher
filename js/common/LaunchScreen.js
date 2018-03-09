@@ -30,6 +30,7 @@ import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 import { serverURL } from '../env';
 import { APIRequest } from '../api';
 import { logIn, showRoomList, enterRoom } from '../actions'
+import ScreenComponent from './ScreenComponent';
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -42,7 +43,11 @@ const WIN_WIDTH = Dimensions.get("window").width,
 * ==============================================================================
 */
 
-class LaunchScreen extends React.Component {
+class LaunchScreen extends ScreenComponent {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
