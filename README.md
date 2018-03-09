@@ -1,6 +1,9 @@
 ### coin-pusher
 A React-Native coin pusher project
 
+### 关于react-native-navigation
+RNN注册的Screen都需要继承自ScreenComponent, 以实现全局当前Tab导航.
+
 ### UI尺寸
 * 应用内单位:
   layout size (dp)
@@ -23,7 +26,7 @@ A React-Native coin pusher project
 * PixelRatio.get() === 3.5
   Nexus 6
 
-# 例子
+### 例子
 * iphone 5s
   dp:320 x 568
   px:640 x 1136
