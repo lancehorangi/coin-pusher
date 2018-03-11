@@ -12,6 +12,7 @@ import GridButton from './GridButton';
 import { showRoomList } from "./../actions";
 import { Navigation } from 'react-native-navigation';
 import CustomMainScreenTabButton from './CustomMainScreenTabButton';
+import F8Colors from './F8Colors';
 
 const initialLayout = {
   height: 0,
@@ -22,7 +23,7 @@ const initialLayout = {
 // const HEADER_HEIGHT = Platform.OS === "ios" ? 64 : 50;
 
 const HeadComponent = () => (
-            <View style={{backgroundColor: "#24272e"}}>
+            <View style={{backgroundColor: F8Colors.mainBgColor}}>
             <StatusBar barStyle="light-content"/>
               <BannerCarousel/>
               <View style={styles.gridContainer}>
@@ -89,7 +90,7 @@ export class MainScreen extends React.Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
-  onNavigatorEvent(event) { 
+  onNavigatorEvent(event) {
     console.log('MainScreen:' + JSON.stringify(event));
     switch(event.id) {
       case 'willAppear':
@@ -126,7 +127,7 @@ export class MainScreen extends React.Component {
     this.props.dispatch(showRoomList());
   }
 
-  _renderHeader = props => {
+  _renderHeaderTabBar = props => {
       return <TabBar style={{
                               transform: [{translateY: this.state.tabY}],
                               backgroundColor: '#292d36'
@@ -151,6 +152,34 @@ export class MainScreen extends React.Component {
     default:
       return null;
     }
+  }
+
+  _onPressSign = () => {
+    this.props.navigator.push({
+      screen: 'CP.SignScreen', // unique ID registered with Navigation.registerScreen
+      title: "签到",
+    });
+  }
+
+  _renderHeader = () => { return (
+      <View style={{backgroundColor: F8Colors.mainBgColor}}>
+      <StatusBar barStyle="light-content"/>
+        <BannerCarousel/>
+        <View style={styles.gridContainer}>
+          <GridButton
+            icon={require('./img/buttons/sign.png')}
+            caption={'签到'}
+            onPress={_ => this._onPressSign()}/>
+          <GridButton
+            icon={require('./img/buttons/course.png')}
+            caption={'教程'}
+            onPress={_ => Alert.alert('教程')}/>
+          <GridButton
+            icon={require('./img/buttons/more.png')}
+            caption={'敬请期待'}/>
+        </View>
+      </View>
+    )
   }
 
   componentDidMount() {
@@ -181,7 +210,7 @@ export class MainScreen extends React.Component {
         style={styles.container}
         navigationState={this.state}
         renderScene={this._renderScene}
-        renderHeader={this._renderHeader}
+        renderHeader={this._renderHeaderTabBar}
         onIndexChange={this._handleIndexChange}
         initialLayout={initialLayout}
       />;
@@ -227,7 +256,7 @@ export class MainScreen extends React.Component {
             }})}
             style={styles.container}>
             <View onLayout={this.onHeaderLayout}>
-              <HeadComponent/>
+              {this._renderHeader()}
             </View>
             {this._renderTabView()}
         </Animated.ScrollView>
@@ -240,7 +269,7 @@ const GRID_HEIGHT = 62;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#24272e",
+    backgroundColor: F8Colors.mainBgColor,
   },
   gridContainer: {
     flex: 1,

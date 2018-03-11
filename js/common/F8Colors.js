@@ -70,7 +70,10 @@ const THEME_COLORS = {
   lightText: NAMED_COLORS.blueBayoux,
 
   // legacy
-  inactiveText: "#9B9B9B"
+  inactiveText: "#9B9B9B",
+
+  //
+  mainBgColor: "#24272e",
 };
 
 const LOCATION_COLORS = {

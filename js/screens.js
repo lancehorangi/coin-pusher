@@ -10,6 +10,8 @@ import MsgHistoryScreen from './common/MsgHistoryScreen';
 import MsgDetailScreen from './common/MsgDetailScreen';
 import MineScreen from './common/MineScreen';
 import IAPScreen from './common/IAPScreen';
+import MallScreen from './common/MallScreen';
+import SignScreen from './common/SignScreen';
 
 // register all screens of the app (including internal ones)
 export default (store, Provider) => {
@@ -21,6 +23,8 @@ export default (store, Provider) => {
   Navigation.registerComponent('CP.MsgDetailScreen', () => MsgDetailScreen, store, Provider);
   Navigation.registerComponent('CP.MineScreen', () => MineScreen, store, Provider);
   Navigation.registerComponent('CP.IAPScreen', () => IAPScreen, store, Provider);
+  Navigation.registerComponent('CP.MallScreen', () => MallScreen, store, Provider);
+  Navigation.registerComponent('CP.SignScreen', () => SignScreen, store, Provider);
   Navigation.registerComponent('CP.Notification', () => Notification);
 
   Navigation.registerComponent('CP.Sub.RoomThumbnail', () => RoomThumbnail);

@@ -38,7 +38,7 @@ class RoomList extends Component {
       let { roomList } = this.props;
 
       if (!roomList || roomList.length == 0) {
-        return (<HeaderTitle style={{backgroundColor: "#24272e"}}> 暂无房间 </HeaderTitle>)
+        return (<HeaderTitle style={{backgroundColor: F8Colors.mainBgColor}}> 暂无房间 </HeaderTitle>)
       }
 
       return roomList.map((room, idx) => {
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         //alignContent: 'space-around',
         flexWrap: 'wrap',
         flexDirection: 'row',
-        backgroundColor: "#24272e"
+        backgroundColor: F8Colors.mainBgColor
     },
     bg: {
       position: "absolute",

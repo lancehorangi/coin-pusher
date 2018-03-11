@@ -11,48 +11,20 @@ import F8Colors from './F8Colors';
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 
+cardWidth = (WIN_WIDTH - 50) / 2;
+
 // Our custom component we want as a button in the nav bar
-const NormalItem = ({ text, price, unit, describ, onPress, bgColor, subBgColor }) =>
+const NormalItem = ({ text, price, onPress, icon }) =>
   <TouchableOpacity
-    style={[styles.card, { backgroundColor: bgColor }]}
+    style={styles.card}
     onPress={() => onPress()}
   >
-    <View style={{flex: 0, height:100, backgroundColor: "transparent"}}>
-      <Text style={{ color: 'white', top: 10, left: 10, fontSize:25 }}>
-        {text}
-      </Text>
-      <View style={{flex: 0, position: "absolute",
-            backgroundColor: "#ffdf00", borderRadius: 13,
-            marginTop:5, right:5, paddingHorizontal:10, height: 23 }}>
-        <Text style={{ color: '#ee4943', fontSize:18 }}>
-          {price}
-        </Text>
-      </View>
-      <Text style={{ color: 'white', top: 10, left: 10, fontSize:15 }}>
-        {unit}
-      </Text>
-      <View style={{position: "absolute", left:0, right:0, bottom:0, height:25, backgroundColor: subBgColor, borderBottomLeftRadius: 13,
-                borderBottomRightRadius: 13}}>
-        <Text style={{ color: 'white', fontSize:12, top:4, left:10 }}>
-          {describ}
-        </Text>
-      </View>
-    </View>
+    <Image source={{uri:icon}} style={{width:'100%', height:cardWidth, resizeMode: "stretch"}} />
+    <Text style={{color:'#d3d3e8'}}> {text} </Text>
+    <Text style={{color:'#d3d3e8'}}> {'价格:' + price} </Text>
   </TouchableOpacity>;
 
-const CardItem = ({ text }) =>
-  <TouchableOpacity
-    style={[styles.button, { backgroundColor: 'tomato' }]}
-    onPress={() => console.log('pressed me!')}
-  >
-    <View style={styles.button}>
-      <Text style={{ color: 'white' }}>
-        {text}
-      </Text>
-    </View>
-  </TouchableOpacity>;
-
-class IAPScreen extends ScreenComponent {
+class MallScreen extends ScreenComponent {
   constructor(props) {
     super(props);
 
@@ -75,47 +47,43 @@ class IAPScreen extends ScreenComponent {
 
   renderContent = () => {
     TEMP_DATA = [{
-      text: "100",
-      price: "5000",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }]
+      text: "这是商品的描述",
+      price: "1200",
+      icon: 'https://www.baidu.com/img/bd_logo1.png',
+    },
+    {
+      text: "这是商品的描述",
+      price: "1200",
+      icon: 'https://www.baidu.com/img/bd_logo1.png',
+    },
+    {
+      text: "这是商品的描述",
+      price: "1200",
+      icon: 'https://www.baidu.com/img/bd_logo1.png',
+    },
+    {
+      text: "这是商品的描述",
+      price: "1200",
+      icon: 'https://www.baidu.com/img/bd_logo1.png',
+    },
+    {
+      text: "这是商品的描述",
+      price: "1200",
+      icon: 'https://www.baidu.com/img/bd_logo1.png',
+    },
+    {
+      text: "这是商品的描述",
+      price: "1200",
+      icon: 'https://www.baidu.com/img/bd_logo1.png',
+    },]
 
     return TEMP_DATA.map((data, idx) => {
       return (
         <NormalItem
           text={data.text}
           price={data.price}
-          describ={data.describ}
-          unit={data.unit}
+          icon={data.icon}
           onPress={this.onPress}
-          bgColor={'#ee4943'}
-          subBgColor={'#3b94e6'}
           />
       );
     });
@@ -133,7 +101,7 @@ class IAPScreen extends ScreenComponent {
   render() {
     return (
       <ScrollView style={styles.container}>
-        {this.renderTitle(require('./img/Recharge1.png'), '超值充值')}
+        {this.renderTitle(require('./img/shopmall.png'), '商城兑换')}
         <View style={styles.cardContainer}>
           {this.renderContent()}
         </View>
@@ -144,10 +112,6 @@ class IAPScreen extends ScreenComponent {
 
 /* StyleSheet
 ============================================================================= */
-let cardWidth = 170;
-if(WIN_WIDTH < 3200) {
-  cardWidth = (WIN_WIDTH - 50) / 2;
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -168,9 +132,10 @@ const styles = StyleSheet.create({
   },
   card: {
     width: cardWidth,
-    height: 100,
+    height: cardWidth + 30,
     borderRadius: 13,
-    marginTop:15
+    marginTop:15,
+    backgroundColor: 'transparent'
   },
   titleContainer: {
     flex: 1,
@@ -190,4 +155,4 @@ function select(store) {
 }
 
 /* exports ================================================================== */
-module.exports = connect(select)(IAPScreen);
+module.exports = connect(select)(MallScreen);

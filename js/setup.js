@@ -90,12 +90,13 @@ configureStore(
               },
               {
                   label: '商城',
-                  screen: 'CP.LaunchScreen',
+                  //screen: 'CP.LaunchScreen',
+                  screen: 'CP.MallScreen',
                   icon: require('./common/img/buttons/shop.png'),
                   selectedIcon: require('./common/img/buttons/shop_2.png'),
                   title: '商城',
                   navigatorStyle: {
-                    navBarHidden: true
+                    navBarHidden: false
                   }
               },
               {

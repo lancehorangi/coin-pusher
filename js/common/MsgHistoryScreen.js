@@ -85,19 +85,20 @@ class MsgHistoryScreen extends ScreenComponent {
   };
 
   renderFooter = () => {
-    if (!this.props.bLoading) return null;
-
-    return (
-      <View
-        style={{
-          //paddingVertical: 20,
-          borderTopWidth: 1,
-          borderColor: "#CED0CE"
-        }}
-      >
-        <ActivityIndicator animating size="large" />
-      </View>
-    );
+    return null;
+    // if (!this.props.bLoading) return null;
+    //
+    // return (
+    //   <View
+    //     style={{
+    //       //paddingVertical: 20,
+    //       borderTopWidth: 1,
+    //       borderColor: "#CED0CE"
+    //     }}
+    //   >
+    //     <ActivityIndicator animating size="large" />
+    //   </View>
+    // );
   };
 
   render() {

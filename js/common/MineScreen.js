@@ -5,6 +5,7 @@ import { refreshMsgs, setNavigator } from "../actions";
 import { connect } from "react-redux";
 import dateFormat from 'dateformat';
 import ScreenComponent from './ScreenComponent';
+import F8Colors from './F8Colors';
 
 class MineScreen extends ScreenComponent {
   constructor(props) {
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    backgroundColor: "#24272e",
+    backgroundColor: F8Colors.mainBgColor,
     //height: '100%',
   },
   header: {
