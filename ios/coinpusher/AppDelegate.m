@@ -14,7 +14,7 @@
 #import <React/RCTRootView.h>
 
 #import <NIMSDK/NIMSDK.h>
-//#import <CodePush/CodePush.h>
+#import <CodePush/CodePush.h>
 
 @implementation AppDelegate
 
@@ -33,7 +33,7 @@
   }
   
   NSURL *jsCodeLocation;
-
+  NSURL *temp = [CodePush bundleURL];
 //#ifdef DEBUG
   //jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

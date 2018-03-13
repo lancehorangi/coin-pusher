@@ -3,6 +3,9 @@ package com.coinpusher;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.netease.im.RNNeteaseImPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.reactnativenavigation.NavigationReactPackage;
@@ -26,6 +29,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNNeteaseImPackage(),
+            new LinearGradientPackage(),
+            new RNGestureHandlerPackage(),
             new VectorIconsPackage(),
             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
             new NavigationReactPackage()

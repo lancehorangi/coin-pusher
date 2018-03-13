@@ -8,7 +8,7 @@ import { Dimensions, StyleSheet, View, Image, Alert, PixelRatio } from "react-na
 import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 import { serverURL } from '../env';
 import { APIRequest } from '../api';
-import { logIn, showRoomList, enterRoom, pushCoin } from '../actions'
+import { logIn, showRoomList, enterRoom, pushCoin, leaveRoom } from '../actions'
 import { Navigation } from 'react-native-navigation';
 
 const WIN_WIDTH = Dimensions.get("window").width,
@@ -48,10 +48,12 @@ class GameScreen extends React.Component {
     this._isMounted = true;
 
     let {roomID, meetingName} = this.props;
+    console.warn('enterRoom=' + meetingName);
     this.props.dispatch(enterRoom(roomID, meetingName));
   }
 
   onPress = _ => {
+    this.props.dispatch(leaveRoom());
     Navigation.dismissModal({
       animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
     });

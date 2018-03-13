@@ -10,7 +10,7 @@ const BANNER_HEIGHT = WIN_WIDTH / 4;
 
 function select(state) {
   return {
-    gold: state.user.account,
+    diamond: state.user.diamond,
     navigator: state.appNavigator.navigator,
   }
 }
@@ -21,13 +21,13 @@ class CustomMainScreenTabButton extends Component {
       onPress: () => mixed,
     };
     state: {
-      gold: number,
+      diamond: number,
     };
 
     constructor() {
       super();
       this.state = {
-        gold: 0,
+        diamond: 0,
       }
     }
 
@@ -41,8 +41,8 @@ class CustomMainScreenTabButton extends Component {
     }
 
     handleChange = () => {
-      let {gold} = select(store.getState());
-      this.setState( { gold } );
+      let {diamond} = select(store.getState());
+      this.setState( { diamond } );
     }
 
     componentDidMount() {
@@ -64,7 +64,7 @@ class CustomMainScreenTabButton extends Component {
                 style={styles.img}
                 />
               <Text style={styles.label}>
-                {this.state.gold}
+                {this.state.diamond}
               </Text>
             </View>
           </TouchableOpacity>

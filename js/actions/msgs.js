@@ -27,7 +27,7 @@ import { Navigation } from 'react-native-navigation';
 import { APIRequest, configureAPIToken } from '../api';
 import { STATUS_OK } from '../env';
 import type { Action, ThunkAction } from "./types";
-import Toast from 'react-native-root-toast';
+import { toastShow } from './../util';
 
 async function _refreshMsgs() : Promise<Action> {
   try {
@@ -50,9 +50,69 @@ function refreshMsgs(): ThunkAction {
     response.then(result => dispatch(_succ(result.mailList, result.unreadNum)),
       err => {
         console.log('mailList failed reason=' + err.message);
+        toastShow('邮件刷新失败:' + err.message)
         dispatch(_failed());
       });
   };
+}
+
+async function _openMsg(mailID: number): Promise<Action>{
+  try {
+    let response = await APIRequest('account/mailRead', {id:mailID }, true);
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function openMsg(mailID: nubmer): ThunkAction {
+  return (dispatch, getState) => {
+    let responese = _openMsg(mailID);
+    responese.then( result => dispatch({
+      type: "OPEN_MSG",
+      openMail: result.info
+    }),
+    err => {
+      console.log('openMsg failed reason=' + err.message);
+      toastShow('打开邮件失败:' + err.message)
+    });
+  };
+}
+
+async function _getMailAcessory(mailID: number): Promise<Action> {
+  try {
+    let response = await APIRequest('mail/pull', {id:mailID}, true);
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function getMailAccessory(mailID: number): ThunkAction {
+  return (dispatch, getState) => {
+    let response = _getMailAcessory(mailID);
+
+    response.then( result => dispatch({
+      type: "OPEN_MSG",
+      openMail: result.info
+    }),
+    err => {
+      console.log('pullMsg failed reason=' + err.message);
+      toastShow('领取附件失败:' + err.message)
+    });
+
+    return response;
+  }
 }
 
 function _succ(msgs: Object, unreadNum: number): Action {
@@ -64,7 +124,7 @@ function _succ(msgs: Object, unreadNum: number): Action {
 }
 
 function _failed(): Action {
-  Toast.show('刷新失败');
+  toastShow('刷新失败');
 
   return {
     type: "MSG_LIST_FAILED"
@@ -77,4 +137,4 @@ function _load(): Action {
   }
 }
 
-module.exports = { refreshMsgs };
+module.exports = { refreshMsgs, openMsg, getMailAccessory };

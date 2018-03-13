@@ -28,10 +28,12 @@ import * as loginActions from "./login";
 import * as lobbyActions from "./lobby";
 import * as msgsActions from "./msgs";
 import * as naviActions from "./appNavigator";
+import * as checkinActions from "./checkin";
 
 module.exports = {
   ...loginActions,
   ...lobbyActions,
   ...msgsActions,
   ...naviActions,
+  ...checkinActions,
 };

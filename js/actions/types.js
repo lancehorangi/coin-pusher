@@ -42,6 +42,19 @@ export type Action =
       type: "CLEAR_ROOM_LIST",
       roomType: number,
     }
+  | {
+      type: "ACCOUNT_INFO",
+      nickName: string,
+      roomID: string,
+      meetingName: string,
+      diamond: number,
+      gold: number,
+      integral: number,
+    }
+  | {
+      type: "CHECKIN_INFO",
+      checkinInfos: Array<Object>,
+    }
   | { type: "LOGGED_OUT" }
   | { type: "MSG_LIST" }
   | { type: "MSG_LIST_SUCC", msgs:Object, unreadNum: number }
@@ -49,6 +62,10 @@ export type Action =
   | {
       type: "MSG_TAG_READ",
       msgID: number
+    }
+  | {
+      type: "OPEN_MSG",
+      openMail: Object,
     }
   | {
       type: "APP_SWITCH_TAB",

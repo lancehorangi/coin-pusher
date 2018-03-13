@@ -1,10 +1,11 @@
-import { View, Image, StyleSheet, Dimensions, Alert } from 'react-native';
+import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
+import { showRoomList } from "./../actions";
+import RoomThumbnail from "./RoomThumbnail";
 import F8Colors from "./F8Colors";
 import { HeaderTitle, Text } from "./F8Text";
-import RoomThumbnail from "./RoomThumbnail";
-import { showRoomList } from "./../actions";
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -26,11 +27,9 @@ class RoomList extends Component {
     }
 
     onEndReached() {
-      //Alert.alert('RoomList Need LoadMore');
     }
 
     componentDidMount() {
-      //Alert.alert('componentDidMount');
       //this.props.dispatch(showRoomList());
     }
 

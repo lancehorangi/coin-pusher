@@ -39,7 +39,10 @@ class MineScreen extends ScreenComponent {
           activeOpacity={0.7}
           containerStyle={{width:80, height:80, marginTop: 40, marginLeft:40}}
           />
-          <Text style={{color:'white', marginTop:40, marginLeft:10, fontSize:20}}>{this.props.account} </Text>
+          <View style={{flex:0, marginTop:40}}>
+          <Text style={{color:'white', marginLeft:10, fontSize:20}}> {this.props.account}  </Text>
+          <Text style={{color:'white', marginLeft:10, fontSize:20}}> {this.props.nickName} </Text>
+          </View>
       </View>
     )
   }
@@ -111,7 +114,8 @@ const styles = StyleSheet.create({
 
 function select(store) {
   return {
-    account:store.user.account,
+    account: store.user.account,
+    nickName: store.user.nickName,
   };
 }
 

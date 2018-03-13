@@ -29,6 +29,9 @@ import { STATUS_OK } from '../env';
 import { NimUtils, NimSession } from 'react-native-netease-im';
 import type { Action, ThunkAction } from "./types";
 import Toast from 'react-native-root-toast';
+import { showRoomList } from './lobby';
+import { refreshMsgs } from './msgs';
+import { getCheckinInfo, checkin } from './checkin';
 
 async function _logIn(username: string, pwd: string) : Promise<Action> {
   try {
@@ -65,34 +68,59 @@ function logIn(account: string, pwd: string, source: ?string): ThunkAction {
   };
 }
 
-function loggedIn(account: string, token: string, source: ?string): Action {
-  NimSession.logout();
-  console.log("Netease IM login account=" + account + ", token=" + token);
-  NimSession.login(account, token).then(size => {
-    console.log("Netease IM login succ")
-  }, e => {
-    console.warn("Netease IM login failed=" + e.message);
-  });
+async function _loggedIn( ) : Promise<Action> {
+  // try {
+  //   await ;
+  //
+  // } catch(e) {
+  //   throw Error(e.message);
+  // };
+}
 
-  Navigation.dismissModal({
-    animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-  });
+function loggedIn(account: string, token: string, source: ?string): ThunkAction {
+  return (dispatch, getState) => {
+    NimSession.logout();
+    console.log("Netease IM login account=" + account + ", token=" + token);
 
-  Toast.show('登录成功');
+    NimSession.login(account, token)
+    .then(size => {
+      console.log("Netease IM login succ")
+    }, e => {
+      console.warn("Netease IM login failed=" + e.message);
+    });
 
-  return {
-    type: "LOGGED_IN",
-    account,
-    token,
-    source
-  };
+    Navigation.dismissModal({
+      animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+    });
+
+    //Toast.show('登录成功');
+    // 一倍金币场
+
+    dispatch({
+      type: "LOGGED_IN",
+      account,
+      token,
+      source
+    })
+
+    dispatch(showRoomList(0));
+    dispatch(refreshMsgs());
+    dispatch(getAccountInfo());
+    dispatch(getCheckinInfo());
+    // return {
+    //   type: "LOGGED_IN",
+    //   account,
+    //   token,
+    //   source
+    // };
+  }
 }
 
 function loggedOut(): Action {
   configureAPIToken(null);
   NimSession.logout();
 
-  Navigation.dismissModal({
+  Navigation.dismissAllModals({
     animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
   });
 
@@ -139,4 +167,37 @@ function reg(account: string, pwd: string): ThunkAction {
   // };
 }
 
-module.exports = { logIn, loggedIn, loggedOut };
+async function _getAccountInfo() : Promise<Action> {
+  try {
+    let response = await APIRequest('account/accountInfo', {}, true);
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function getAccountInfo(): ThunkAction {
+  return (dispatch, getState) => {
+    const response = _getAccountInfo();
+
+    response.then(result => dispatch({
+      type: 'ACCOUNT_INFO',
+      nickName: result.nickName,
+      roomID: result.roomID,
+      meetingName: result.roomID,
+      diamond: result.diamond,
+      gold: result.gold,
+      integral: result.integral,
+    }),
+      err => {
+        console.log('getAccountInfo err:' + err.message);
+    });
+  }
+}
+
+module.exports = { logIn, loggedOut, getAccountInfo };

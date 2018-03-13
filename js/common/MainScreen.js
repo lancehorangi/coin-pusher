@@ -1,18 +1,30 @@
 import * as React from 'react';
-import { View, StyleSheet, Dimensions, Animated, Platform, ScrollView,
-  Image, Alert, FlatView, AlertIOS, StatusBar } from 'react-native';
+import { View,
+  StyleSheet,
+  Dimensions,
+  Animated,
+  Platform,
+  ScrollView,
+  Image,
+  Alert,
+  StatusBar } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from "react-redux";
-import { Text, HeaderTitle } from "./F8Text";
+import { Navigation } from 'react-native-navigation';
+
+import { loggedOut, setNavigator, showRoomList,
+  refreshMsgs, getAccountInfo, getCheckinInfo } from './../actions';
+
+import { toastShow } from './../util';
 import LaunchScreen from './LaunchScreen';
 import BannerCarousel from './BannerCarousel';
 import RoomList from './RoomList';
-import { loggedOut, setNavigator } from './../actions';
 import GridButton from './GridButton';
-import { showRoomList } from "./../actions";
-import { Navigation } from 'react-native-navigation';
 import CustomMainScreenTabButton from './CustomMainScreenTabButton';
+
 import F8Colors from './F8Colors';
+import { Text, HeaderTitle } from "./F8Text";
+
 
 const initialLayout = {
   height: 0,
@@ -21,27 +33,6 @@ const initialLayout = {
 
 // const {width: SCREEN_WIDTH} = Dimensions.get("window");
 // const HEADER_HEIGHT = Platform.OS === "ios" ? 64 : 50;
-
-const HeadComponent = () => (
-            <View style={{backgroundColor: F8Colors.mainBgColor}}>
-            <StatusBar barStyle="light-content"/>
-              <BannerCarousel/>
-              <View style={styles.gridContainer}>
-                <GridButton
-                  icon={require('./img/buttons/sign.png')}
-                  caption={'签到'}
-                  onPress={_ => Alert.alert('签到')}/>
-                <GridButton
-                  icon={require('./img/buttons/course.png')}
-                  caption={'教程'}
-                  onPress={_ => Alert.alert('教程')}/>
-                <GridButton
-                  icon={require('./img/buttons/more.png')}
-                  caption={'敬请期待'}/>
-              </View>
-            </View>
-          );
-
 Navigation.registerComponent('CP.CustomMainScreenTabButton', () => CustomMainScreenTabButton);
 
 export class MainScreen extends React.Component {
@@ -91,7 +82,7 @@ export class MainScreen extends React.Component {
   }
 
   onNavigatorEvent(event) {
-    console.log('MainScreen:' + JSON.stringify(event));
+    //console.log('MainScreen:' + JSON.stringify(event));
     switch(event.id) {
       case 'willAppear':
        break;
@@ -124,7 +115,7 @@ export class MainScreen extends React.Component {
 
   _handleIndexChange = index => {
     this.setState({ index });
-    this.props.dispatch(showRoomList());
+    this.props.dispatch(showRoomList(this.state.index));
   }
 
   _renderHeaderTabBar = props => {
@@ -173,7 +164,7 @@ export class MainScreen extends React.Component {
           <GridButton
             icon={require('./img/buttons/course.png')}
             caption={'教程'}
-            onPress={_ => Alert.alert('教程')}/>
+            onPress={_ => toastShow('教程', {position: -470})}/>
           <GridButton
             icon={require('./img/buttons/more.png')}
             caption={'敬请期待'}/>
@@ -183,9 +174,12 @@ export class MainScreen extends React.Component {
   }
 
   componentDidMount() {
-    //Alert.alert("MainScreen componentDidMount loggedIn:" + this.props.loggedIn)
     if(this.props.loggedIn){
-      this.props.dispatch(showRoomList());
+      //Alert.alert("MainScreen componentDidMount loggedIn:" + this.props.loggedIn)
+      this.props.dispatch(showRoomList(this.state.index));
+      this.props.dispatch(refreshMsgs());
+      this.props.dispatch(getAccountInfo());
+      this.props.dispatch(getCheckinInfo());
     }
     else {
       this.props.dispatch(loggedOut());

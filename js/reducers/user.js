@@ -32,14 +32,24 @@ export type State = {
   isLoggedIn: boolean,
   token: string,
   account: string,
-  source: ?string
+  nickName: ?string,
+  diamond: ?number,
+  gold: ?number,
+  integral: ?number,
+  source: ?string,
+  checkinInfo: ?Array<Object>,
 };
 
 const initialState = {
   isLoggedIn: false,
   token: null,
   account: null,
-  source: null
+  nickName: '',
+  diamond: 0,
+  gold: 0,
+  integral: 0,
+  source: null,
+  checkinInfo: null,
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -49,6 +59,7 @@ function user(state: State = initialState, action: Action): State {
     configureAPIToken(token);
 
     return {
+      ...initialState,
       isLoggedIn: true,
       token,
       account
@@ -57,6 +68,25 @@ function user(state: State = initialState, action: Action): State {
 
   if(action.type === "LOGGED_OUT"){
     return initialState;
+  }
+
+  if(action.type === "ACCOUNT_INFO") {
+    return {
+      ...state,
+      nickName: action.nickName,
+      //roomID: action.roomID,
+      //meetingName: action.roomID,
+      diamond: action.diamond,
+      gold: action.gold,
+      integral: action.integral,
+    }
+  }
+
+  if(action.type === "CHECKIN_INFO") {
+    return {
+      ...state,
+      checkinInfo: action.checkinInfo,
+    }
   }
 
   return state;

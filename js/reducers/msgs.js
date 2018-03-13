@@ -31,13 +31,15 @@ import { configureAPIToken } from '../api';
 export type State = {
   msgs: Object,
   bLoading: boolean,
-  unreadNum: ?number
+  unreadNum: ?number,
+  openMail: ?Object,
 };
 
 const initialState = {
   msgs: null,
   bLoading: false,
-  unreadNum: 0
+  unreadNum: 0,
+  openMail: null,
 };
 
 function msgs(state: State = initialState, action: Action): State {
@@ -51,6 +53,8 @@ function msgs(state: State = initialState, action: Action): State {
 
   if(action.type === "MSG_LIST_SUCC"){
     let { msgs, unreadNum } = action;
+    let openMail = null;
+
     return {
       ...state,
       msgs,
@@ -68,6 +72,14 @@ function msgs(state: State = initialState, action: Action): State {
 
   if(action.type === "LOGGED_OUT"){
     return initialState;
+  }
+
+  if (action.type === "OPEN_MSG") {
+    let { openMail } = action;
+    return {
+      ...state,
+      openMail,
+    }
   }
 
   return state;

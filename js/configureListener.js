@@ -5,6 +5,7 @@ import { NativeAppEventEmitter, Alert } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { NIMLoginDescrib, NIMAVChatDescrib } from './nativeEventDescribe';
 import type { Action, ThunkAction } from "./actions/types";
+import { toastShow } from './util';
 
 let _store = null;
 
@@ -41,6 +42,7 @@ function configureListener(store): void {
     //       autoDismissTimerSec: 1 // auto dismiss notification in seconds
     //     });
     // }
+    toastShow('NIM=' + data.status);
   });
 
   //NIM AVChat 相关事件

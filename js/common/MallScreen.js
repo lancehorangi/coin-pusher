@@ -94,6 +94,11 @@ class MallScreen extends ScreenComponent {
     <View style={styles.titleContainer}>
       <Image source={icon}/>
       <Text style={{color:'#d3d3e8'}}> {label} </Text>
+      <Text style={{
+        right: 40,
+        position: 'absolute',
+        color: '#d3d3e8',
+      }}> {"你的积分:" + this.props.integral} </Text>
     </View>
     )
   }
@@ -112,7 +117,6 @@ class MallScreen extends ScreenComponent {
 
 /* StyleSheet
 ============================================================================= */
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -139,6 +143,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flex: 1,
+    width: WIN_WIDTH,
     height: 40,
     marginLeft: 20,
     marginTop: 10,
@@ -150,7 +155,8 @@ const styles = StyleSheet.create({
 
 function select(store) {
   return {
-    account:store.user.account,
+    account: store.user.account,
+    integral: store.user.integral,
   };
 }
 

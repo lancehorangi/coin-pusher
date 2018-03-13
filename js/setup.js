@@ -109,6 +109,16 @@ configureStore(
                     navBarHidden: true
                   }
               },
+              {
+                  label: '商城',
+                  screen: 'CP.LaunchScreen',
+                  icon: require('./common/img/buttons/shop.png'),
+                  selectedIcon: require('./common/img/buttons/shop_2.png'),
+                  title: '商城',
+                  navigatorStyle: {
+                    navBarHidden: false
+                  }
+              },
               ],
               passProps: {loggedIn: bLogin}, // simple serializable object that will pass as props to all top screens (optional)
               animationType: 'fade',

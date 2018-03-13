@@ -1,10 +1,16 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator,
-  StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
-import { List, ListItem, SearchBar, Button, Avatar } from "react-native-elements";
-import { refreshMsgs } from "../actions";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Dimensions
+} from "react-native";
+
 import { connect } from "react-redux";
-import dateFormat from 'dateformat';
+import { refreshMsgs, checkin } from "../actions";
 import ScreenComponent from './ScreenComponent';
 import F8Colors from './F8Colors';
 
@@ -30,10 +36,18 @@ renderUnavaibleMark = (bAvaiable) => {
   )
 }
 
+const TYPE_IMG = {
+  0: require('./img/new.png'),
+  1: require('./img/gift.png'),
+  2: require('./img/week.png'),
+  3: require('./img/month.png'),
+}
+
 // Our custom component we want as a button in the nav bar
 const NormalItem = ({ text, bAvaiable, onPress, icon, btnText }) =>
   <TouchableOpacity
     style={styles.card}
+    activeOpacity={1}
   >
     <Image source={icon} style={{width:40, resizeMode: "stretch"}} />
     {renderUnavaibleMark(bAvaiable)}
@@ -68,8 +82,16 @@ class SignScreen extends ScreenComponent {
   componentDidMount() {
   }
 
-  onPress = () => {
-
+  onPress = (type: number, avaiable) => {
+    if (avaiable) {
+      this.props.dispatch(checkin(type));
+    }
+    else {
+      this.props.navigator.push({
+        screen: 'CP.IAPScreen', // unique ID registered with Navigation.registerScreen
+        title: "商城",
+      });
+    }
   }
 
   renderSeparator = () => {
@@ -85,51 +107,70 @@ class SignScreen extends ScreenComponent {
   };
 
   renderContent = () => {
-    TEMP_DATA = [{
-      text: "每日奖励10积分\n 有效期7次",
-      bAvaiable: false,
-      icon: require('./img/new.png'),
-      btnText: '领取领取'
-    },
-    {
-      text: "每日奖励10积分\n 有效期7次",
-      bAvaiable: true,
-      icon: require('./img/new.png'),
-      btnText: '领取领取'
-    },
-    {
-      text: "每日奖励10积分\n 有效期7次",
-      bAvaiable: false,
-      icon: require('./img/new.png'),
-      btnText: '领取领取'
-    },
-    {
-      text: "每日奖励10积分\n 有效期7次",
-      bAvaiable: false,
-      icon: require('./img/new.png'),
-      btnText: '领取领取'
-    },]
+    if (this.props.checkinInfo) {
+      return this.props.checkinInfo.map((data, idx) => {
+        if(data.type != 0 || data.days != 0 && TYPE_IMG[data.type.toString()]) {
+          return (
+            <View>
+              <NormalItem
+              text={this.getItemText(data.integral, data.days, data.type)}
+              bAvaiable={data.days != 0}
+              icon={TYPE_IMG[data.type.toString()]}
+              btnText={this.getBtnText(data.type, data.receive, data.days != 0)}
+              onPress={() => { this.onPress(data.type, data.days != 0) }}
+              />
+              <View
+                style={{
+                  height: 1,
+                  width: "100%",
+                  backgroundColor: "#45474D",
+                }}
+              />
+            </View>
+          );
+        }
+        else {
+          return;
+        }
+      });
+    }
+    else {
+      return;
+    }
+  }
 
-    return TEMP_DATA.map((data, idx) => {
-      return (
-        <View>
-        <NormalItem
-          text={data.text}
-          bAvaiable={data.bAvaiable}
-          icon={data.icon}
-          btnText={data.btnText}
-          onPress={this.onPress}
-          />
-          <View
-            style={{
-              height: 1,
-              width: "100%",
-              backgroundColor: "#45474D",
-            }}
-          />
-        </View>
-      );
-    });
+  getItemText(num, leftDays, type) {
+    let text = '';
+    text += '每日奖励:' + num + '积分';
+
+    if(leftDays != 0) {
+      text += '\n 有效期:' + leftDays + '天';
+    }
+
+    return text;
+  }
+
+  getBtnText(type, receive, avaiable) {
+    if (avaiable) {
+      if (receive == 1) {
+        return "已领取"
+      }
+      else {
+        return "领取"
+      }
+    }
+    else {
+      const BTN_DESC_TEXT = {
+        0: "",
+        1: "获得福利",
+        2: "获得周卡",
+        3: "获得月卡",
+      }
+
+      return BTN_DESC_TEXT[type.toString()];
+    }
+
+    return '';
   }
 
   render() {
@@ -177,7 +218,8 @@ const styles = StyleSheet.create({
 
 function select(store) {
   return {
-    account:store.user.account,
+    account: store.user.account,
+    checkinInfo: store.user.checkinInfo,
   };
 }
 

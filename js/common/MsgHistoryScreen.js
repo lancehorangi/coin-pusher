@@ -1,14 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from "react-native";
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, Image, Alert } from "react-native";
 import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
 import { refreshMsgs, setNavigator } from "../actions";
 import { connect } from "react-redux";
 import dateFormat from 'dateformat';
 import ScreenComponent from './ScreenComponent';
+import F8Colors from './F8Colors';
 
 class MsgHistoryScreen extends ScreenComponent {
   constructor(props) {
     super(props);
+
+    props.bLoading=false;
 
     this.state = {
       page: 1,
@@ -22,8 +25,12 @@ class MsgHistoryScreen extends ScreenComponent {
     navBarButtonColor: '#ffffff'
   };
 
-  componentDidMount() {
+  RNNDidAppear = () => {
     this.makeRemoteRequest();
+  }
+
+  componentDidMount() {
+    //this.makeRemoteRequest();
   }
 
   makeRemoteRequest = () => {
@@ -55,15 +62,12 @@ class MsgHistoryScreen extends ScreenComponent {
     // );
   };
 
-  onPress = (item) => {
+  onPress = (mailID) => {
     this.props.navigator.push({
       screen: 'CP.MsgDetailScreen', // unique ID registered with Navigation.registerScreen
       title: "邮件详情",
       passProps: {
-        id: item.id,
-        sendTime: item.sendTime,
-        content: item.content,
-        items: item.items,
+        mailID
       },
     });
   }
@@ -74,7 +78,8 @@ class MsgHistoryScreen extends ScreenComponent {
         style={{
           height: 1,
           width: "100%",
-          backgroundColor: "#CED0CE",
+          backgroundColor: "#45474d",
+          opacity: 0.5,
         }}
       />
     );
@@ -101,32 +106,51 @@ class MsgHistoryScreen extends ScreenComponent {
     // );
   };
 
+  renderItem = ({item}) => {
+    let accessoryContent = item.items && item.items.length > 0 ? (
+      <Avatar
+        containerStyle={{marginRight:5, marginLeft:5}}
+        overlayContainerStyle={{backgroundColor: 'transparent'}}
+        width={20}
+        height={20}
+        source={require('./img/mail_x.png')}
+      />
+    ) : null;
+
+    return (
+      (
+        <ListItem
+          containerStyle={{borderTopWidth: 0, borderBottomWidth: 0}}
+          //title={item.sender}
+          title={item.title}
+          titleStyle={{color: '#d1d3e8', fontSize: 17}}
+          //subtitle={item.content}
+          rightTitle={dateFormat(Date(item.sendTime), 'yyyy/mm/dd\nHH:MM')}
+          //rightTitle={item.sendTime}
+          rightTitleNumberOfLines={2}
+          avatar={accessoryContent}
+          leftIcon={
+            <Image
+            style={{width:20, height:20, marginRight:5, marginLeft:5}}
+            source={item.mark ? require('./img/header/news.png') : require('./img/news_y.png')}/>
+          }
+          onPress={() => this.onPress(item.id)}
+        />
+      )
+    )
+  }
+
   render() {
     return (
       <List containerStyle={styles.container}>
         <FlatList
           data={this.props.msgs}
-          renderItem={({ item }) => (
-            <ListItem
-              roundAvatar
-              //title={item.sender}
-              title={'系统消息'}
-              subtitle={item.content}
-              rightTitle={dateFormat(Date(item.sendTime), 'yyyy/mm/dd\nHH:MM')}
-              //rightTitle={item.sendTime}
-              rightTitleNumberOfLines={2}
-              avatar={<Avatar
-                rounded
-                title={'消'}
-              />}
-              //containerStyle={{ borderBottomWidth: 0 }}
-              onPress={() => this.onPress(item)}
-            />
-          )}
+          renderItem={this.renderItem}
           keyExtractor={item => item.id}
           ItemSeparatorComponent={this.renderSeparator}
           //ListHeaderComponent={this.renderHeader}
-          ListFooterComponent={this.renderFooter}
+          //ListFooterComponent={this.renderFooter}
+          refreshControl={{tintColor:'white'}}
           onRefresh={this.handleRefresh}
           refreshing={this.props.bLoading}
           onEndReached={this.handleLoadMore}
@@ -145,9 +169,10 @@ const styles = StyleSheet.create({
     flex: 1,
     //height: '100%',
     marginTop: 0,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cbd2d9"
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    borderBottomColor: "#45474D",
+    backgroundColor: F8Colors.mainBgColor,
   }
 });
 

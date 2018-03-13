@@ -11,13 +11,16 @@ class ScreenComponent extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
+  RNNDidAppear = () => {}
+
   onNavigatorEvent(event) {
-    console.log(this.constructor.name + ':' + JSON.stringify(event));
+    //console.log(this.constructor.name + ':' + JSON.stringify(event));
     switch(event.id) {
       case 'willAppear':
        break;
       case 'didAppear':
         this.props.dispatch(setNavigator(this.props.navigator));
+        this.RNNDidAppear();
         break;
       case 'willDisappear':
         break;

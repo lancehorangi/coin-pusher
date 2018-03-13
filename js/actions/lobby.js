@@ -30,9 +30,9 @@ import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 
 import type { Action, ThunkAction } from "./types";
 
-async function _roomList() : Promise<Action> {
+async function _roomList(roomType: number) : Promise<Action> {
   try {
-    let response = await APIRequest('room/list', {type:0}, true);
+    let response = await APIRequest('room/list', {type:roomType}, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error("room/list failed reason=" + response.ReasonPhrase);
@@ -47,7 +47,7 @@ async function _roomList() : Promise<Action> {
 
 function showRoomList(roomType: number): ThunkAction {
   return (dispatch, getState) => {
-    const response = _roomList();
+    const response = _roomList(roomType);
     response.then(result => dispatch({
       type: "ROOM_LIST",
       list: result.list,
@@ -66,6 +66,7 @@ async function _enterRoom(roomID: string, meetingName: string) : Promise<Action>
       throw Error(response.ReasonPhrase);
     }
 
+    NimUtils.leaveMeeting();
     await NimUtils.joinMeeting(meetingName);
     return response;
   } catch(e) {
@@ -79,6 +80,30 @@ function enterRoom(roomID: string, meetingName: string): ThunkAction {
     response.then(result => {
 
     }, err => {Alert.alert('进入房间失败:' + err.message)});
+  };
+}
+
+async function _leaveRoom( ) : Promise<Action> {
+  try {
+    let response = await APIRequest('room/leave', { }, true);
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    NimUtils.leaveMeeting();
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function leaveRoom(): ThunkAction {
+  return (dispatch, getState) => {
+    const response = _leaveRoom();
+    response.then(result => {
+
+    }, err => {console.warn('房间失败:' + err.message)});
   };
 }
 
@@ -105,4 +130,4 @@ function pushCoin(): ThunkAction {
   };
 }
 
-module.exports = { showRoomList, enterRoom, pushCoin };
+module.exports = { showRoomList, enterRoom, pushCoin, leaveRoom };
