@@ -6,6 +6,9 @@ import { connect } from "react-redux";
 import dateFormat from 'dateformat';
 import ScreenComponent from './ScreenComponent';
 import F8Colors from './F8Colors';
+import { isIphoneX } from './../util';
+
+const IPHONE_X_HEAD = 30;
 
 class MineScreen extends ScreenComponent {
   constructor(props) {
@@ -17,7 +20,7 @@ class MineScreen extends ScreenComponent {
 
   static navigatorStyle = {
     navBarTextColor: '#ffffff',
-    navBarBackgroundColor: '#373a41',
+    navBarBackgroundColor: F8Colors.mainBgColor2,
     navBarButtonColor: '#ffffff'
   };
 
@@ -34,15 +37,29 @@ class MineScreen extends ScreenComponent {
         <Avatar
           large
           rounded
-          icon={{name: 'rocket', color: 'white'}}
+          icon={{name: 'history', color: 'white'}}
           overlayContainerStyle={{backgroundColor: 'grey'}}
           activeOpacity={0.7}
-          containerStyle={{width:80, height:80, marginTop: 40, marginLeft:40}}
+          containerStyle={{width:80, marginTop: 20, marginLeft:20}}
           />
-          <View style={{flex:0, marginTop:40}}>
-          <Text style={{color:'white', marginLeft:10, fontSize:20}}> {this.props.account}  </Text>
-          <Text style={{color:'white', marginLeft:10, fontSize:20}}> {this.props.nickName} </Text>
-          </View>
+        <View style={{flex:0, marginLeft: 10, marginTop:20}}>
+            <Text style={{color:'white', marginLeft:10, fontSize:20}}> {"昵称:" + this.props.nickName} </Text>
+            <Text style={{color:'white', marginLeft:10, marginTop:5, fontSize:15}}> {"ID:" + this.props.account}  </Text>
+            <Text style={{color:'white', marginLeft:10, marginTop:5,fontSize:15}}> {"卡"}  </Text>
+        </View>
+      </View>
+    )
+  }
+
+  renderCurr = () => {
+    return (
+      <View style={styles.currContainer}>
+        <Text style={{color:'white', fontSize:15, marginLeft: 10}}>
+          {"钻石:" + this.props.diamond}
+        </Text>
+        <Text style={{color:'white', fontSize:15, marginRight: 10}}>
+          {"积分:" + this.props.integral}
+        </Text>
       </View>
     )
   }
@@ -50,13 +67,23 @@ class MineScreen extends ScreenComponent {
   BTN_LIST = [
     {
       title: '消息记录',
-      icon: 'av-timer',
+      icon: 'history',
       onPress: () => {this.pressMsgHistory()}
     },
     {
+      title: '游戏历史',
+      icon: 'history',
+      onPress: () => {this.pressGameHistory()}
+    },
+    {
       title: '意见反馈',
-      icon: 'flight-takeoff',
-      onPress: () => {this.pressMsgHistory()}
+      icon: 'feedback',
+      onPress: () => {this.pressFeeback()}
+    },
+    {
+      title: '设置',
+      icon: 'settings',
+      onPress: () => {this.pressOption()}
     },
   ]
 
@@ -67,12 +94,32 @@ class MineScreen extends ScreenComponent {
     });
   }
 
+  pressFeeback = () => {
+
+  }
+
+  pressGameHistory = () => {
+    this.props.navigator.push({
+      screen: 'CP.GameHistoryScreen', // unique ID registered with Navigation.registerScreen
+      title: "游戏历史",
+    });
+  }
+
+  pressOption = () => {
+    this.props.navigator.push({
+      screen: 'CP.OptionScreen', // unique ID registered with Navigation.registerScreen
+      title: "设置",
+    });
+  }
+
   renderBtn = () => {
     return (
-      <List>
+      <List containerStyle={styles.listContainer}>
       {
         this.BTN_LIST.map((item, i) => (
           <ListItem
+            containerStyle={{borderTopWidth: 0, borderBottomWidth: 1, borderBottomColor: F8Colors.mainBgColor2}}
+            titleStyle={{color: '#d1d3e8', fontSize: 15}}
             key={i}
             title={item.title}
             leftIcon={{name: item.icon}}
@@ -87,7 +134,10 @@ class MineScreen extends ScreenComponent {
   render() {
     return (
       <View style={styles.container}>
+        <View style={{width:'100%', backgroundColor: F8Colors.mainBgColor2, height: isIphoneX() ? IPHONE_X_HEAD : 0}}>
+        </View>
           {this.renderHead()}
+          {this.renderCurr()}
           {this.renderBtn()}
       </View>
     );
@@ -106,9 +156,30 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: 150,
-    backgroundColor: 'black',
+    //height: 150,
+    paddingBottom: 15,
+    backgroundColor: F8Colors.mainBgColor2,
     flexDirection: "row",
+  },
+  currContainer: {
+    width: '100%',
+    height: 50,
+    flexDirection: "row",
+    marginTop: 10,
+    backgroundColor: F8Colors.mainBgColor2,
+    //justifyContent: 'center',
+    //alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: "space-between",
+  },
+  listContainer: {
+    flex: 1,
+    //height: '100%',
+    marginTop: 0,
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    borderBottomColor: "#45474D",
+    backgroundColor: F8Colors.mainBgColor,
   }
 });
 
@@ -116,6 +187,8 @@ function select(store) {
   return {
     account: store.user.account,
     nickName: store.user.nickName,
+    diamond: store.user.diamond,
+    integral: store.user.integral,
   };
 }
 

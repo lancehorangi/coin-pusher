@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import { connect } from "react-redux";
-import { refreshMsgs, checkin } from "../actions";
+import { refreshMsgs, checkin, getCheckinInfo } from "../actions";
 import ScreenComponent from './ScreenComponent';
 import F8Colors from './F8Colors';
 
@@ -75,11 +75,16 @@ class SignScreen extends ScreenComponent {
 
   static navigatorStyle = {
     navBarTextColor: '#ffffff',
-    navBarBackgroundColor: '#373a41',
+    navBarBackgroundColor: F8Colors.mainBgColor2,
     navBarButtonColor: '#ffffff'
   };
 
+  RNNDidAppear = () => {
+    this.props.dispatch(getCheckinInfo());
+  }
+
   componentDidMount() {
+
   }
 
   onPress = (type: number, avaiable) => {

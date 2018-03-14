@@ -12,6 +12,8 @@ import MineScreen from './common/MineScreen';
 import IAPScreen from './common/IAPScreen';
 import MallScreen from './common/MallScreen';
 import SignScreen from './common/SignScreen';
+import OptionScreen from './common/OptionScreen';
+import GameHistoryScreen from './common/GameHistoryScreen';
 
 // register all screens of the app (including internal ones)
 export default (store, Provider) => {
@@ -25,6 +27,8 @@ export default (store, Provider) => {
   Navigation.registerComponent('CP.IAPScreen', () => IAPScreen, store, Provider);
   Navigation.registerComponent('CP.MallScreen', () => MallScreen, store, Provider);
   Navigation.registerComponent('CP.SignScreen', () => SignScreen, store, Provider);
+  Navigation.registerComponent('CP.OptionScreen', () => OptionScreen, store, Provider);
+  Navigation.registerComponent('CP.GameHistoryScreen', () => GameHistoryScreen, store, Provider);
   Navigation.registerComponent('CP.Notification', () => Notification);
 
   Navigation.registerComponent('CP.Sub.RoomThumbnail', () => RoomThumbnail);

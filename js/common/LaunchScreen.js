@@ -25,12 +25,14 @@ import React from "react";
 import { connect } from "react-redux";
 import F8Colors from "./F8Colors";
 import F8Button from "./F8Button";
-import { Dimensions, StyleSheet, View, Image, Alert } from "react-native";
+import { Dimensions, StyleSheet, View, Image, Alert, ScrollView } from "react-native";
 import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 import { serverURL } from '../env';
 import { APIRequest } from '../api';
 import { logIn, showRoomList, enterRoom } from '../actions'
 import ScreenComponent from './ScreenComponent';
+import { Navigation } from 'react-native-navigation';
+import RoomHistory from './RoomHistory';
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -50,22 +52,10 @@ class LaunchScreen extends ScreenComponent {
 
   render() {
     return (
-      <View style={[styles.container, this.props.style]}>
+      <ScrollView style={[styles.container, this.props.style]}>
         <Image
           source={require("./img/launchscreen.png")}
           style={styles.image}
-        />
-        <F8Button
-          theme="bordered"
-          type="default"
-          caption="注册"
-          onPress={() => this.reg()}
-        />
-        <F8Button
-          theme="bordered"
-          type="default"
-          caption="登录"
-          onPress={() => this.logIn()}
         />
         <F8Button
           theme="bordered"
@@ -101,9 +91,11 @@ class LaunchScreen extends ScreenComponent {
           theme="bordered"
           type="default"
           caption="登录失效"
-          onPress={() => this.logout()}
+          onPress={() => this.test()}
         />
-      </View>
+        <RoomHistory id={1}/>
+
+      </ScrollView>
     );
   }
 
@@ -175,6 +167,18 @@ class LaunchScreen extends ScreenComponent {
     } catch(e) {
       Alert.alert(e.message);
     };
+  }
+
+  async test() {
+    Navigation.showLightBox({
+      screen: 'CP.LaunchScreen', // unique ID registered with Navigation.registerScreen
+      passProps: {}, // simple serializable object that will pass as props to the lightbox (optional)
+      style: {
+        backgroundBlur: 'dark', // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
+        backgroundColor: '#ff000000', // tint color for the background, you can specify alpha here (optional)
+        tapBackgroundToDismiss: true // dismisses LightBox on background taps (optional)
+      }
+    });
   }
 
   async reg()

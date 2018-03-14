@@ -74,6 +74,7 @@ const THEME_COLORS = {
 
   //
   mainBgColor: "#24272e",
+  mainBgColor2: "#373a41",
 };
 
 const LOCATION_COLORS = {

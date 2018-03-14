@@ -50,6 +50,7 @@ export type Action =
       diamond: number,
       gold: number,
       integral: number,
+      entityID: number,
     }
   | {
       type: "CHECKIN_INFO",
@@ -70,6 +71,26 @@ export type Action =
   | {
       type: "APP_SWITCH_TAB",
       navigator: Object
+    }
+  | {
+      type: "MALL_CHARGE_LIST",
+      chargeList: Array<Object>
+    }
+  | {
+      type: "MALL_MARKET_LIST",
+      marketList: Array<Object>,
+    }
+  | {
+      type: "ACCOUNT_GAME_HISTORY",
+      accountGameHistory: Array<Object>,
+    }
+  | {
+      type: "CURR_ROOM_INFO",
+      roomInfo: Object,
+    }
+  | {
+      type: "ROOM_HISTORY_INFO",
+      roomGameHistory: Object,
     }
 ;
 

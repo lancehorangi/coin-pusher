@@ -31,4 +31,6 @@ module.exports = combineReducers({
   lobby: require("./lobby"),
   msgs: require("./msgs"),
   appNavigator: require("./appNavigator"),
+  mall: require("./mall"),
+  room: require("./room"),
 });

@@ -67,7 +67,8 @@ async function _enterRoom(roomID: string, meetingName: string) : Promise<Action>
     }
 
     NimUtils.leaveMeeting();
-    await NimUtils.joinMeeting(meetingName);
+    let nimresult = await NimUtils.joinMeeting(meetingName);
+
     return response;
   } catch(e) {
     throw Error(e.message);
@@ -78,8 +79,12 @@ function enterRoom(roomID: string, meetingName: string): ThunkAction {
   return (dispatch, getState) => {
     const response = _enterRoom(roomID, meetingName);
     response.then(result => {
-
-    }, err => {Alert.alert('进入房间失败:' + err.message)});
+      dispatch({
+        type: "CURR_ROOM_INFO",
+        roomInfo: result.info,
+      })
+    });
+    return response;
   };
 }
 
@@ -130,4 +135,32 @@ function pushCoin(): ThunkAction {
   };
 }
 
-module.exports = { showRoomList, enterRoom, pushCoin, leaveRoom };
+async function _getRoomHistory(id: number) : Promise<Action> {
+  try {
+    let response = await APIRequest('machine/getHistory', {id}, true);
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function getRoomHistory(id: number) : ThunkAction {
+  return (dispatch, getState) => {
+    const response = _pushCoin();
+    response.then(result => {
+      dispatch({
+        type: "ROOM_HISTORY_INFO",
+        roomGameHistory: result.list,
+      })
+    });
+
+    return response;
+  };
+}
+
+module.exports = { showRoomList, enterRoom, pushCoin, leaveRoom, getRoomHistory };

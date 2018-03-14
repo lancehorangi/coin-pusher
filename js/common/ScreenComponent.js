@@ -8,10 +8,14 @@ import dateFormat from 'dateformat';
 class ScreenComponent extends Component {
   constructor(props) {
     super(props);
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+
+    if (this.props.navigator) {
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    }
   }
 
   RNNDidAppear = () => {}
+  RNNWillDisappear = () => {}
 
   onNavigatorEvent(event) {
     //console.log(this.constructor.name + ':' + JSON.stringify(event));
@@ -23,6 +27,7 @@ class ScreenComponent extends Component {
         this.RNNDidAppear();
         break;
       case 'willDisappear':
+        this.RNNWillDisappear();
         break;
       case 'didDisappear':
         break;

@@ -6,10 +6,11 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from "react-native";
 import { List, ListItem, SearchBar, Button, Avatar } from "react-native-elements";
-import { refreshMsgs } from "../actions";
+import { getChargeList } from "../actions";
 import { connect } from "react-redux";
 import dateFormat from 'dateformat';
 import ScreenComponent from './ScreenComponent';
@@ -40,7 +41,8 @@ const NormalItem = ({ text, price, unit, describ, onPress, bgColor, subBgColor }
       </Text>
       <View style={{position: "absolute", left:0, right:0, bottom:0, height:25, backgroundColor: subBgColor, borderBottomLeftRadius: 13,
                 borderBottomRightRadius: 13}}>
-        <Text style={{ color: 'white', fontSize:12, top:4, left:10 }}>
+        <Text style={{ color: 'white', fontSize:12, width:"90%", top:4, left:10 }}
+          numberOfLines={1}>
           {describ}
         </Text>
       </View>
@@ -75,7 +77,8 @@ const NormalCardItem = ({ text, price, unit, describ, describ2, onPress, bgColor
         </Text>
         <View style={{position: "absolute", left:0, right:0, bottom:0, height:25, backgroundColor: subBgColor, borderBottomLeftRadius: 13,
                   borderBottomRightRadius: 13}}>
-          <Text style={{ color: 'white', fontSize:12, top:4, left:10 }}>
+          <Text style={{ color: 'white', fontSize:12, width:"90%", top:4, left:10 }}
+            numberOfLines={1}>
             {describ}
           </Text>
         </View>
@@ -94,6 +97,9 @@ const CardItem = ({ text }) =>
     </View>
   </TouchableOpacity>;
 
+const WEEK_CARD = 101;
+const MONTH_CARD = 102;
+
 class IAPScreen extends ScreenComponent {
   constructor(props) {
     super(props);
@@ -104,118 +110,77 @@ class IAPScreen extends ScreenComponent {
 
   static navigatorStyle = {
     navBarTextColor: '#ffffff',
-    navBarBackgroundColor: '#373a41',
+    navBarBackgroundColor: F8Colors.mainBgColor2,
     navBarButtonColor: '#ffffff'
   };
+
+  RNNDidAppear = () => {
+    this.props.dispatch(getChargeList());
+  }
 
   componentDidMount() {
   }
 
-  onPress = () => {
-
+  onPress = (id) => {
+    Alert.alert('iap buy:' + id);
   }
 
   renderContent = () => {
-    TEMP_DATA = [{
-      text: "100",
-      price: "5000",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-    }]
+    let { items } = this.props;
 
-    return TEMP_DATA.map((data, idx) => {
-      return (
-        <NormalItem
-          text={data.text}
-          price={data.price}
-          describ={data.describ}
-          unit={data.unit}
-          onPress={this.onPress}
-          bgColor={'#ee4943'}
-          subBgColor={'#3b94e6'}
-          />
-      );
+    return items.map((item, idx) => {
+      if (item.id != WEEK_CARD && item.id != MONTH_CARD) {
+        return (
+          <NormalItem
+            text={item.desc1}
+            price={item.cost + '元'}
+            describ={item.desc2}
+            unit={"钻石"}
+            onPress={ _ => this.onPress(item.id)}
+            bgColor={'#ee4943'}
+            subBgColor={'#3b94e6'}
+            key={item.id}
+            />
+        );
+      }
     });
   }
 
   renderCard = () => {
-    TEMP_DATA = [{
-      text: "10000",
-      price: "5000",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-      describ2: "额外赠送20钻石\n20钻石",
-    }, {
-      text: "1000",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-      describ2: "额外赠送20钻石\n20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-      describ2: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-      describ2: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-      describ2: "额外赠送20钻石",
-    }, {
-      text: "100",
-      price: "50",
-      unit: '钻石',
-      describ: "额外赠送20钻石",
-      describ2: "额外赠送20钻石",
-    }]
+    let { items } = this.props;
 
-    return TEMP_DATA.map((data, idx) => {
-      return (
-        <NormalCardItem
-          text={data.text}
-          price={data.price}
-          describ={data.describ}
-          describ2={data.describ2}
-          unit={data.unit}
-          onPress={this.onPress}
-          bgColor={'#ee4943'}
-          subBgColor={'#3b94e6'}
-          />
-      );
+    return items.map((item, idx) => {
+      if (item.id == WEEK_CARD || item.id == MONTH_CARD) {
+        return (
+          <NormalCardItem
+            text={item.desc1}
+            price={item.cost + '元'}
+            describ={item.desc2}
+            describ2={item.desc3}
+            unit={"钻石"}
+            onPress={_ => this.onPress(item.id)}
+            bgColor={item.id == WEEK_CARD ? '#00c832' : '#3d38f6'}
+            subBgColor={item.id == WEEK_CARD ? '#008321' : '#1f66a7'}
+            key={item.id}
+            />
+        );
+      }
     });
+
+    // return TEMP_DATA.map((data, idx) => {
+    //   return (
+    //     <NormalCardItem
+    //       text={data.text}
+    //       price={data.price}
+    //       describ={data.describ}
+    //       describ2={data.describ2}
+    //       unit={data.unit}
+    //       onPress={this.onPress}
+    //       bgColor={'#ee4943'}
+    //       subBgColor={'#3b94e6'}
+    //       />
+    //   );
+    // });
   }
 
   renderTitle = (icon, label) => {
@@ -228,18 +193,30 @@ class IAPScreen extends ScreenComponent {
   }
 
   render() {
-    return (
-      <ScrollView style={styles.container}>
-        {this.renderTitle(require('./img/Recharge1.png'), '超值充值')}
-        <View style={styles.cardContainer}>
-          {this.renderContent()}
+    let { items } = this.props;
+    if (items) {
+      return (
+        <ScrollView style={styles.container}>
+          {this.renderTitle(require('./img/Recharge1.png'), '超值充值')}
+          <View style={styles.cardContainer}>
+            {this.renderContent()}
+          </View>
+          {this.renderTitle(require('./img/Recharge2.png'), '周卡月卡')}
+          <View style={styles.cardContainer}>
+            {this.renderCard()}
+          </View>
+        </ScrollView>
+      );
+    }
+    else {
+      return (
+        <View style={[styles.loadingCotainer]}>
+            <ActivityIndicator animating size="large" color='white'/>
         </View>
-        {this.renderTitle(require('./img/Recharge2.png'), '周卡月卡')}
-        <View style={styles.cardContainer}>
-          {this.renderCard()}
-        </View>
-      </ScrollView>
-    );
+      );
+    }
+
+
   }
 }
 
@@ -258,8 +235,8 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
       flex: 1,
-      justifyContent: 'space-around',
-      //alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
       //alignContent: 'space-around',
       flexWrap: 'wrap',
       flexDirection: 'row',
@@ -271,7 +248,8 @@ const styles = StyleSheet.create({
     width: cardWidth,
     height: 100,
     borderRadius: 13,
-    marginTop:15
+    marginTop:15,
+    marginLeft:10,
   },
   titleContainer: {
     flex: 1,
@@ -281,12 +259,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: 'center',
     backgroundColor: F8Colors.mainBgColor,
+  },
+  loadingCotainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: F8Colors.mainBgColor,
   }
 });
 
 function select(store) {
   return {
-    account:store.user.account,
+    items: store.mall.chargeList,
   };
 }
 

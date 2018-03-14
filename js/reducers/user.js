@@ -38,6 +38,7 @@ export type State = {
   integral: ?number,
   source: ?string,
   checkinInfo: ?Array<Object>,
+  accountGameHistory: ?Array<Object>,
 };
 
 const initialState = {
@@ -50,6 +51,7 @@ const initialState = {
   integral: 0,
   source: null,
   checkinInfo: null,
+  accountGameHistory: null,
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -79,6 +81,7 @@ function user(state: State = initialState, action: Action): State {
       diamond: action.diamond,
       gold: action.gold,
       integral: action.integral,
+      entityID: action.entityID,
     }
   }
 
@@ -86,6 +89,13 @@ function user(state: State = initialState, action: Action): State {
     return {
       ...state,
       checkinInfo: action.checkinInfo,
+    }
+  }
+
+  if (action.type === "ACCOUNT_GAME_HISTORY") {
+    return {
+      ...state,
+      accountGameHistory: action.accountGameHistory,
     }
   }
 

@@ -29,32 +29,35 @@ import type { Action } from "../actions/types";
 import { configureAPIToken } from '../api';
 
 export type State = {
-  navigator: Object,
+  chargeList: Array<Object>
 };
 
 const initialState = {
-  navigator: null,
+  chargeList: null,
 };
 
-function appNavigator(state: State = initialState, action: Action): State {
-  if (action.type === "APP_SWITCH_TAB") {
-    return {
-      navigator: action.navigator
-    };
+function mall(state: State = initialState, action: Action): State {
+  if(action.type === "LOGGED_OUT"){
+    return initialState;
   }
 
-  if (action.type === "LOGGED_OUT") {
-    if(state.navigator) {
-      state.navigator.popToRoot({
-        animated: false
-      });
-      state.navigator.switchToTab({
-        tabIndex: 0 // (optional) if missing, this screen's tab will become selected
-      });
+  if (action.type === "MALL_CHARGE_LIST") {
+    let { chargeList } = action;
+    return {
+      ...state,
+      chargeList
+    }
+  }
+
+  if(action.type === "MALL_MARKET_LIST") {
+    let { marketList } = action;
+    return {
+      ...state,
+      marketList
     }
   }
 
   return state;
 }
 
-module.exports = appNavigator;
+module.exports = mall;

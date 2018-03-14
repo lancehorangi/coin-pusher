@@ -18,43 +18,43 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE
- *
- * @flow
  */
 
 "use strict";
 
-import { Alert } from 'react-native';
-import type { Action } from "../actions/types";
-import { configureAPIToken } from '../api';
+import { Platform, Alert } from "react-native";
+import { Navigation } from 'react-native-navigation';
+import { APIRequest, configureAPIToken } from '../api';
+import { STATUS_OK } from '../env';
+import type { Action, ThunkAction } from "./types";
+import { toastShow } from './../util';
 
-export type State = {
-  navigator: Object,
-};
+async function _getAccountHistory(): Promise<Action>{
+  try {
+    let response = await APIRequest('account/getHistory', {}, true);
 
-const initialState = {
-  navigator: null,
-};
-
-function appNavigator(state: State = initialState, action: Action): State {
-  if (action.type === "APP_SWITCH_TAB") {
-    return {
-      navigator: action.navigator
-    };
-  }
-
-  if (action.type === "LOGGED_OUT") {
-    if(state.navigator) {
-      state.navigator.popToRoot({
-        animated: false
-      });
-      state.navigator.switchToTab({
-        tabIndex: 0 // (optional) if missing, this screen's tab will become selected
-      });
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
     }
-  }
 
-  return state;
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
 }
 
-module.exports = appNavigator;
+function getAccountHistory(): ThunkAction {
+  return (dispatch, getState) => {
+    let responese = _getAccountHistory();
+    responese.then( result => dispatch({
+      type: "ACCOUNT_GAME_HISTORY",
+      accountGameHistory: result.list
+    }),
+    err => {
+      console.log('getAccountHistory failed reason=' + err.message);
+      toastShow('获取个人游戏记录失败:' + err.message)
+    });
+  };
+}
+
+module.exports = { getAccountHistory };

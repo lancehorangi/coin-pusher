@@ -193,6 +193,7 @@ function getAccountInfo(): ThunkAction {
       diamond: result.diamond,
       gold: result.gold,
       integral: result.integral,
+      entityID: result.entityID,
     }),
       err => {
         console.log('getAccountInfo err:' + err.message);

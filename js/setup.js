@@ -36,6 +36,7 @@ import LaunchScreen from "./common/LaunchScreen";
 import { Navigation } from 'react-native-navigation';
 import { APIRequest, configureAPIToken } from './api';
 import CustomMainScreenTabButton from './common/CustomMainScreenTabButton';
+import F8Colors from './common/F8Colors';
 
 // Config
 //import { serverURL, parseAppID } from "./env";
@@ -123,7 +124,7 @@ configureStore(
               passProps: {loggedIn: bLogin}, // simple serializable object that will pass as props to all top screens (optional)
               animationType: 'fade',
               tabsStyle: { // optional, **iOS Only** add this if you want to style the tab bar beyond the defaults
-                tabBarBackgroundColor: '#373a41',
+                tabBarBackgroundColor: F8Colors.mainBgColor2,
                 //tabBarLabelColor: '#ffffff',
                 //tabBarButtonColor: '#ffffff', // change the color of the tab icons and text (also unselected)
                 tabBarSelectedButtonColor: '#ffffff',

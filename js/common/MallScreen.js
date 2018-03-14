@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, FlatList, ActivityIndicator,
   StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
 import { List, ListItem, SearchBar, Button, Avatar } from "react-native-elements";
-import { refreshMsgs } from "../actions";
+import { getMarketList } from "../actions";
 import { connect } from "react-redux";
 import dateFormat from 'dateformat';
 import ScreenComponent from './ScreenComponent';
@@ -34,9 +34,13 @@ class MallScreen extends ScreenComponent {
 
   static navigatorStyle = {
     navBarTextColor: '#ffffff',
-    navBarBackgroundColor: '#373a41',
+    navBarBackgroundColor: F8Colors.mainBgColor2,
     navBarButtonColor: '#ffffff'
   };
+
+  RNNDidAppear = () => {
+    this.props.dispatch(getMarketList());
+  }
 
   componentDidMount() {
   }
@@ -46,47 +50,27 @@ class MallScreen extends ScreenComponent {
   }
 
   renderContent = () => {
-    TEMP_DATA = [{
-      text: "这是商品的描述",
-      price: "1200",
-      icon: 'https://www.baidu.com/img/bd_logo1.png',
-    },
-    {
-      text: "这是商品的描述",
-      price: "1200",
-      icon: 'https://www.baidu.com/img/bd_logo1.png',
-    },
-    {
-      text: "这是商品的描述",
-      price: "1200",
-      icon: 'https://www.baidu.com/img/bd_logo1.png',
-    },
-    {
-      text: "这是商品的描述",
-      price: "1200",
-      icon: 'https://www.baidu.com/img/bd_logo1.png',
-    },
-    {
-      text: "这是商品的描述",
-      price: "1200",
-      icon: 'https://www.baidu.com/img/bd_logo1.png',
-    },
-    {
-      text: "这是商品的描述",
-      price: "1200",
-      icon: 'https://www.baidu.com/img/bd_logo1.png',
-    },]
-
-    return TEMP_DATA.map((data, idx) => {
+    let { items } = this.props;
+    if (items) {
+      return items.map((item, idx) => {
+        return (
+          <NormalItem
+            text={item.name}
+            price={item.cost}
+            icon={item.url}
+            onPress={this.onPress}
+            key={idx}
+            />
+        );
+      });
+    }
+    else {
       return (
-        <NormalItem
-          text={data.text}
-          price={data.price}
-          icon={data.icon}
-          onPress={this.onPress}
-          />
-      );
-    });
+        <View style={[styles.loadingCotainer]}>
+            <ActivityIndicator animating size="large" color='white'/>
+        </View>
+      )
+    }
   }
 
   renderTitle = (icon, label) => {
@@ -125,7 +109,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
       flex: 1,
-      justifyContent: 'space-around',
+      justifyContent: 'flex-start',
       //alignItems: 'flex-start',
       //alignContent: 'space-around',
       flexWrap: 'wrap',
@@ -139,6 +123,7 @@ const styles = StyleSheet.create({
     height: cardWidth + 30,
     borderRadius: 13,
     marginTop:15,
+    marginLeft:10,
     backgroundColor: 'transparent'
   },
   titleContainer: {
@@ -150,12 +135,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: 'center',
     backgroundColor: F8Colors.mainBgColor,
+  },
+  loadingCotainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: F8Colors.mainBgColor,
   }
 });
 
 function select(store) {
   return {
-    account: store.user.account,
+    items: store.mall.marketList,
     integral: store.user.integral,
   };
 }

@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -37,7 +37,9 @@ class RoomList extends Component {
       let { roomList } = this.props;
 
       if (!roomList || roomList.length == 0) {
-        return (<HeaderTitle style={{backgroundColor: F8Colors.mainBgColor}}> 暂无房间 </HeaderTitle>)
+        return (
+          <ActivityIndicator style={{alignSelf:'center', marginTop: 100}} animating size="large" color='white'/>
+        )
       }
 
       return roomList.map((room, idx) => {

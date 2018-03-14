@@ -31,7 +31,7 @@ class MsgDetailScreen extends ScreenComponent {
 
   static navigatorStyle = {
     navBarTextColor: '#ffffff',
-    navBarBackgroundColor: '#373a41',
+    navBarBackgroundColor: F8Colors.mainBgColor2,
     navBarButtonColor: '#ffffff'
   };
 
@@ -127,7 +127,7 @@ class MsgDetailScreen extends ScreenComponent {
           title={mail.title}
           titleStyle={{color: '#d1d3e8', fontSize: 17}}
           //subtitle={item.content}
-          rightTitle={dateFormat(Date(mail.sendTime), 'yyyy/mm/dd\nHH:MM')}
+          rightTitle={dateFormat(new Date(mail.sendTime * 1000), 'UTC:yyyy/mm/dd\nHH:MM')}
           //rightTitle={item.sendTime}
           rightTitleNumberOfLines={2}
           avatar={accessoryContent}

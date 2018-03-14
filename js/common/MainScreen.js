@@ -72,7 +72,7 @@ export class MainScreen extends React.Component {
 
   static navigatorStyle = {
     navBarTextColor: '#ffffff',
-    navBarBackgroundColor: '#373a41'
+    navBarBackgroundColor: F8Colors.mainBgColor2
   };
 
   constructor(props) {

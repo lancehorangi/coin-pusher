@@ -41,12 +41,16 @@ import {
   TextInput,
   Alert
 } from "react-native";
+import { Input } from 'react-native-elements';
 import LoginButton from "../common/LoginButton";
 import { serverURL } from '../env';
 import { APIRequest } from '../api';
 import { logIn } from '../actions';
 import Toast from 'react-native-root-toast';
+import { isIphoneX } from './../util';
+import RoomHistory from './RoomHistory';
 
+const IPHONE_X_HEAD = 30;
 /* Config/Constants
 ============================================================================= */
 
@@ -80,6 +84,8 @@ class LoginScreen extends React.Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="default" />
+        <View style={{width:'100%', height: isIphoneX() ? IPHONE_X_HEAD : 0}}>
+        </View>
         <View style={styles.content}>
             <TextInput
               style={styles.account}
@@ -101,7 +107,9 @@ class LoginScreen extends React.Component {
               caption="登录"
               onPress={() => this.login()}
             />
+            <RoomHistory id={1}/>
         </View>
+
       </View>
     );
   }
