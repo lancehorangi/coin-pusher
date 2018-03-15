@@ -20,11 +20,12 @@ import {
 import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 import { serverURL } from '../env';
 import { APIRequest } from '../api';
-import { logIn, showRoomList, enterRoom, pushCoin, leaveRoom } from '../actions'
+import { logIn, showRoomList, enterRoom, pushCoin, leaveRoom, connectMeeting } from '../actions'
 import { Navigation } from 'react-native-navigation';
 import ScreenComponent from './ScreenComponent';
 import { isIphoneX, toastShow, getMachineName } from './../util';
 import { Button } from "react-native-elements";
+import RoomHistory from './RoomHistory';
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -48,12 +49,18 @@ class GameScreen extends ScreenComponent {
   _isMounted: boolean;
 
   state: {
-    bLoading: boolean
+    bLoading: boolean,
+    autoPlay: boolean,
+    bPlaying: boolean,
   };
 
   constructor(props) {
     super(props);
-    this.state = { bLoading: true };
+    this.state = {
+      bLoading: true,
+      autoPlay: false,
+      bPlaying: false,
+    };
     this._isMounted = false;
   }
 
@@ -67,6 +74,7 @@ class GameScreen extends ScreenComponent {
 
   componentWillUnmount() {
     this._isMounted = false;
+    clearInterval(this.updateLoop);
   }
 
   componentDidMount() {
@@ -77,10 +85,19 @@ class GameScreen extends ScreenComponent {
 
   async reqEnterRoom() {
     await this.setState({ bLoading:true });
-    let {roomID, meetingName} = this.props;
+    let { roomID } = this.props;
 
     try {
-      let result = await this.props.dispatch(enterRoom(roomID, meetingName));
+      let result = await this.props.dispatch(enterRoom(roomID));
+
+      if (result.info.entityID === this.props.entityID) {
+        await this.props.dispatch(connectMeeting(result.info.nimName));
+        await this.setState({bPlaying:true});
+      }
+      else {
+        Alert.alert("房间已有玩家\n请稍后再试");
+      }
+
       this.setState({bLoading:false});
     } catch (e) {
       toastShow("进入房间失败:" + e.message);
@@ -90,6 +107,21 @@ class GameScreen extends ScreenComponent {
       // });
     } finally {
 
+    }
+  }
+
+  onAutoPlayValue = (value) => {
+    if (this.state.bPlaying) {
+      this.setState({autoPlay:value});
+      if (value) {
+        clearInterval(this.updateLoop);
+        this.updateLoop = setInterval( _ => {
+          this.coinPush();
+        }, 1000);
+      }
+      else {
+        clearInterval(this.updateLoop);
+      }
     }
   }
 
@@ -107,8 +139,8 @@ class GameScreen extends ScreenComponent {
     });
   }
 
-  async coinPush() {
-    await this.props.dispatch(pushCoin());
+  coinPush = () => {
+    this.props.dispatch(pushCoin());
   }
 
   renderHeader = () => {
@@ -149,6 +181,9 @@ class GameScreen extends ScreenComponent {
     else {
       return (
         <View style={styles.container}>
+          <View style={styles.videoLoading}>
+            <ActivityIndicator animating size="large" color='white'/>
+          </View>
           <NTESGLView style={styles.video}/>
         </View>
       )
@@ -159,8 +194,21 @@ class GameScreen extends ScreenComponent {
     if (!this.state.bLoading) {
       return (
         <View style={styles.bottomContainer}>
-          <View style={{justifyContent:'center', alignItems:'center', alignContent:'center'}}>
-            <Switch style={{width:'100%'}}/>
+          <View style={{
+            position: 'absolute',
+            left: 20,
+            flex: 1,
+            justifyContent:'center',
+            alignItems:'center',
+            alignContent:'center',
+            }}>
+            <Switch
+              value={this.state.autoPlay}
+              onValueChange={this.onAutoPlayValue}
+              tintColor={"red"}
+              onTintColor={"red"}
+              //thumbTintColor={"red"}
+              />
             <Text style={{color:"white", width:'100%', fontSize:15, marginTop:2, textAlign:'center'}}>
               {"自动"}
             </Text>
@@ -173,35 +221,58 @@ class GameScreen extends ScreenComponent {
             onPress={this.coinPush}
             />
 
-            <View style={{justifyContent:'center', alignItems:'center'}}>
-              <Button
-                title={this.props.gold}
-                titleStyle={{color:"red", fontSize:15}}
-                buttonStyle={{backgroundColor:"red", borderRadius:20}}
-                onPress={this.onPressIAP}
-                />
-
-              <Button
-                title={this.props.integral}
-                titleStyle={{color:"white", fontSize:15}}
-                buttonStyle={{backgroundColor:"red", borderRadius:20}}
+          <View style={{
+            position: 'absolute',
+            right: 10,
+            justifyContent:'center',
+            alignItems:'flex-end'
+          }}>
+            <Button
+              title={this.props.gold}
+              titleStyle={{color:"red", fontSize:15}}
+              buttonStyle={{backgroundColor:"red", borderRadius:20}}
+              onPress={this.onPressIAP}
               />
-            </View>
+
+            <Button
+              title={this.props.integral}
+              titleStyle={{color:"white", fontSize:15}}
+              buttonStyle={{backgroundColor:"red", borderRadius:20}}
+            />
+          </View>
         </View>
       )
     }
   }
 
+  renderHistory = () => {
+    return (
+      <View>
+        <View style={styles.historyTitle}>
+          <Text style={{color:"white", fontSize:20}}>
+            {"开奖记录"}
+          </Text>
+        </View>
+        <View style={{width:'80%', height:2, backgroundColor:"#45474d", alignSelf: 'center'}}/>
+        <View style={{paddingHorizontal:30, marginBottom: 50}}>
+          <RoomHistory id={this.props.roomID}/>
+        </View>
+      </View>
+    )
+  }
+
   render() {
     return (
       <ScrollView
-      style={[styles.container]}
-      bounces={false}>
-        <View style={{width:'100%', backgroundColor: F8Colors.mainBgColor2,
-        height: isIphoneX() ? IPHONE_X_HEAD : 0}}/>
-        {this.renderHeader()}
-        {this.renderContent()}
-        {this.renderBottom()}
+        style={[styles.container]}
+        //bounces={false}
+        >
+          <View style={{width:'100%', backgroundColor: F8Colors.mainBgColor2,
+          height: isIphoneX() ? IPHONE_X_HEAD : 0}}/>
+          {this.renderHeader()}
+          {this.renderContent()}
+          {this.renderBottom()}
+          {this.renderHistory()}
       </ScrollView>
     );
   }
@@ -222,14 +293,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   bottomContainer: {
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     width: '100%',
-    height: 150,
+    height: 100,
     marginLeft: 0,
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    backgroundColor: 'black',
+    marginTop:10,
+    //backgroundColor: 'black',
   },
   loadingCotainer: {
     height: WIN_HEIGHT,
@@ -245,6 +317,14 @@ const styles = StyleSheet.create({
     height: WIN_WIDTH / 3 * 4,
     resizeMode: "stretch"
   },
+  videoLoading: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    justifyContent: 'center',
+    width: WIN_WIDTH,
+    height: WIN_WIDTH / 3 * 4,
+  },
   btn: {
     width:20,
     height:20
@@ -252,12 +332,20 @@ const styles = StyleSheet.create({
   closeBtn: {
     width:20,
     height:20,
+  },
+  historyTitle: {
+    justifyContent: 'center',
+    width: '100%',
+    height: 50,
+    alignItems: 'center',
+    flexDirection: 'row',
   }
 });
 
 function select(store) {
   return {
     account: store.user.account,
+    token: store.user.token,
     entityID: store.user.entityID,
     roomInfo: store.room.roomInfo,
     integral: store.user.integral,

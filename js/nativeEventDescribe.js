@@ -17,7 +17,7 @@ let NIMLoginDescrib = {
 let NIMAVChatDescrib = {
   '502': '连接直播服务',
   '503': '连接直播服务成功',
-  //'504': '连接直播服务失败',
+  '504': '连接直播服务失败',
 }
 
 module.exports = { NIMLoginDescrib, NIMAVChatDescrib }

@@ -64,7 +64,7 @@ export function APIRequest(path, json, bToken = false)
     json['auth'] = authStr;
 
     if (LOG_API) {console.log('Start api req: path=' + path + ', json' + JSON.stringify(json));}
-    
+
     fetch(serverURL + path, {
       body:JSON.stringify(json),
       method: 'post',
@@ -72,7 +72,7 @@ export function APIRequest(path, json, bToken = false)
         'Content-Type': 'application/x-www-form-urlencoded',
       }}).then(parseJSON)
       .then((response) => {
-        if (LOG_API) {console.log("API response=" + JSON.stringify(response))}
+        if (LOG_API) {console.log("API req=" + path + ", response=" + JSON.stringify(response))}
 
         if (response.ok) {
           if (response.json.StatusCode === APICode.TokenDisabled) {

@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, Image, Alert } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  Image,
+  Alert,
+  ScrollView,
+  Dimensions
+} from "react-native";
 import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
 import { getRoomHistory } from "../actions";
 import { connect } from "react-redux";
@@ -8,7 +18,7 @@ import ScreenComponent from './ScreenComponent';
 import F8Colors from './F8Colors';
 import { getMachineName } from './../util';
 
-class RoomHistory extends ScreenComponent {
+class RoomHistory extends React.Component {
   props: {
     id: number
   }
@@ -29,6 +39,7 @@ class RoomHistory extends ScreenComponent {
     try {
       await this.setState({bLoading:true});
 
+      console.log("makeRemoteRequest id=" + this.props.id)
       if (this.props.id) {
         this.props.dispatch(getRoomHistory(this.props.id));
       }
@@ -52,28 +63,30 @@ class RoomHistory extends ScreenComponent {
     );
   };
 
-  renderItem = ({item}) => {
+  renderItem = ({item, index}) => {
     return (
       (
         <ListItem
           containerStyle={{borderTopWidth: 0, borderBottomWidth: 0}}
           title={item.account}
-          titleStyle={{color: '#d1d3e8', fontSize: 15}}
+          titleStyle={{color: '#d1d3e8', fontSize: 13}}
           subtitle={"获得" + item.integral + "积分"}
-          subtitleContainerStyle={{color: '#d1d3e8', fontSize: 17}}
+          subtitleStyle={{color: '#d1d3e8', fontSize: 13}}
           rightTitle={
-            "始:" + dateFormat(new Date(item.enterTime * 1000), 'UTC:yyyy/mm/dd HH:MM') + '\n'
-            + "终:" + dateFormat(new Date(item.leaveTime * 1000), 'UTC:yyyy/mm/dd HH:MM')
+            dateFormat(new Date(item.enterTime * 1000), 'UTC:yyyy/mm/dd HH:MM') + '\n'
+             + dateFormat(new Date(item.leaveTime * 1000), 'UTC:yyyy/mm/dd HH:MM')
           }
+          rightTitleStyle={{fontSize:13}}
           rightTitleNumberOfLines={2}
           hideChevron={true}
+          key={index}
           avatar={
             <Avatar
               rounded
               containerStyle={{marginRight:5, marginLeft:5}}
               overlayContainerStyle={{backgroundColor: 'transparent'}}
-              width={20}
-              height={20}
+              // width={20}
+              // height={20}
               source={{uri:item.headUrl}}
             />
           }
@@ -99,9 +112,9 @@ class RoomHistory extends ScreenComponent {
                 renderItem={this.renderItem}
                 keyExtractor={item => item.id}
                 ItemSeparatorComponent={this.renderSeparator}
-                refreshControl={{tintColor:'white'}}
-                onRefresh={this.handleRefresh}
-                refreshing={this.state.bLoading}
+                //refreshControl={{tintColor:'white'}}
+                //onRefresh={this.handleRefresh}
+                //refreshing={this.state.bLoading}
               />
             </View>
           );
@@ -119,6 +132,9 @@ class RoomHistory extends ScreenComponent {
   }
 }
 
+const WIN_WIDTH = Dimensions.get("window").width,
+  WIN_HEIGHT = Dimensions.get("window").height;
+
 /* StyleSheet
 ============================================================================= */
 
@@ -130,20 +146,28 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderBottomWidth: 0,
     borderBottomColor: "#45474D",
-    backgroundColor: F8Colors.mainBgColor,
+    backgroundColor: "transparent",
+  },
+  historyContainer: {
+    height: WIN_HEIGHT,
+    marginTop: 0,
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    borderBottomColor: "#45474D",
+    backgroundColor: "transparent",
   },
   loadingCotainer: {
     flex: 1,
     height: 150,
     justifyContent: 'center',
-    backgroundColor: F8Colors.mainBgColor,
+    backgroundColor: "transparent",
   },
   emptyContainer: {
     width: "100%",
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: F8Colors.mainBgColor,
+    backgroundColor: "transparent",
   }
 });
 

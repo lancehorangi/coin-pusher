@@ -93,7 +93,6 @@ class LaunchScreen extends ScreenComponent {
           caption="登录失效"
           onPress={() => this.test()}
         />
-        <RoomHistory id={1}/>
 
       </ScrollView>
     );

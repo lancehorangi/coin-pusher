@@ -86,7 +86,7 @@ class GameHistoryScreen extends ScreenComponent {
           title={getMachineName(item.machine, true)}
           titleStyle={{color: '#d1d3e8', fontSize: 15}}
           subtitle={"获得" + item.integral + "积分"}
-          subtitleContainerStyle={{color: '#d1d3e8', fontSize: 17}}
+          subtitleStyle={{color: '#d1d3e8', fontSize: 17}}
           rightTitle={
             "始:" + dateFormat(new Date(item.enterTime * 1000), 'UTC:yyyy/mm/dd HH:MM') + '\n'
             + "终:" + dateFormat(new Date(item.leaveTime * 1000), 'UTC:yyyy/mm/dd HH:MM')

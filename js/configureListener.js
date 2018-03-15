@@ -42,11 +42,11 @@ function configureListener(store): void {
     //       autoDismissTimerSec: 1 // auto dismiss notification in seconds
     //     });
     // }
-    toastShow('NIM=' + data.status);
   });
 
   //NIM AVChat 相关事件
   NativeAppEventEmitter.addListener("observeAVChatStatus",(data)=>{
+    toastShow('NIM AV STATUS=' + data);
     if (NIMAVChatDescrib[data]) {
       // Navigation.showInAppNotification({
       //     screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
@@ -58,11 +58,12 @@ function configureListener(store): void {
 
   //NIM AVChat 中断出错
   NativeAppEventEmitter.addListener("observeAVChatError",(data)=>{
-      Navigation.showInAppNotification({
-          screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
-          passProps: {text:NIMAVChatDescrib[data]}, // simple serializable object that will pass as props to the in-app notification (optional)
-          autoDismissTimerSec: 1 // auto dismiss notification in seconds
-        });
+    toastShow('NIM AV ERROR=' + NIMAVChatDescrib[data]);
+      // Navigation.showInAppNotification({
+      //     screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
+      //     passProps: {text:NIMAVChatDescrib[data]}, // simple serializable object that will pass as props to the in-app notification (optional)
+      //     autoDismissTimerSec: 1 // auto dismiss notification in seconds
+      //   });
   });
 }
 

@@ -27,7 +27,7 @@ import { Navigation } from 'react-native-navigation';
 import { APIRequest } from '../api';
 import { STATUS_OK } from '../env';
 import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
-
+import { toastShow } from '../util';
 import type { Action, ThunkAction } from "./types";
 
 async function _roomList(roomType: number) : Promise<Action> {
@@ -58,7 +58,7 @@ function showRoomList(roomType: number): ThunkAction {
   };
 }
 
-async function _enterRoom(roomID: string, meetingName: string) : Promise<Action> {
+async function _enterRoom(roomID: string) : Promise<Action> {
   try {
     let response = await APIRequest('room/enter', {roomid: roomID}, true);
 
@@ -67,7 +67,7 @@ async function _enterRoom(roomID: string, meetingName: string) : Promise<Action>
     }
 
     NimUtils.leaveMeeting();
-    let nimresult = await NimUtils.joinMeeting(meetingName);
+    //let nimresult = await NimUtils.joinMeeting(meetingName);
 
     return response;
   } catch(e) {
@@ -75,9 +75,9 @@ async function _enterRoom(roomID: string, meetingName: string) : Promise<Action>
   };
 }
 
-function enterRoom(roomID: string, meetingName: string): ThunkAction {
+function enterRoom(roomID: string): ThunkAction {
   return (dispatch, getState) => {
-    const response = _enterRoom(roomID, meetingName);
+    const response = _enterRoom(roomID);
     response.then(result => {
       dispatch({
         type: "CURR_ROOM_INFO",
@@ -88,7 +88,25 @@ function enterRoom(roomID: string, meetingName: string): ThunkAction {
   };
 }
 
-async function _leaveRoom( ) : Promise<Action> {
+async function _connectMeeting(meetingName: string) : Promise<Action> {
+  try {
+    NimUtils.leaveMeeting();
+    let nimresult = await NimUtils.joinMeeting(meetingName);
+
+    return nimresult;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function connectMeeting(meetingName: string): ThunkAction {
+  return (dispatch, getState) => {
+    const response = _connectMeeting(meetingName);
+    return response;
+  };
+}
+
+async function _leaveRoom() : Promise<Action> {
   try {
     let response = await APIRequest('room/leave', { }, true);
 
@@ -108,7 +126,7 @@ function leaveRoom(): ThunkAction {
     const response = _leaveRoom();
     response.then(result => {
 
-    }, err => {console.warn('房间失败:' + err.message)});
+    }, err => {console.warn('离开房间失败:' + err.message)});
   };
 }
 
@@ -131,7 +149,9 @@ function pushCoin(): ThunkAction {
     const response = _pushCoin();
     response.then(result => {
 
-    }, err => {Alert.alert(err.message)});
+    }, err => {
+      toastShow('投币失败:' + err.message);
+    });
   };
 }
 
@@ -151,7 +171,7 @@ async function _getRoomHistory(id: number) : Promise<Action> {
 
 function getRoomHistory(id: number) : ThunkAction {
   return (dispatch, getState) => {
-    const response = _pushCoin();
+    const response = _getRoomHistory(id);
     response.then(result => {
       dispatch({
         type: "ROOM_HISTORY_INFO",
@@ -163,4 +183,4 @@ function getRoomHistory(id: number) : ThunkAction {
   };
 }
 
-module.exports = { showRoomList, enterRoom, pushCoin, leaveRoom, getRoomHistory };
+module.exports = { showRoomList, enterRoom, pushCoin, leaveRoom, getRoomHistory, connectMeeting };

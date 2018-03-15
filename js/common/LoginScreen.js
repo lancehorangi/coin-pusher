@@ -107,7 +107,6 @@ class LoginScreen extends React.Component {
               caption="登录"
               onPress={() => this.login()}
             />
-            <RoomHistory id={1}/>
         </View>
 
       </View>

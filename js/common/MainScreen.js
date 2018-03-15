@@ -11,7 +11,7 @@ import { View,
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from "react-redux";
 import { Navigation } from 'react-native-navigation';
-
+import { NimSession } from 'react-native-netease-im';
 import { loggedOut, setNavigator, showRoomList,
   refreshMsgs, getAccountInfo, getCheckinInfo } from './../actions';
 
@@ -176,6 +176,7 @@ export class MainScreen extends React.Component {
   componentDidMount() {
     if(this.props.loggedIn){
       //Alert.alert("MainScreen componentDidMount loggedIn:" + this.props.loggedIn)
+      NimSession.login(this.props.account, this.props.token);
       this.props.dispatch(showRoomList(this.state.index));
       this.props.dispatch(refreshMsgs());
       this.props.dispatch(getAccountInfo());
@@ -282,6 +283,7 @@ const styles = StyleSheet.create({
 
 function select(store) {
   return {
+    account: store.user.account,
     token: store.user.token
   };
 }
