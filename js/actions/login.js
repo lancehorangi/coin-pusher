@@ -32,18 +32,14 @@ import Toast from 'react-native-root-toast';
 import { showRoomList } from './lobby';
 import { refreshMsgs } from './msgs';
 import { getCheckinInfo, checkin } from './checkin';
+import { showModal, showLoginModal, hideLoginModal, dismissModal } from './../navigator';
+import { freshMoney, freshItems } from './user';
 
 async function _logIn(username: string, pwd: string) : Promise<Action> {
   try {
     let response = await APIRequest('account/getToken', {
         account:username, password:pwd
        });
-
-    // Navigation.showInAppNotification({
-    //     screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
-    //     passProps: {text:response.ReasonPhrase}, // simple serializable object that will pass as props to the in-app notification (optional)
-    //     autoDismissTimerSec: 1 // auto dismiss notification in seconds
-    //   });
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -57,9 +53,6 @@ async function _logIn(username: string, pwd: string) : Promise<Action> {
 
 function logIn(account: string, pwd: string, source: ?string): ThunkAction {
   return (dispatch, getState) => {
-    //let name = getState().user.name || "there";
-    //dispatch(logOut())
-
     const response = _logIn(account, pwd);
     response.then(result => dispatch(loggedIn(result.account, result.token)),
       err => {
@@ -89,12 +82,13 @@ function loggedIn(account: string, token: string, source: ?string): ThunkAction 
       console.warn("Netease IM login failed=" + e.message);
     });
 
-    Navigation.dismissModal({
-      animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-    });
+    // Navigation.dismissModal({
+    //   animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+    // });
 
     //Toast.show('登录成功');
-    // 一倍金币场
+
+    hideLoginModal();
 
     dispatch({
       type: "LOGGED_IN",
@@ -107,6 +101,7 @@ function loggedIn(account: string, token: string, source: ?string): ThunkAction 
     dispatch(refreshMsgs());
     dispatch(getAccountInfo());
     dispatch(getCheckinInfo());
+    dispatch(freshItems());
     // return {
     //   type: "LOGGED_IN",
     //   account,
@@ -120,18 +115,20 @@ function loggedOut(): Action {
   configureAPIToken(null);
   NimSession.logout();
 
-  Navigation.dismissAllModals({
-    animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-  });
+  // Navigation.dismissAllModals({
+  //   animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+  // });
 
-  Navigation.showModal({
-    screen: 'CP.LoginScreen', // unique ID registered with Navigation.registerScreen
-    //title: '游戏', // title of the screen as appears in the nav bar (optional)
-    passProps: {}, // simple serializable object that will pass as props to the modal (optional)
-    navigatorStyle: { navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-    navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-    animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
-  });
+  // Navigation.showModal({
+  //   screen: 'CP.LoginScreen', // unique ID registered with Navigation.registerScreen
+  //   //title: '游戏', // title of the screen as appears in the nav bar (optional)
+  //   passProps: {}, // simple serializable object that will pass as props to the modal (optional)
+  //   navigatorStyle: { navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+  //   navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+  //   animationType: 'none' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+  // });
+
+  showLoginModal();
 
   return {
     type: "LOGGED_OUT"
@@ -185,7 +182,8 @@ function getAccountInfo(): ThunkAction {
   return (dispatch, getState) => {
     const response = _getAccountInfo();
 
-    response.then(result => dispatch({
+    response.then(result => {
+      dispatch({
       type: 'ACCOUNT_INFO',
       nickName: result.nickName,
       roomID: result.roomID,
@@ -194,7 +192,20 @@ function getAccountInfo(): ThunkAction {
       gold: result.gold,
       integral: result.integral,
       entityID: result.entityID,
-    }),
+      headUrl: result.url,
+    });
+
+    if (result.roomID != 0) {
+      showModal({
+        screen: 'CP.GameScreen', // unique ID registered with Navigation.registerScreen
+        title: '游戏', // title of the screen as appears in the nav bar (optional)
+        passProps: {roomID:result.roomID}, // simple serializable object that will pass as props to the modal (optional)
+        navigatorStyle: { navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+        navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+        animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+      });
+    }
+  },
       err => {
         console.log('getAccountInfo err:' + err.message);
     });

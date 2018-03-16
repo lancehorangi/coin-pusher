@@ -6,6 +6,7 @@ import { APIRequest, configureAPIToken } from '../api';
 import { STATUS_OK } from '../env';
 import type { Action, ThunkAction } from "./types";
 import { toastShow } from './../util';
+import { freshMoney, freshItems } from './user';
 
 async function _getChargeList(): Promise<Action> {
   try {
@@ -69,4 +70,36 @@ function getMarketList(): ThunkAction {
   }
 }
 
-module.exports = { getChargeList, getMarketList };
+async function _mallBuy(id: number): Promise<Action> {
+  try {
+    let response = await APIRequest('market/buy', {type:'2', id}, true);
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function mallBuy(id: number): ThunkAction {
+  return (dispatch, getState) => {
+    let response = _mallBuy(id);
+
+    response.then( result => {
+      dispatch(freshMoney());
+      dispatch(freshItems());
+      toastShow('购买成功!')
+    },
+    err => {
+      console.log('mallBuy failed reason=' + err.message);
+      toastShow('购买失败:' + err.message)
+    });
+
+    return response;
+  }
+}
+
+module.exports = { getChargeList, getMarketList, mallBuy };

@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from "react-native";
 
 import { connect } from "react-redux";
@@ -70,6 +71,7 @@ class SignScreen extends ScreenComponent {
     super(props);
 
     this.state = {
+      bLoading:true
     };
   }
 
@@ -80,7 +82,19 @@ class SignScreen extends ScreenComponent {
   };
 
   RNNDidAppear = () => {
-    this.props.dispatch(getCheckinInfo());
+    this.initInfo();
+  }
+
+  async initInfo(){
+    await this.setState({bLoading:true});
+
+    try {
+      let result = await this.props.dispatch(getCheckinInfo());
+    } catch (e) {
+
+    } finally {
+      this.setState({bLoading:false});
+    }
   }
 
   componentDidMount() {
@@ -146,7 +160,7 @@ class SignScreen extends ScreenComponent {
 
   getItemText(num, leftDays, type) {
     let text = '';
-    text += '每日奖励:' + num + '积分';
+    text += '每日奖励:' + num + '钻石';
 
     if(leftDays != 0) {
       text += '\n 有效期:' + leftDays + '天';
@@ -179,11 +193,20 @@ class SignScreen extends ScreenComponent {
   }
 
   render() {
-    return (
-      <ScrollView style={styles.container}>
-          {this.renderContent()}
-      </ScrollView>
-    );
+    if (this.state.bLoading) {
+      return (
+        <View style={[styles.loadingCotainer]}>
+            <ActivityIndicator animating size="large" color='white'/>
+        </View>
+      );
+    }
+    else {
+      return (
+        <ScrollView style={styles.container}>
+            {this.renderContent()}
+        </ScrollView>
+      );
+    }
   }
 }
 
@@ -218,6 +241,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#ee4943",
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  loadingCotainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: F8Colors.mainBgColor,
   }
 });
 

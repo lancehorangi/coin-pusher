@@ -20,12 +20,14 @@ import {
 import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 import { serverURL } from '../env';
 import { APIRequest } from '../api';
-import { logIn, showRoomList, enterRoom, pushCoin, leaveRoom, connectMeeting } from '../actions'
+import { enterRoom, pushCoin, leaveRoom, connectMeeting, heartRequest } from '../actions'
 import { Navigation } from 'react-native-navigation';
 import ScreenComponent from './ScreenComponent';
+import MoneyLabel from './MoneyLabel';
 import { isIphoneX, toastShow, getMachineName } from './../util';
 import { Button } from "react-native-elements";
 import RoomHistory from './RoomHistory';
+import { showModal, showLoginModal, hideLoginModal, dismissModal } from './../navigator';
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -65,34 +67,44 @@ class GameScreen extends ScreenComponent {
   }
 
   RNNDidAppear = () => {
-
+    this._isMounted = true;
+    this.reqEnterRoom();
   }
 
   RNNWillDisappear = () => {
-
+    this._isMounted = false;
+    clearInterval(this.updateLoop);
+    clearInterval(this.heartLoop);
+    this.setState({autoPlay:false})
+    NimUtils.leaveMeeting();
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
     clearInterval(this.updateLoop);
+    clearInterval(this.heartLoop);
   }
 
   componentDidMount() {
     this._isMounted = true;
-
-    this.reqEnterRoom();
+    //this.reqEnterRoom();
   }
 
   async reqEnterRoom() {
     await this.setState({ bLoading:true });
-    let { roomID } = this.props;
+    let { roomID, account, token } = this.props;
 
     try {
       let result = await this.props.dispatch(enterRoom(roomID));
 
       if (result.info.entityID === this.props.entityID) {
+        await NimSession.login(account, token);
         await this.props.dispatch(connectMeeting(result.info.nimName));
         await this.setState({bPlaying:true});
+
+        clearInterval(this.heartLoop);
+        this.heartLoop = setInterval( _ => {
+          this.props.dispatch(heartRequest());
+        }, 1000);
       }
       else {
         Alert.alert("房间已有玩家\n请稍后再试");
@@ -102,9 +114,6 @@ class GameScreen extends ScreenComponent {
     } catch (e) {
       toastShow("进入房间失败:" + e.message);
       Alert.alert("进入房间失败:" + e.message);
-      // Navigation.dismissAllModals({
-      //   animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-      // });
     } finally {
 
     }
@@ -127,9 +136,10 @@ class GameScreen extends ScreenComponent {
 
   onPress = _ => {
     this.props.dispatch(leaveRoom());
-    Navigation.dismissModal({
-      animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-    });
+    // Navigation.dismissModal({
+    //   animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+    // });
+    dismissModal();
   }
 
   onPressIAP = () => {
@@ -155,7 +165,7 @@ class GameScreen extends ScreenComponent {
           style={styles.closeBtn}
         >
           <Image
-            source={require("../common/img/buttons/icon-x.png")}
+            source={require("../common/img/close.png")}
             resizeMode={"stretch"}/>
         </TouchableOpacity>
         <Text
@@ -225,20 +235,23 @@ class GameScreen extends ScreenComponent {
             position: 'absolute',
             right: 10,
             justifyContent:'center',
-            alignItems:'flex-end'
+            alignItems:'flex-end',
+            paddingVertical: 5,
           }}>
-            <Button
-              title={this.props.gold}
-              titleStyle={{color:"red", fontSize:15}}
-              buttonStyle={{backgroundColor:"red", borderRadius:20}}
-              onPress={this.onPressIAP}
-              />
 
-            <Button
-              title={this.props.integral}
-              titleStyle={{color:"white", fontSize:15}}
-              buttonStyle={{backgroundColor:"red", borderRadius:20}}
-            />
+              <MoneyLabel
+                containerStyle={{width:100}}
+                type={'gold'}
+                count={this.props.gold}
+                withBtn={true}
+                onPressBuy={this.onPressIAP}/>
+
+              <MoneyLabel
+                containerStyle={{marginTop:5, width:100}}
+                type={'integral'}
+                count={this.props.integral}
+                withBtn={false}/>
+
           </View>
         </View>
       )
@@ -262,19 +275,19 @@ class GameScreen extends ScreenComponent {
   }
 
   render() {
-    return (
-      <ScrollView
-        style={[styles.container]}
-        //bounces={false}
-        >
-          <View style={{width:'100%', backgroundColor: F8Colors.mainBgColor2,
-          height: isIphoneX() ? IPHONE_X_HEAD : 0}}/>
-          {this.renderHeader()}
-          {this.renderContent()}
-          {this.renderBottom()}
-          {this.renderHistory()}
-      </ScrollView>
-    );
+      return (
+        <ScrollView
+          style={[styles.container]}
+          //bounces={false}
+          >
+            <View style={{width:'100%', backgroundColor: F8Colors.mainBgColor2,
+            height: isIphoneX() ? IPHONE_X_HEAD : 0}}/>
+            {this.renderHeader()}
+            {this.renderContent()}
+            {this.renderBottom()}
+            {this.renderHistory()}
+        </ScrollView>
+      );
   }
 }
 

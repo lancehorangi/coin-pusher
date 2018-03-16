@@ -28,6 +28,7 @@ import { APIRequest } from '../api';
 import { STATUS_OK } from '../env';
 import { NimUtils, NTESGLView, NimSession } from 'react-native-netease-im';
 import { toastShow } from '../util';
+import { heartRequest } from './user';
 import type { Action, ThunkAction } from "./types";
 
 async function _roomList(roomType: number) : Promise<Action> {
@@ -51,6 +52,7 @@ function showRoomList(roomType: number): ThunkAction {
     response.then(result => dispatch({
       type: "ROOM_LIST",
       list: result.list,
+      baseCost: result.baseCoins,
       roomType: roomType
     }), err => {
       console.warn("showRoomList failed=" + err.message);
@@ -125,7 +127,7 @@ function leaveRoom(): ThunkAction {
   return (dispatch, getState) => {
     const response = _leaveRoom();
     response.then(result => {
-
+      dispatch(heartRequest());
     }, err => {console.warn('离开房间失败:' + err.message)});
   };
 }

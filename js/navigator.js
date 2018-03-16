@@ -1,41 +1,114 @@
 import { Navigation } from 'react-native-navigation';
 
 let _modalArray = [];
-let _lastShowTime = 0;
+let _lastActTime = 0;
 
-export function showModal(
-                  screen: string,
-                  title: string,
-                  passProps: Object,
-                  navigatorStyle: Object)
+let _bShowLoginModal = false;
+const DelayTime = 100;
+
+function _RealShowLoginModal() {
+  _lastActTime = Date.now();
+  Navigation.showModal({
+    screen: 'CP.LoginScreen', // unique ID registered with Navigation.registerScreen
+    //title: '游戏', // title of the screen as appears in the nav bar (optional)
+    passProps: {}, // simple serializable object that will pass as props to the modal (optional)
+    navigatorStyle: { navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+    navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+    animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+  });
+}
+
+export function showLoginModal() {
+  if (_bShowLoginModal) {
+    return;
+  }
+
+  _modalArray = [];
+  let diff = Date.now() - _lastActTime;
+  if (diff > DelayTime) {
+    _lastActTime = Date.now();
+    _RealShowLoginModal();
+  }
+  else {
+    setTimeout(_RealShowLoginModal, DelayTime - diff);
+  }
+
+  _bShowLoginModal = true;
+}
+
+export function hideLoginModal() {
+  _bShowLoginModal = false;
+  _lastActTime = Date.now();
+
+  Navigation.dismissAllModals();
+}
+
+
+export function showModal(screenInfo)
+                  // screen: string,
+                  // title: string,
+                  // passProps: Object,
+                  // navigatorStyle: Object)
 {
-    var found = _modalArray.find(function(element) {
-      return element === screen;
-    });
+    if (_bShowLoginModal) {
+      return;
+    }
 
-    if (!found) {
-      _lastShowTime = Date.now();
-      _modalArray.push(screen);
-      Navigation.showModal({
-        screen,
-        title,
-        passProps,
-        navigatorStyle,
-        navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-        animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
-      });
+    let diff = Date.now() - _lastActTime;
+
+    if (diff > DelayTime) {
+      _lastActTime = Date.now();
+      Navigation.showModal(
+        screenInfo
+      );
+    }
+    else {
+      _modalArray.push(screenInfo)
+
+      if (_modalArray.length == 1) {
+        setTimeout(doNext, DelayTime - diff);
+      }
     }
 }
 
 export function dismissModal() {
+  if (_bShowLoginModal) {
+    return;
+  }
+
+  let diff = Date.now() - _lastActTime;
+
+  if (diff > DelayTime) {
+    _lastActTime = Date.now();
+    Navigation.dismissAllModals();
+  }
+  else {
+    _modalArray.push({dismiss:true})
+
+    if (_modalArray.length == 1) {
+      setTimeout(doNext, DelayTime - diff + 100);
+    }
+  }
+}
+
+function doNext() {
+  if (_modalArray.length == 0) {
+    return;
+  }
+
+  let screenInfo = _modalArray.shift();
+
+  _lastActTime = Date.now();
+  if (screenInfo.dismiss) {
+    Navigation.dismissAllModals();
+  }
+  else {
+    Navigation.showModal(
+      screenInfo
+    );
+  }
+
   if (_modalArray.length > 0) {
-    let diff = Date.now() - _lastShowTime;
-    if (diff > 1500) {
-      Navigation.dismissAllModals();
-      _modalArray = [];
-    }
-    else {
-      setTimeout(dismissModal, 1500 - diff + 100);
-    }
+    setTimeout(doNext, DelayTime);
   }
 }

@@ -6,6 +6,7 @@ import { APIRequest, configureAPIToken } from '../api';
 import { STATUS_OK } from '../env';
 import type { Action, ThunkAction } from "./types";
 import { toastShow } from './../util';
+import { freshMoney, freshItems } from './user';
 
 async function _getCheckinInfo() : Promise<Action> {
   try {
@@ -24,6 +25,7 @@ async function _getCheckinInfo() : Promise<Action> {
 function getCheckinInfo(): ThunkAction {
   return (dispatch, getState) => {
     const response = _getCheckinInfo();
+
     response.then(result => dispatch({
       type: "CHECKIN_INFO",
       checkinInfo: result.checkinList,
@@ -31,6 +33,8 @@ function getCheckinInfo(): ThunkAction {
       err => {
         console.log('getCheckinInfo failed reason=' + err.message);
       });
+
+    return response;
   };
 }
 
@@ -53,6 +57,8 @@ function checkin(type: number): ThunkAction {
     const response = _checkin(type);
     response.then(result => {
       toastShow('签到成功');
+      dispatch(freshMoney());
+      dispatch(freshItems());
       dispatch({
         type: "CHECKIN_INFO",
         checkinInfo: result.checkinList,
@@ -62,6 +68,8 @@ function checkin(type: number): ThunkAction {
         toastShow('签到失败(' + err.message + ')');
         console.log('getCheckinInfo failed reason=' + err.message);
       });
+
+    return response;
   };
 }
 

@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { List, ListItem, SearchBar, Button, Avatar } from "react-native-elements";
 import { refreshMsgs, setNavigator } from "../actions";
 import { connect } from "react-redux";
@@ -9,6 +18,9 @@ import F8Colors from './F8Colors';
 import { isIphoneX } from './../util';
 
 const IPHONE_X_HEAD = 30;
+
+const WEEK_CARD = 101;
+const MONTH_CARD = 102;
 
 class MineScreen extends ScreenComponent {
   constructor(props) {
@@ -31,21 +43,57 @@ class MineScreen extends ScreenComponent {
     return
   }
 
+  getCardDesc = () => {
+    let { items } = this.props;
+
+    let desc = '无卡';
+
+    // const WEEK_CARD = 2;
+    // const MONTH_CARD = 3;
+
+    if (items) {
+      let _weekCard = false;
+
+      if(items.find(function(element) {
+        return element.id == WEEK_CARD;
+      })){
+        _weekCard = true;
+        desc = '周卡';
+      }
+
+      if(items.find(function(element) {
+        return element.id == MONTH_CARD;
+      })){
+        if (_weekCard) {
+          desc += '/月卡';
+        }
+        else {
+          desc = '月卡';
+        }
+      }
+    }
+
+    return desc;
+  }
+
   renderHead = () => {
     return (
       <View style={styles.header}>
         <Avatar
           large
           rounded
-          icon={{name: 'history', color: 'white'}}
-          overlayContainerStyle={{backgroundColor: 'grey'}}
+          //icon={{name: 'history', color: 'white'}}
+          source={{uri:this.props.headUrl}}
+          //overlayContainerStyle={{backgroundColor: 'grey'}}
           activeOpacity={0.7}
           containerStyle={{width:80, marginTop: 20, marginLeft:20}}
           />
-        <View style={{flex:0, marginLeft: 10, marginTop:20}}>
-            <Text style={{color:'white', marginLeft:10, fontSize:20}}> {"昵称:" + this.props.nickName} </Text>
-            <Text style={{color:'white', marginLeft:10, marginTop:5, fontSize:15}}> {"ID:" + this.props.account}  </Text>
-            <Text style={{color:'white', marginLeft:10, marginTop:5,fontSize:15}}> {"卡"}  </Text>
+        <View style={{flex:0, marginLeft: 10, marginTop:20, alignItems:'flex-start'}}>
+            <Text style={{color:'white', marginLeft:10, fontSize:20}}> {"" + this.props.nickName} </Text>
+            <Text style={{color:'white', marginLeft:10, marginTop:5, fontSize:15}}> {"id:" + this.props.account}  </Text>
+            <Text style={{color:'white', marginLeft:10, marginTop:5, fontSize:15}}>
+             {this.getCardDesc()}
+            </Text>
         </View>
       </View>
     )
@@ -54,9 +102,20 @@ class MineScreen extends ScreenComponent {
   renderCurr = () => {
     return (
       <View style={styles.currContainer}>
-        <Text style={{color:'white', fontSize:15, marginLeft: 10}}>
-          {"钻石:" + this.props.diamond}
-        </Text>
+        <View style={{flexDirection: "row", alignContent:'center'}}>
+          <Text style={{color:'white', fontSize:15, marginLeft: 10}}>
+            {"钻石:" + this.props.diamond}
+          </Text>
+          <TouchableOpacity
+            style={{justifyContent:'center', alignContent:'center', marginLeft:3}}
+            onPress={this.pressBuy}
+          >
+            <Image
+              source={require('./img/add.png')}
+              style={{width:20, height:20}}
+              />
+          </TouchableOpacity>
+        </View>
         <Text style={{color:'white', fontSize:15, marginRight: 10}}>
           {"积分:" + this.props.integral}
         </Text>
@@ -67,22 +126,22 @@ class MineScreen extends ScreenComponent {
   BTN_LIST = [
     {
       title: '消息记录',
-      icon: 'history',
+      icon: require('./img/message.png'),
       onPress: () => {this.pressMsgHistory()}
     },
     {
       title: '游戏历史',
-      icon: 'history',
+      icon: require('./img/histery.png'),
       onPress: () => {this.pressGameHistory()}
     },
     {
       title: '意见反馈',
-      icon: 'feedback',
+      icon: require('./img/us.png'),
       onPress: () => {this.pressFeeback()}
     },
     {
       title: '设置',
-      icon: 'settings',
+      icon: require('./img/set.png'),
       onPress: () => {this.pressOption()}
     },
   ]
@@ -95,7 +154,10 @@ class MineScreen extends ScreenComponent {
   }
 
   pressFeeback = () => {
-
+    this.props.navigator.push({
+      screen: 'CP.FeedbackScreen', // unique ID registered with Navigation.registerScreen
+      title: "意见反馈",
+    });
   }
 
   pressGameHistory = () => {
@@ -112,6 +174,13 @@ class MineScreen extends ScreenComponent {
     });
   }
 
+  pressBuy = () => {
+    this.props.navigator.push({
+      screen: 'CP.IAPScreen', // unique ID registered with Navigation.registerScreen
+      title: "商城",
+    });
+  }
+
   renderBtn = () => {
     return (
       <List containerStyle={styles.listContainer}>
@@ -122,7 +191,11 @@ class MineScreen extends ScreenComponent {
             titleStyle={{color: '#d1d3e8', fontSize: 15}}
             key={i}
             title={item.title}
-            leftIcon={{name: item.icon}}
+            leftIcon={
+              <Image
+              style={{width:25, height:25, marginRight:5, marginLeft:5}}
+              source={item.icon}/>
+            }
             onPress={() => item.onPress(item)}
           />
         ))
@@ -189,6 +262,9 @@ function select(store) {
     nickName: store.user.nickName,
     diamond: store.user.diamond,
     integral: store.user.integral,
+    //checkinInfo: store.user.checkinInfo,
+    headUrl: store.user.headUrl,
+    items: store.user.items,
   };
 }
 

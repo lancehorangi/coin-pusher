@@ -10,6 +10,9 @@ import { HeaderTitle, Text } from "./F8Text";
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 
+const THUMB_WIDTH = (WIN_WIDTH - 50) / 2;
+const THUMB_HEIGHT = THUMB_WIDTH / 3 * 4;
+
 class RoomList extends Component {
     props: {
       dispatch: (action: any) => Promise,
@@ -38,7 +41,9 @@ class RoomList extends Component {
 
       if (!roomList || roomList.length == 0) {
         return (
+          <View style={{width:"100%", height:"100%", justifyContent:'center', alignContent:'center'}}>
           <ActivityIndicator style={{alignSelf:'center', marginTop: 100}} animating size="large" color='white'/>
+          </View>
         )
       }
 
@@ -48,6 +53,13 @@ class RoomList extends Component {
             roomID={room.roomID}
             meetingName={room.nimName}
             key={room.roomID}
+            integralRate={room.integralRate}
+            currCost={room.coins}
+            baseCost={this.props.baseCost}
+            bPlaying={room.entityID !== 0}
+            queueList={room.queueList}
+            style={{width:THUMB_WIDTH, height:THUMB_HEIGHT, marginLeft:10}}
+            picUrl={room.roomSnapshoot}
             />
         );
       });
@@ -65,12 +77,13 @@ class RoomList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
         //alignItems: 'flex-start',
         //alignContent: 'space-around',
         flexWrap: 'wrap',
         flexDirection: 'row',
-        backgroundColor: F8Colors.mainBgColor
+        backgroundColor: F8Colors.mainBgColor,
+        paddingHorizontal: 10,
     },
     bg: {
       position: "absolute",
@@ -85,7 +98,8 @@ const styles = StyleSheet.create({
 function select(store) {
   return {
     roomType: store.lobby.roomType,
-    roomList: store.lobby.list
+    roomList: store.lobby.list,
+    baseCost: store.lobby.baseCost,
   };
 }
 

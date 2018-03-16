@@ -36,7 +36,8 @@ function lobby(state: State = {}, action: Action): State {
     return {
       ...state,
       list: action.list,
-      roomType: action.roomType
+      roomType: action.roomType,
+      baseCost: action.baseCost,
     };
   }
 

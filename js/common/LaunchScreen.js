@@ -91,7 +91,7 @@ class LaunchScreen extends ScreenComponent {
           theme="bordered"
           type="default"
           caption="登录失效"
-          onPress={() => this.test()}
+          onPress={() => this.logout()}
         />
 
       </ScrollView>
@@ -158,14 +158,12 @@ class LaunchScreen extends ScreenComponent {
     let v = await NimUtils.leaveMeeting();
   }
 
-  async logout()
+  logout()
   {
-    try {
-        let response = await APIRequest('test', { });
-
-    } catch(e) {
-      Alert.alert(e.message);
-    };
+    APIRequest('test', { });
+    APIRequest('test', { });
+    APIRequest('test', { });
+    APIRequest('test', { });
   }
 
   async test() {

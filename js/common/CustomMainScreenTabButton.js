@@ -1,8 +1,17 @@
-import { View, Image, StyleSheet, Dimensions, Text, TouchableOpacity, Alert} from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+  Alert
+} from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getStore } from '../configureListener';
+import MoneyLabel from './MoneyLabel';
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -53,22 +62,37 @@ class CustomMainScreenTabButton extends Component {
     }
 
     render () {
+        // return (
+        //   <TouchableOpacity
+        //     style={[styles.button]}
+        //     onPress={this.onPress}
+        //   >
+        //     <View style={styles.button}>
+        //       <Image
+        //         source={require('./img/header/add.png')}
+        //         style={styles.img}
+        //         />
+        //       <Text style={styles.label}>
+        //         {this.state.diamond}
+        //       </Text>
+        //     </View>
+        //   </TouchableOpacity>
+        // );
+        // let diamond = 0;
+        //
+        // if (this.state && this.state.diamond) {
+        //   diamond = this.state.diamond;
+        // }
+
+        let {diamond} = this.state;
+
         return (
-          <TouchableOpacity
-            style={[styles.button]}
-            onPress={this.onPress}
-          >
-            <View style={styles.button}>
-              <Image
-                source={require('./img/header/add.png')}
-                style={styles.img}
-                />
-              <Text style={styles.label}>
-                {this.state.diamond}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        );
+          <MoneyLabel
+            type={'diamond'}
+            count={diamond}
+            withBtn={true}
+            onPressBuy={this.onPress}/>
+        )
     }
 }
 

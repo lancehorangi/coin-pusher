@@ -39,6 +39,7 @@ export type State = {
   source: ?string,
   checkinInfo: ?Array<Object>,
   accountGameHistory: ?Array<Object>,
+  items: ?Array<Object>,
 };
 
 const initialState = {
@@ -52,6 +53,7 @@ const initialState = {
   source: null,
   checkinInfo: null,
   accountGameHistory: null,
+  items: null,
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -82,6 +84,7 @@ function user(state: State = initialState, action: Action): State {
       gold: action.gold,
       integral: action.integral,
       entityID: action.entityID,
+      headUrl: action.headUrl,
     }
   }
 
@@ -96,6 +99,30 @@ function user(state: State = initialState, action: Action): State {
     return {
       ...state,
       accountGameHistory: action.accountGameHistory,
+    }
+  }
+
+  if (action.type === "TICK_INFO") {
+    return {
+      ...state,
+      gold: action.gold,
+      integral: action.integral,
+    }
+  }
+
+  if (action.type === "ACCOUNT_UPDATE_MONEY") {
+    return {
+      ...state,
+      gold: action.gold,
+      integral: action.integral,
+      diamond: action.diamond,
+    }
+  }
+
+  if (action.type === "ACCOUNT_UPDATE_ITEMS") {
+    return {
+      ...state,
+      items: action.items,
     }
   }
 

@@ -57,4 +57,88 @@ function getAccountHistory(): ThunkAction {
   };
 }
 
-module.exports = { getAccountHistory };
+async function _heartRequest() {
+  try {
+    let response = await APIRequest('account/heart', {}, true);
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function heartRequest(): ThunkAction {
+  return (dispatch, getState) => {
+    let responese = _heartRequest();
+    responese.then( result => dispatch({
+      type: "TICK_INFO",
+      gold: result.gold,
+      integral: result.integral,
+    }),
+    err => {
+      console.warn('heartRequest failed reason=' + err.message);
+    });
+  }
+}
+
+async function _freshMoney() {
+  try {
+    let response = await APIRequest('account/moneyInfo', {}, true);
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function freshMoney(): ThunkAction {
+  return (dispatch, getState) => {
+    let responese = _freshMoney();
+    responese.then( result => dispatch({
+      type: "ACCOUNT_UPDATE_MONEY",
+      gold: result.gold,
+      integral: result.integral,
+      diamond: result.diamond,
+    }),
+    err => {
+      console.warn('moneyFresh failed reason=' + err.message);
+    });
+  }
+}
+
+async function _freshItems() {
+  try {
+    let response = await APIRequest('account/bagInfo', {}, true);
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function freshItems(): ThunkAction {
+  return (dispatch, getState) => {
+    let responese = _freshItems();
+    responese.then( result => dispatch({
+      type: "ACCOUNT_UPDATE_ITEMS",
+      items: result.bag,
+    }),
+    err => {
+      console.warn('freshItems failed reason=' + err.message);
+    });
+  }
+}
+
+module.exports = { getAccountHistory, heartRequest, freshMoney, freshItems };

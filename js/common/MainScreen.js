@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { Navigation } from 'react-native-navigation';
 import { NimSession } from 'react-native-netease-im';
 import { loggedOut, setNavigator, showRoomList,
-  refreshMsgs, getAccountInfo, getCheckinInfo } from './../actions';
+  refreshMsgs, getAccountInfo, getCheckinInfo, freshItems, freshMoney } from './../actions';
 
 import { toastShow } from './../util';
 import LaunchScreen from './LaunchScreen';
@@ -88,6 +88,8 @@ export class MainScreen extends React.Component {
        break;
       case 'didAppear':
         this.props.dispatch(setNavigator(this.props.navigator));
+        this.props.dispatch(freshMoney());
+        this.props.dispatch(freshItems());
         break;
       case 'willDisappear':
         break;
@@ -173,14 +175,28 @@ export class MainScreen extends React.Component {
     )
   }
 
-  componentDidMount() {
-    if(this.props.loggedIn){
-      //Alert.alert("MainScreen componentDidMount loggedIn:" + this.props.loggedIn)
-      NimSession.login(this.props.account, this.props.token);
+  async initInfo() {
+    try {
+      await NimSession.login(this.props.account, this.props.token);
       this.props.dispatch(showRoomList(this.state.index));
       this.props.dispatch(refreshMsgs());
       this.props.dispatch(getAccountInfo());
       this.props.dispatch(getCheckinInfo());
+      this.props.dispatch(freshItems());
+
+    } catch (e) {
+      Alert.alert("account:" + this.props.account + ', token:' + this.props.token + ', err=' + e.message);
+    } finally {
+
+    }
+
+  }
+
+  componentDidMount() {
+    if(this.props.loggedIn){
+      this.initInfo();
+      //Alert.alert("MainScreen componentDidMount loggedIn:" + this.props.loggedIn)
+
     }
     else {
       this.props.dispatch(loggedOut());

@@ -37,6 +37,7 @@ export type Action =
       type: "ROOM_LIST",
       list: Array<Object>,
       roomType: number,
+      baseCost: number,
     }
   | {
       type: "CLEAR_ROOM_LIST",
@@ -51,6 +52,17 @@ export type Action =
       gold: number,
       integral: number,
       entityID: number,
+      headUrl: string,
+    }
+  | {
+      type: "ACCOUNT_UPDATE_MONEY",
+      gold: number,
+      intergral: number,
+      diamond: number,
+    }
+  | {
+      type: "ACCOUNT_UPDATE_ITEMS",
+      items: Array<Object>,
     }
   | {
       type: "CHECKIN_INFO",
@@ -91,6 +103,11 @@ export type Action =
   | {
       type: "ROOM_HISTORY_INFO",
       roomGameHistory: Object,
+    }
+  | {
+      type: "TICK_INFO",
+      gold: number,
+      integral: number,
     }
 ;
 

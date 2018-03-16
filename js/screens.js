@@ -14,6 +14,7 @@ import MallScreen from './common/MallScreen';
 import SignScreen from './common/SignScreen';
 import OptionScreen from './common/OptionScreen';
 import GameHistoryScreen from './common/GameHistoryScreen';
+import FeedbackScreen from './common/FeedbackScreen';
 
 // register all screens of the app (including internal ones)
 export default (store, Provider) => {
@@ -29,6 +30,7 @@ export default (store, Provider) => {
   Navigation.registerComponent('CP.SignScreen', () => SignScreen, store, Provider);
   Navigation.registerComponent('CP.OptionScreen', () => OptionScreen, store, Provider);
   Navigation.registerComponent('CP.GameHistoryScreen', () => GameHistoryScreen, store, Provider);
+  Navigation.registerComponent('CP.FeedbackScreen', () => FeedbackScreen, store, Provider);
   Navigation.registerComponent('CP.Notification', () => Notification);
 
   Navigation.registerComponent('CP.Sub.RoomThumbnail', () => RoomThumbnail);

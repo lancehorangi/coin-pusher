@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { List, ListItem, SearchBar, Button, Avatar } from "react-native-elements";
-import { getChargeList } from "../actions";
+import { getChargeList, mallBuy } from "../actions";
 import { connect } from "react-redux";
 import dateFormat from 'dateformat';
 import ScreenComponent from './ScreenComponent';
@@ -85,18 +86,6 @@ const NormalCardItem = ({ text, price, unit, describ, describ2, onPress, bgColor
       </View>
     </TouchableOpacity>;
 
-const CardItem = ({ text }) =>
-  <TouchableOpacity
-    style={[styles.button, { backgroundColor: 'tomato' }]}
-    onPress={() => console.log('pressed me!')}
-  >
-    <View style={styles.button}>
-      <Text style={{ color: 'white' }}>
-        {text}
-      </Text>
-    </View>
-  </TouchableOpacity>;
-
 const WEEK_CARD = 101;
 const MONTH_CARD = 102;
 
@@ -122,7 +111,8 @@ class IAPScreen extends ScreenComponent {
   }
 
   onPress = (id) => {
-    Alert.alert('iap buy:' + id);
+    //Alert.alert('iap buy:' + id);
+    this.props.dispatch(mallBuy(id));
   }
 
   renderContent = () => {
