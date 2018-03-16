@@ -20,12 +20,15 @@ import ScreenComponent from './ScreenComponent';
 class MsgDetailScreen extends ScreenComponent {
   props:{
     mail: ?Object,
+    mailID: number,
   }
 
   constructor(props) {
     super(props);
-    this.props.mailID = null;
+    //this.props.mailID = null;
+
     this.state = {
+      bLoading:true,
     };
   }
 
@@ -37,7 +40,20 @@ class MsgDetailScreen extends ScreenComponent {
 
   componentDidMount() {
     if (this.props.mailID) {
-      this.props.dispatch(openMsg(this.props.mailID));
+      //this.props.dispatch(openMsg(this.props.mailID));
+      this.initInfo();
+    }
+  }
+
+  async initInfo() {
+    this.setState({bLoading:true});
+
+    try {
+      let result = await this.props.dispatch(openMsg(this.props.mailID));
+    } catch (e) {
+
+    } finally {
+      this.setState({bLoading:false});
     }
   }
 
@@ -65,7 +81,7 @@ class MsgDetailScreen extends ScreenComponent {
                   height: 60,
                   resizeMode: "stretch"
                 }}/>
-              <Text style={{color:'#d1d3e8', width:'100%'}} textAlign='center'>
+              <Text style={{color:'#d1d3e8', width:'100%'}}>
                 {item.name + ' X ' + item.num}
               </Text>
             </View>
@@ -144,23 +160,34 @@ class MsgDetailScreen extends ScreenComponent {
   }
 
   render() {
-    let { mail } = this.props;
-    if (mail) {
-      return (
-        <ScrollView style={[styles.container]}>
-            {this.renderHeader()}
-            {this.renderContent()}
-            {this.renderItem()}
-            {this.renderBtn()}
-        </ScrollView>
-      );
-    }
-    else {
+    if (this.state.bLoading) {
       return (
         <View style={[styles.loadingCotainer]}>
             <ActivityIndicator animating size="large" color='white'/>
         </View>
       );
+    }
+    else {
+      let { mail } = this.props;
+      if (mail) {
+        return (
+          <ScrollView style={[styles.container]}>
+              {this.renderHeader()}
+              {this.renderContent()}
+              {this.renderItem()}
+              {this.renderBtn()}
+          </ScrollView>
+        );
+      }
+      else {
+        return (
+          <View style={[styles.loadingCotainer]}>
+              <Text style={{color:'white', fontSize:15}}>
+                无
+              </Text>
+          </View>
+        );
+      }
     }
   }
 }
@@ -196,7 +223,9 @@ const styles = StyleSheet.create({
   itemContainer: {
     flex: 0,
     justifyContent: "center",
-    width: 80,
+    alignItems: "center",
+    alignContent: "center",
+    //width: 80,
   },
   loadingCotainer: {
     flex: 1,

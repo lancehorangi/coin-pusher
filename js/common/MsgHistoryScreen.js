@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, Image, Alert } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  Image,
+  Alert,
+} from "react-native";
 import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
 import { refreshMsgs, setNavigator } from "../actions";
 import { connect } from "react-redux";
@@ -11,11 +19,13 @@ class MsgHistoryScreen extends ScreenComponent {
   constructor(props) {
     super(props);
 
-    props.bLoading=false;
+    //props.bLoading=false;
 
     this.state = {
       page: 1,
-      error: null
+      error: null,
+      bRefreshing:true,
+      bLoading:false,
     };
   }
 
@@ -33,9 +43,15 @@ class MsgHistoryScreen extends ScreenComponent {
     //this.makeRemoteRequest();
   }
 
-  makeRemoteRequest = () => {
-    if( this.props.bLoading !== true){
-        this.props.dispatch(refreshMsgs());
+  makeRemoteRequest = async () => {
+    this.setState({bRefreshing:true})
+
+    try {
+      let response = await this.props.dispatch(refreshMsgs());
+    } catch (e) {
+
+    } finally {
+      this.setState({bRefreshing:false})
     }
   };
 
@@ -141,23 +157,32 @@ class MsgHistoryScreen extends ScreenComponent {
   }
 
   render() {
-    return (
-      <List containerStyle={styles.container}>
-        <FlatList
-          data={this.props.msgs}
-          renderItem={this.renderItem}
-          keyExtractor={item => item.id}
-          ItemSeparatorComponent={this.renderSeparator}
-          //ListHeaderComponent={this.renderHeader}
-          //ListFooterComponent={this.renderFooter}
-          refreshControl={{tintColor:'white'}}
-          onRefresh={this.handleRefresh}
-          refreshing={this.props.bLoading}
-          onEndReached={this.handleLoadMore}
-          onEndReachedThreshold={0}
-        />
-      </List>
-    );
+    // if (this.state.bRefreshing) {
+    //   return (
+    //     <View style={[styles.loadingCotainer]}>
+    //         <ActivityIndicator animating size="large" color='white'/>
+    //     </View>
+    //   );
+    // }
+    // else {
+      return (
+        <List containerStyle={styles.container}>
+          <FlatList
+            data={this.props.msgs}
+            renderItem={this.renderItem}
+            keyExtractor={item => item.id}
+            ItemSeparatorComponent={this.renderSeparator}
+            //ListHeaderComponent={this.renderHeader}
+            //ListFooterComponent={this.renderFooter}
+            refreshControl={{tintColor:'white'}}
+            onRefresh={this.handleRefresh}
+            refreshing={this.state.bLoading}
+            onEndReached={this.handleLoadMore}
+            onEndReachedThreshold={0}
+          />
+        </List>
+      );
+    //}
   }
 }
 
@@ -173,13 +198,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     borderBottomColor: "#45474D",
     backgroundColor: F8Colors.mainBgColor,
+  },
+  loadingCotainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: F8Colors.mainBgColor,
   }
 });
 
 function select(store) {
   return {
     msgs: store.msgs.msgs,
-    bLoading: store.msgs.bLoading,
   };
 }
 

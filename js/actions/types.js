@@ -69,9 +69,7 @@ export type Action =
       checkinInfos: Array<Object>,
     }
   | { type: "LOGGED_OUT" }
-  | { type: "MSG_LIST" }
-  | { type: "MSG_LIST_SUCC", msgs:Object, unreadNum: number }
-  | { type: "MSG_LIST_FAILED" }
+  | { type: "MSG_LIST", msgs:Object, unreadNum: number }
   | {
       type: "MSG_TAG_READ",
       msgID: number

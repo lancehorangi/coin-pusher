@@ -45,14 +45,14 @@ async function _refreshMsgs() : Promise<Action> {
 
 function refreshMsgs(): ThunkAction {
   return (dispatch, getState) => {
-    dispatch(_load());
     const response = _refreshMsgs();
     response.then(result => dispatch(_succ(result.mailList, result.unreadNum)),
       err => {
         console.log('mailList failed reason=' + err.message);
         toastShow('邮件刷新失败:' + err.message)
-        dispatch(_failed());
       });
+
+    return response;
   };
 }
 
@@ -72,8 +72,8 @@ async function _openMsg(mailID: number): Promise<Action>{
 
 function openMsg(mailID: nubmer): ThunkAction {
   return (dispatch, getState) => {
-    let responese = _openMsg(mailID);
-    responese.then( result => dispatch({
+    let response = _openMsg(mailID);
+    response.then( result => dispatch({
       type: "OPEN_MSG",
       openMail: result.info
     }),
@@ -81,6 +81,8 @@ function openMsg(mailID: nubmer): ThunkAction {
       console.log('openMsg failed reason=' + err.message);
       toastShow('打开邮件失败:' + err.message)
     });
+
+    return response;
   };
 }
 
@@ -117,24 +119,10 @@ function getMailAccessory(mailID: number): ThunkAction {
 
 function _succ(msgs: Object, unreadNum: number): Action {
   return {
-    type: "MSG_LIST_SUCC",
+    type: "MSG_LIST",
     msgs,
     unreadNum
   };
-}
-
-function _failed(): Action {
-  toastShow('刷新失败');
-
-  return {
-    type: "MSG_LIST_FAILED"
-  }
-}
-
-function _load(): Action {
-  return {
-    type: "MSG_LIST"
-  }
 }
 
 module.exports = { refreshMsgs, openMsg, getMailAccessory };

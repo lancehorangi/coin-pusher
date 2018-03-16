@@ -30,28 +30,18 @@ import { configureAPIToken } from '../api';
 
 export type State = {
   msgs: Object,
-  bLoading: boolean,
   unreadNum: ?number,
   openMail: ?Object,
 };
 
 const initialState = {
   msgs: null,
-  bLoading: false,
   unreadNum: 0,
   openMail: null,
 };
 
 function msgs(state: State = initialState, action: Action): State {
-  if (action.type === "MSG_LIST") {
-    let bLoading = true;
-    return {
-      ...state,
-      bLoading
-    };
-  }
-
-  if(action.type === "MSG_LIST_SUCC"){
+  if(action.type === "MSG_LIST"){
     let { msgs, unreadNum } = action;
     let openMail = null;
 
@@ -59,14 +49,6 @@ function msgs(state: State = initialState, action: Action): State {
       ...state,
       msgs,
       unreadNum,
-      bLoading: false
-    };
-  }
-
-  if(action.type === "MSG_LIST_FAILED"){
-    return {
-      ...state,
-      bLoading: false
     };
   }
 
