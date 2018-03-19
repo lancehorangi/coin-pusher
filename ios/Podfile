@@ -11,12 +11,30 @@ pod 'SSZipArchive', '~> 1.2'
 pod 'Reachability', '~> 3.1.1'
 pod 'CocoaLumberjack', '~> 2.0.0-rc2'
 pod 'FMDB', '~>2.5'
+pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
 
-  #pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+  pod 'CodePush', :path => '../node_modules/react-native-code-push', :subspecs => [
+    'Core',
+    'JWT',]
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+  'Core',
+  'tvOS',
+  'RCTActionSheet',
+  'RCTAnimation',
+  'RCTGeolocation',
+  'RCTImage',
+  'RCTLinkingIOS',
+  'RCTNetwork',
+  'RCTSettings',
+  'RCTText',
+  'RCTVibration',
+  'RCTWebSocket',
+  'DevSupport'
+  ]
 
   target 'coinpusherTests' do
     inherit! :search_paths
@@ -36,4 +54,15 @@ target 'coinpusher-tvOS' do
     # Pods for testing
   end
 
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        if target.name == 'yoga'
+            target.build_configurations.each do |config|
+                config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'NO'
+                config.build_settings['GCC_WARN_64_TO_32_BIT_CONVERSION'] = 'NO'
+            end
+        end
+    end
 end

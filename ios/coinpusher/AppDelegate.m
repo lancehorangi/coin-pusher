@@ -15,11 +15,15 @@
 
 #import <NIMSDK/NIMSDK.h>
 #import <CodePush/CodePush.h>
+#import <React/RCTLog.h>
 
 @implementation AppDelegate
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  //RELEASE日志
+  RCTSetLogThreshold(RCTLogLevelInfo);
+  
   [self setupNIMSDK];
   //[self registerAPNs];
   if (launchOptions)
@@ -33,13 +37,13 @@
   }
   
   NSURL *jsCodeLocation;
-  NSURL *temp = [CodePush bundleURL];
-//#ifdef DEBUG
+#ifdef DEBUG
   //jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-//#else
   //jsCodeLocation = [CodePush bundleURL];
-//#endif
+#else
+  jsCodeLocation = [CodePush bundleURL];
+#endif
   
   // **********************************************
   // *** DON'T MISS: THIS IS HOW WE BOOTSTRAP *****

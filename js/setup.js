@@ -37,6 +37,8 @@ import { Navigation } from 'react-native-navigation';
 import { APIRequest, configureAPIToken } from './api';
 import CustomMainScreenTabButton from './common/CustomMainScreenTabButton';
 import F8Colors from './common/F8Colors';
+import codePush from "react-native-code-push";
+import { toastShow, codePushSync } from './util';
 
 // Config
 //import { serverURL, parseAppID } from "./env";
@@ -57,6 +59,7 @@ configureStore(
         configureAPIToken(store.getState().user.token);
 
         let bLogin = store.getState().user.token && store.getState().user.token.length != 0;
+        codePushSync();
 
         Navigation.startTabBasedApp({
               tabs: [
@@ -133,5 +136,8 @@ configureStore(
       }
     )
 
-export default class Root extends React.Component {
+
+class Root extends React.Component {
 }
+
+module.exports = Root

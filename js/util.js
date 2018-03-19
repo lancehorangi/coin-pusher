@@ -1,5 +1,6 @@
 import Toast from 'react-native-root-toast';
 import { Dimensions, Platform } from 'react-native';
+import codePush from "react-native-code-push";
 
 export function isIphoneX() {
   const dimen = Dimensions.get('window');
@@ -48,4 +49,27 @@ export function getCurrFormat(count: number) {
   else {
     return count + "万";
   }
+}
+
+export function codePushSync() {
+  codePush.sync({
+              // updateDialog: {
+              //   descriptionPrefix: '描述:',
+              //   mandatoryContinueButtonLabel:'继续',
+              //   mandatoryUpdateMessage:'这是一个必须要安装的更新',
+              //   optionalIgnoreButtonLabel: '忽略',
+              //   optionalInstallButtonLabel: '安装',
+              //   optionalUpdateMessage: '发现一个更新,是否要安装?',
+              //   title: '更新',
+              // },
+              checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+              //installMode: codePush.InstallMode.IMMEDIATE
+              installMode: codePush.InstallMode.ON_NEXT_RESUME,
+          },
+          (syncStatus) => { // status callback
+            // do smthing with the sync status
+          },
+          (progress) => {
+              console.log("codePush:" + progress.receivedBytes + " of " + progress.totalBytes + " received.");
+          });
 }

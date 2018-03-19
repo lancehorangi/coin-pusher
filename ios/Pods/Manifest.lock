@@ -1,4 +1,6 @@
 PODS:
+  - BVLinearGradient (2.4.0):
+    - React
   - CocoaLumberjack (2.0.3):
     - CocoaLumberjack/Default (= 2.0.3)
     - CocoaLumberjack/Extensions (= 2.0.3)
@@ -7,27 +9,104 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.3):
     - CocoaLumberjack/Default
+  - CodePush/Core (5.2.1):
+    - React
+  - CodePush/JWT (5.2.1):
+    - React
   - FMDB (2.7.2):
     - FMDB/standard (= 2.7.2)
   - FMDB/standard (2.7.2)
   - NIMSDK (4.4.0)
   - Reachability (3.1.1)
+  - React (0.52.0):
+    - React/Core (= 0.52.0)
+  - React/Core (0.52.0):
+    - yoga (= 0.52.0.React)
+  - React/DevSupport (0.52.0):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.52.0)
+  - React/RCTActionSheet (0.52.0):
+    - React/Core
+  - React/RCTAnimation (0.52.0):
+    - React/Core
+  - React/RCTBlob (0.52.0):
+    - React/Core
+  - React/RCTGeolocation (0.52.0):
+    - React/Core
+  - React/RCTImage (0.52.0):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.52.0):
+    - React/Core
+  - React/RCTNetwork (0.52.0):
+    - React/Core
+  - React/RCTSettings (0.52.0):
+    - React/Core
+  - React/RCTText (0.52.0):
+    - React/Core
+  - React/RCTVibration (0.52.0):
+    - React/Core
+  - React/RCTWebSocket (0.52.0):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - React/tvOS (0.52.0):
+    - React/Core
+  - RNVectorIcons (4.5.0):
+    - React
   - SSZipArchive (1.8.1)
+  - yoga (0.52.0.React)
 
 DEPENDENCIES:
+  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (~> 2.0.0-rc2)
+  - CodePush/Core (from `../node_modules/react-native-code-push`)
+  - CodePush/JWT (from `../node_modules/react-native-code-push`)
   - FMDB (~> 2.5)
   - NIMSDK (= 4.4.0)
   - Reachability (~> 3.1.1)
+  - React/Core (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - React/tvOS (from `../node_modules/react-native`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - SSZipArchive (~> 1.2)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+EXTERNAL SOURCES:
+  BVLinearGradient:
+    :path: ../node_modules/react-native-linear-gradient
+  CodePush:
+    :path: ../node_modules/react-native-code-push
+  React:
+    :path: ../node_modules/react-native
+  RNVectorIcons:
+    :path: ../node_modules/react-native-vector-icons
+  yoga:
+    :path: ../node_modules/react-native/ReactCommon/yoga
 
 SPEC CHECKSUMS:
+  BVLinearGradient: 4b3f3bdf1ac1a52a5ef5e65c9585d793a7c3f825
   CocoaLumberjack: f58d8a19629f4d8379ae14bb3534def24161430e
+  CodePush: af67b07310e4037ecd5c38f03c7a51c6350240b5
   FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
   NIMSDK: 670ac5de3069534b10e274e2db51eb47dab0d3f9
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
+  React: 43e97926f429d846050880666de1809e22dd5cc5
+  RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
   SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
+  yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 6b1fd99380ead8c7491acad1eb6cadf740d8f7b1
+PODFILE CHECKSUM: 8d349214cff2c2fc5be70b53b02e4626345fa560
 
 COCOAPODS: 1.4.0
