@@ -22,7 +22,7 @@
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   //RELEASE日志
-  RCTSetLogThreshold(RCTLogLevelInfo);
+  //RCTSetLogThreshold(RCTLogLevelInfo);
   
   [self setupNIMSDK];
   //[self registerAPNs];
