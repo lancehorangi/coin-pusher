@@ -1,4 +1,6 @@
 rootProject.name = 'coinpusher'
+include ':react-native-talkingdata-game'
+project(':react-native-talkingdata-game').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-talkingdata-game/android')
 include ':react-native-device-info'
 project(':react-native-device-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-device-info/android')
 include ':react-native-bugly'

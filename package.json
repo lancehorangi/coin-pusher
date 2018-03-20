@@ -36,6 +36,7 @@
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-snap-carousel": "^3.6.0",
     "react-native-tab-view": "^0.0.74",
+    "react-native-talkingdata-game": "git+https://git@github.com/canyara/react-native-talkingdata-game.git",
     "react-native-vector-icons": "^4.5.0",
     "react-redux": "^5.0.6",
     "react-timer-mixin": "^0.13.3",

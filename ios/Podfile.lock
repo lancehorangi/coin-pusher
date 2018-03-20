@@ -1,4 +1,5 @@
 PODS:
+  - Bugly (2.5.0)
   - BVLinearGradient (2.4.0):
     - React
   - CocoaLumberjack (2.0.3):
@@ -53,6 +54,8 @@ PODS:
     - React/RCTBlob
   - React/tvOS (0.52.0):
     - React/Core
+  - RNBugly (1.0.0):
+    - Bugly
   - RNDeviceInfo (0.21.2)
   - RNVectorIcons (4.5.0):
     - React
@@ -80,6 +83,7 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - React/tvOS (from `../node_modules/react-native`)
+  - RNBugly (from `../node_modules/react-native-bugly`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - SSZipArchive (~> 1.2)
@@ -92,6 +96,8 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native-code-push
   React:
     :path: ../node_modules/react-native
+  RNBugly:
+    :path: ../node_modules/react-native-bugly
   RNDeviceInfo:
     :path: ../node_modules/react-native-device-info
   RNVectorIcons:
@@ -100,6 +106,7 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native/ReactCommon/yoga
 
 SPEC CHECKSUMS:
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   BVLinearGradient: 4b3f3bdf1ac1a52a5ef5e65c9585d793a7c3f825
   CocoaLumberjack: f58d8a19629f4d8379ae14bb3534def24161430e
   CodePush: af67b07310e4037ecd5c38f03c7a51c6350240b5
@@ -107,11 +114,12 @@ SPEC CHECKSUMS:
   NIMSDK: 670ac5de3069534b10e274e2db51eb47dab0d3f9
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   React: 43e97926f429d846050880666de1809e22dd5cc5
+  RNBugly: f5980a181f91674cfce7c073749b3fcc24a47fd4
   RNDeviceInfo: c0c3ef10e6c65609f81a04477c7bab4447751d28
   RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
   SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 5664d2c08b2a2efeba5e27afdde10e33b5db8441
+PODFILE CHECKSUM: e060333650f80e246b8a1a323dacfc2c5b45f3f8
 
 COCOAPODS: 1.4.0

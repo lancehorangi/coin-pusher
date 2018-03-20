@@ -39,6 +39,8 @@ import CustomMainScreenTabButton from './common/CustomMainScreenTabButton';
 import F8Colors from './common/F8Colors';
 import codePush from "react-native-code-push";
 import { toastShow, codePushSync } from './util';
+import DeviceInfo from 'react-native-device-info';
+import RNTalkingdataGame from 'react-native-talkingdata-game';
 
 // Config
 //import { serverURL, parseAppID } from "./env";
@@ -46,6 +48,9 @@ import { toastShow, codePushSync } from './util';
 //console.disableYellowBox = true;
 Text.defaultProps.allowFontScaling = false;
 console.disableYellowBox = true;
+
+//talkingdata
+RNTalkingdataGame.onStart("B7E8A44ADCCE4C9ABBC2A9391E05E6A4", DeviceInfo.getApplicationName(), true);
 
 configureStore(
   // rehydration callback (after async compatibility and persistStore)
@@ -60,6 +65,10 @@ configureStore(
 
         let bLogin = store.getState().user.token && store.getState().user.token.length != 0;
         codePushSync();
+
+        if (bLogin) {
+          RNTalkingdataGame.setAccountName(store.getState().user.account, store.getState().user.account);
+        }
 
         Navigation.startTabBasedApp({
               tabs: [

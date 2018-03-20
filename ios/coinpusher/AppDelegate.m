@@ -17,6 +17,8 @@
 #import <CodePush/CodePush.h>
 #import <React/RCTLog.h>
 
+#import "RNBugly.h"
+
 @implementation AppDelegate
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -66,6 +68,9 @@
 //  rootViewController.view = rootView;
 //  self.window.rootViewController = rootViewController;
 //  [self.window makeKeyAndVisible];
+  
+  //Bugly
+  [RNBugly startWithAppId];
   
   return YES;
 }

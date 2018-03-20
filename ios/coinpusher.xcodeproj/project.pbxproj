@@ -57,6 +57,7 @@
 		EF873C87205542A200ECB884 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EF873C86205542A200ECB884 /* libz.tbd */; };
 		F7B1E0B0405F49DB7D6F7148 /* libPods-coinpusher-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A50C7C4F755AFE5BF4807F /* libPods-coinpusher-tvOS.a */; };
 		F918D851A0024197B0FD4322 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88471ADC217B4E96B6C7A86A /* MaterialCommunityIcons.ttf */; };
+		F9AF209305DA45C28B30D1CF /* libRNTalkingdataGame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D42F327E0F54F25BA19DA12 /* libRNTalkingdataGame.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -340,13 +341,6 @@
 			remoteGlobalIDString = D8AFADBD1BEE6F3F00A4592D;
 			remoteInfo = ReactNativeNavigation;
 		};
-		EF7FC264205FF67700B9BD60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 07426EC6BDC245A4AA2E7570 /* RNBugly.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNBugly;
-		};
 		EF85939E205FFE7000B3879E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 39F7EA3B7D9D4E03982E34E3 /* RNNeteaseIm.xcodeproj */;
@@ -375,6 +369,13 @@
 			remoteGlobalIDString = F886647B1F4ADB500036D01B;
 			remoteInfo = "CodePush-tvOS";
 		};
+		EFFD2AED2060EBDB00CCCA65 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 59AB8CA69B0140268CC311BF /* RNTalkingdataGame.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNTalkingdataGame;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -389,7 +390,6 @@
 		00E356F21AD99517003FC87E /* coinpusherTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coinpusherTests.m; sourceTree = "<group>"; };
 		01E8EEE6885E493098D6EB3B /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		045000279D78474C9E9E4D6C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		07426EC6BDC245A4AA2E7570 /* RNBugly.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBugly.xcodeproj; path = "../node_modules/react-native-bugly/ios/RNBugly.xcodeproj"; sourceTree = "<group>"; };
 		07C4BFC205EE475BA07A33C9 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		0A7B06BF9278C988F88F611D /* Pods-coinpusher-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusher-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusher-tvOS/Pods-coinpusher-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
@@ -405,6 +405,7 @@
 		2D02E47B1E0B4A5D006451C7 /* coinpusher-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "coinpusher-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* coinpusher-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "coinpusher-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D42F327E0F54F25BA19DA12 /* libRNTalkingdataGame.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNTalkingdataGame.a; sourceTree = "<group>"; };
 		33FF30A247C70217D42DA78A /* Pods-coinpusher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusher.release.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusher/Pods-coinpusher.release.xcconfig"; sourceTree = "<group>"; };
 		39F7EA3B7D9D4E03982E34E3 /* RNNeteaseIm.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNNeteaseIm.xcodeproj; path = "../node_modules/react-native-netease-im/ios/RNNeteaseIm/RNNeteaseIm.xcodeproj"; sourceTree = "<group>"; };
 		40DCF893A0B6446981BC9C11 /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
@@ -412,6 +413,7 @@
 		4F24E567D2034EF2924CCC39 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		55C0E56F4BC2C3647CDB81A7 /* libPods-coinpusher.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coinpusher.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57D76F5945A145D68F696EDA /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		59AB8CA69B0140268CC311BF /* RNTalkingdataGame.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNTalkingdataGame.xcodeproj; path = "../node_modules/react-native-talkingdata-game/ios/RNTalkingdataGame.xcodeproj"; sourceTree = "<group>"; };
 		5B38B0B2425AE84592BBE40F /* Pods-coinpusher-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusher-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusher-tvOSTests/Pods-coinpusher-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		68C96597230A46E72F3AC8C5 /* Pods-coinpusherTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusherTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusherTests/Pods-coinpusherTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 				E1079DC600FB4D89B4480A42 /* libRNGestureHandler.a in Frameworks */,
 				EBD7F0D149C94F1F99416715 /* libRNBugly.a in Frameworks */,
 				16383B6A69484F0188A51E35 /* libRNNeteaseIm.a in Frameworks */,
+				F9AF209305DA45C28B30D1CF /* libRNTalkingdataGame.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,8 +703,8 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				89725EA4D6EC4343A7EA0447 /* ReactNativeNavigation.xcodeproj */,
 				B96FBAEDBED540638F553BAD /* RNGestureHandler.xcodeproj */,
-				07426EC6BDC245A4AA2E7570 /* RNBugly.xcodeproj */,
 				39F7EA3B7D9D4E03982E34E3 /* RNNeteaseIm.xcodeproj */,
+				59AB8CA69B0140268CC311BF /* RNTalkingdataGame.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -759,6 +762,7 @@
 				40DCF893A0B6446981BC9C11 /* libRNGestureHandler.a */,
 				78C5BCC7AE534020B38207AA /* libRNBugly.a */,
 				FE88594E18AA460FB6A8009F /* libRNNeteaseIm.a */,
+				2D42F327E0F54F25BA19DA12 /* libRNTalkingdataGame.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -767,14 +771,6 @@
 			isa = PBXGroup;
 			children = (
 				EF1A420020347DCB00E5F085 /* libReactNativeNavigation.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		EF7FC261205FF67600B9BD60 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EF7FC265205FF67700B9BD60 /* libRNBugly.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -800,6 +796,14 @@
 			children = (
 				EFC547B8205574A50051E56B /* libCodePush.a */,
 				EFC547BA205574A50051E56B /* libCodePush.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EFFD2AEA2060EBDB00CCCA65 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EFFD2AEE2060EBDB00CCCA65 /* libRNTalkingdataGame.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -987,16 +991,16 @@
 					ProjectRef = 89725EA4D6EC4343A7EA0447 /* ReactNativeNavigation.xcodeproj */;
 				},
 				{
-					ProductGroup = EF7FC261205FF67600B9BD60 /* Products */;
-					ProjectRef = 07426EC6BDC245A4AA2E7570 /* RNBugly.xcodeproj */;
-				},
-				{
 					ProductGroup = EFC547AD205572B60051E56B /* Products */;
 					ProjectRef = B96FBAEDBED540638F553BAD /* RNGestureHandler.xcodeproj */;
 				},
 				{
 					ProductGroup = EF85939B205FFE7000B3879E /* Products */;
 					ProjectRef = 39F7EA3B7D9D4E03982E34E3 /* RNNeteaseIm.xcodeproj */;
+				},
+				{
+					ProductGroup = EFFD2AEA2060EBDB00CCCA65 /* Products */;
+					ProjectRef = 59AB8CA69B0140268CC311BF /* RNTalkingdataGame.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1276,13 +1280,6 @@
 			remoteRef = EF1A41FF20347DCB00E5F085 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		EF7FC265205FF67700B9BD60 /* libRNBugly.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNBugly.a;
-			remoteRef = EF7FC264205FF67700B9BD60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		EF85939F205FFE7000B3879E /* libRNNeteaseIm.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1309,6 +1306,13 @@
 			fileType = archive.ar;
 			path = libCodePush.a;
 			remoteRef = EFC547B9205574A50051E56B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EFFD2AEE2060EBDB00CCCA65 /* libRNTalkingdataGame.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNTalkingdataGame.a;
+			remoteRef = EFFD2AED2060EBDB00CCCA65 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1684,12 +1688,14 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
+					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 				);
 				INFOPLIST_FILE = coinpusherTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1716,12 +1722,14 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
+					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 				);
 				INFOPLIST_FILE = coinpusherTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1751,6 +1759,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
+					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 				);
 				INFOPLIST_FILE = coinpusher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1778,6 +1787,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
+					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 				);
 				INFOPLIST_FILE = coinpusher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1810,11 +1820,13 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
+					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 				);
 				INFOPLIST_FILE = "coinpusher-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1851,11 +1863,13 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
+					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 				);
 				INFOPLIST_FILE = "coinpusher-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1893,6 +1907,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.coinpusher-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1918,6 +1933,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
