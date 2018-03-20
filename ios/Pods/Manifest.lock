@@ -53,6 +53,7 @@ PODS:
     - React/RCTBlob
   - React/tvOS (0.52.0):
     - React/Core
+  - RNDeviceInfo (0.21.2)
   - RNVectorIcons (4.5.0):
     - React
   - SSZipArchive (1.8.1)
@@ -79,6 +80,7 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - React/tvOS (from `../node_modules/react-native`)
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - SSZipArchive (~> 1.2)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -90,6 +92,8 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native-code-push
   React:
     :path: ../node_modules/react-native
+  RNDeviceInfo:
+    :path: ../node_modules/react-native-device-info
   RNVectorIcons:
     :path: ../node_modules/react-native-vector-icons
   yoga:
@@ -103,10 +107,11 @@ SPEC CHECKSUMS:
   NIMSDK: 670ac5de3069534b10e274e2db51eb47dab0d3f9
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   React: 43e97926f429d846050880666de1809e22dd5cc5
+  RNDeviceInfo: c0c3ef10e6c65609f81a04477c7bab4447751d28
   RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
   SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 8d349214cff2c2fc5be70b53b02e4626345fa560
+PODFILE CHECKSUM: 5664d2c08b2a2efeba5e27afdde10e33b5db8441
 
 COCOAPODS: 1.4.0

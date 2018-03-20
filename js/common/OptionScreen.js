@@ -15,13 +15,16 @@ import dateFormat from 'dateformat';
 import ScreenComponent from './ScreenComponent';
 import F8Colors from './F8Colors';
 import { isIphoneX } from './../util';
+import codePush from "react-native-code-push";
+import DeviceInfo from 'react-native-device-info';
 
 class OptionScreen extends ScreenComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      soundEnable: true
+      soundEnable: true,
+      jsVersion: "",
     };
   }
 
@@ -32,6 +35,11 @@ class OptionScreen extends ScreenComponent {
   };
 
   componentDidMount() {
+    codePush.getUpdateMetadata(codePush.UpdateState.RUNNING).then((update) => {
+    if (update) {
+        this.setState({jsVersion:update.label});
+        }
+    });
   }
 
   toggleSound = (soundEnable) => {
@@ -65,7 +73,7 @@ class OptionScreen extends ScreenComponent {
           title={"版本"}
           leftIcon={{name: "music"}}
           hideChevron={true}
-          rightTitle={"有限公司\n版本:0.0.1"}
+          rightTitle={"有限公司\n版本:" + DeviceInfo.getReadableVersion() + " " + this.state.jsVersion}
           //rightTitle={item.sendTime}
           rightTitleNumberOfLines={2}
         />

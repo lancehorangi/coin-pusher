@@ -3,6 +3,7 @@ package com.coinpusher;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.reactlibrary.RNBuglyPackage;
 import com.netease.im.RNNeteaseImPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNDeviceInfo(),
             new RNBuglyPackage(),
             new RNNeteaseImPackage(),
             new LinearGradientPackage(),

@@ -3726,10 +3726,6 @@ react-devtools@^3.1.0:
     react-devtools-core "^3.1.0"
     update-notifier "^2.1.0"
 
-react-moment@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/react-moment/-/react-moment-0.7.0.tgz#9ccb5c87be683d08c253b48469167443f09c3d89"
-
 "react-native-bugly@git+https://git@github.com/canyara/react-native-bugly.git":
   version "1.0.0"
   resolved "git+https://git@github.com/canyara/react-native-bugly.git#b96b88071625af67f69b59f43a427d26c25f2141"
@@ -3744,6 +3740,10 @@ react-native-code-push@^5.2.1:
     inquirer "1.1.2"
     plist "1.2.0"
     xcode "0.9.2"
+
+react-native-device-info@^0.21.2:
+  version "0.21.2"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.21.2.tgz#82209bf529f5cae7eab1d6512b1cfb03e29ced30"
 
 react-native-elements@^0.19.0:
   version "0.19.0"
