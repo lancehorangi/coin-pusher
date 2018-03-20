@@ -5,7 +5,7 @@ import { NativeAppEventEmitter, Alert, AppState } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { NIMLoginDescrib, NIMAVChatDescrib } from './nativeEventDescribe';
 import type { Action, ThunkAction } from "./actions/types";
-import { toastShow, codePushSync } from './util';
+import { toastShow, codePushSync, BuglyUpdateVersion } from './util';
 
 let _store = null;
 
@@ -71,13 +71,13 @@ let _appState = AppState.currentState;
 let _handleAppStateChange = (nextAppState) => {
   if (_appState.match(/inactive|background/) && nextAppState === 'active') {
     console.log('App has come to the foreground!')
-    codePushSync();
+    codePushSync().then( _ => {
+      BuglyUpdateVersion();
+    });
   }
   _appState = nextAppState;
 }
 
 AppState.addEventListener('change', _handleAppStateChange);
-
-
 
 module.exports = {configureListener, getStoreDispatch, getStore};

@@ -1,6 +1,9 @@
 import Toast from 'react-native-root-toast';
 import { Dimensions, Platform } from 'react-native';
 import codePush from "react-native-code-push";
+import RNBugly from 'react-native-bugly';
+import DeviceInfo from 'react-native-device-info';
+
 
 export function isIphoneX() {
   const dimen = Dimensions.get('window');
@@ -52,7 +55,7 @@ export function getCurrFormat(count: number) {
 }
 
 export function codePushSync() {
-  codePush.sync({
+  return codePush.sync({
               // updateDialog: {
               //   descriptionPrefix: '描述:',
               //   mandatoryContinueButtonLabel:'继续',
@@ -72,4 +75,18 @@ export function codePushSync() {
           (progress) => {
               console.log("codePush:" + progress.receivedBytes + " of " + progress.totalBytes + " received.");
           });
+}
+
+export function BuglyUpdateVersion() {
+  codePush.getUpdateMetadata(codePush.UpdateState.RUNNING).then((update) => {
+      let version = DeviceInfo.getVersion() + "/";
+
+      if (update) {
+        version += update.label;
+      }
+
+      console.warn("BuglyUpdateVersion:" + version);
+      RNBugly.updateAppVersion(version);
+  });
+
 }

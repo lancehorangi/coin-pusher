@@ -3728,7 +3728,7 @@ react-devtools@^3.1.0:
 
 "react-native-bugly@git+https://git@github.com/canyara/react-native-bugly.git":
   version "1.0.0"
-  resolved "git+https://git@github.com/canyara/react-native-bugly.git#61cd6bf16564c5c0ce0af9d43e3b7490985db373"
+  resolved "git+https://git@github.com/canyara/react-native-bugly.git#93c01b96dd9aa62e805c2824334ce529c710ff33"
 
 react-native-code-push@^5.2.1:
   version "5.2.1"

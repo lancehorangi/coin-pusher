@@ -38,9 +38,10 @@ import { APIRequest, configureAPIToken } from './api';
 import CustomMainScreenTabButton from './common/CustomMainScreenTabButton';
 import F8Colors from './common/F8Colors';
 import codePush from "react-native-code-push";
-import { toastShow, codePushSync } from './util';
+import { toastShow, codePushSync, BuglyUpdateVersion } from './util';
 import DeviceInfo from 'react-native-device-info';
 import RNTalkingdataGame from 'react-native-talkingdata-game';
+import RNBugly from 'react-native-bugly';
 
 // Config
 //import { serverURL, parseAppID } from "./env";
@@ -63,11 +64,15 @@ configureStore(
         configureListener(store);
         configureAPIToken(store.getState().user.token);
 
-        let bLogin = store.getState().user.token && store.getState().user.token.length != 0;
-        codePushSync();
+        let { token, account } = store.getState().user;
+        let bLogin = token && token.length != 0;
+        codePushSync().then( _ => {
+          BuglyUpdateVersion();
+        });
 
         if (bLogin) {
-          RNTalkingdataGame.setAccountName(store.getState().user.account, store.getState().user.account);
+          RNTalkingdataGame.setAccountName(account, account);
+          RNBugly.setUserIdentifier(account);
         }
 
         Navigation.startTabBasedApp({
