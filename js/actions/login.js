@@ -198,6 +198,38 @@ function mobileLogin(mobilePhone: string, code: string): ThunkAction {
   };
 }
 
+async function _wxLogin(code: string) : Promise<Action> {
+  try {
+    let response = await APIRequest('account/wxLogin', {
+        code
+       });
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function wxLogin(code: string): ThunkAction {
+  return (dispatch, getState) => {
+    const response = _wxLogin(code);
+    response.then(result => {
+      console.log()
+      dispatch(loggedIn(result.openID, result.token));
+    },
+    err => {
+      //Alert.alert(err.message)
+      toastShow("登录失败:" + err.message);
+    });
+
+    return response;
+  };
+}
+
 async function _getAccountInfo() : Promise<Action> {
   try {
     let response = await APIRequest('account/accountInfo', {}, true);
@@ -246,4 +278,4 @@ function getAccountInfo(): ThunkAction {
   }
 }
 
-module.exports = { logIn, loggedOut, getAccountInfo, mobileCodeReq, mobileLogin };
+module.exports = { logIn, loggedOut, getAccountInfo, mobileCodeReq, mobileLogin, wxLogin };

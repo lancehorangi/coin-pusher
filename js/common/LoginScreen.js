@@ -25,7 +25,7 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { mobileCodeReq, mobileLogin } from "../actions";
+import { mobileCodeReq, mobileLogin, wxLogin } from "../actions";
 import F8Colors from "../common/F8Colors";
 import F8Fonts from "../common/F8Fonts";
 import F8Button from "./F8Button";
@@ -42,14 +42,15 @@ import {
   TextInput,
   Alert
 } from "react-native";
+import * as WeChat from 'react-native-wechat';
 import { Input, Button } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import LoginButton from "../common/LoginButton";
-import { serverURL } from '../env';
+import { serverURL, wxID } from '../env';
 import { APIRequest } from '../api';
 import { logIn } from '../actions';
 import Toast from 'react-native-root-toast';
-import { isIphoneX } from './../util';
+import { isIphoneX, toastShow } from './../util';
 import RoomHistory from './RoomHistory';
 
 const IPHONE_X_HEAD = 30;
@@ -207,7 +208,7 @@ class LoginScreen extends React.Component {
         </TouchableOpacity>
         </View>
         <Button
-          title={'手机登录'}
+          title={'手机登录2'}
           titleStyle={{color:"white", fontSize:15}}
           buttonStyle={{backgroundColor:"blue", borderRadius:10, marginTop: 30, width:250}}
           onPress={this.mobileLogin}
@@ -236,7 +237,7 @@ class LoginScreen extends React.Component {
         backgroundColor:'#00000088',
       }}/>
       <TouchableOpacity
-        onPress={this.wxLogin}
+        onPress={this.onWxLogin}
         style={{
           flex:0,
           marginTop:5,
@@ -348,8 +349,26 @@ class LoginScreen extends React.Component {
     }
   }
 
-  wxLogin = async () => {
-    Alert.alert('微信登录')
+  onWxLogin = async () => {
+    this.setState({logging:true})
+
+    try {
+      let result = await WeChat.sendAuthRequest("snsapi_userinfo");
+      
+      console.log('Weixin: code=' + result.code);
+      if (result.errCode != 0) {
+        toastShow("登录失败")
+      }
+      else {
+
+        await this.props.dispatch(wxLogin(result.code));
+      }
+
+    } catch (e) {
+      toastShow("登录失败:" + e.message);
+    } finally {
+      this.setState({logging:false})
+    }
   }
 
 

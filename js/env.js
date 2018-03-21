@@ -29,6 +29,8 @@ module.exports = {
   serverURL: "http://192.168.2.10:7000/1.0/",
   //graphqlURL: "http://localhost:4000/graphql",
   STATUS_OK: '0',
+  talkingdataID: 'B7E8A44ADCCE4C9ABBC2A9391E05E6A4',
+  wxID: "wx064e8b51fe46ccc9",
   compatibleStoreVersion: "0.10",
   gcmSenderId: "336769939688",
   timezone: "America/Los_Angeles",

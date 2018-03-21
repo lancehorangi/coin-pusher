@@ -42,16 +42,20 @@ import { toastShow, codePushSync, BuglyUpdateVersion } from './util';
 import DeviceInfo from 'react-native-device-info';
 import RNTalkingdataGame from 'react-native-talkingdata-game';
 import RNBugly from 'react-native-bugly';
+import * as WeChat from 'react-native-wechat';
 
 // Config
-//import { serverURL, parseAppID } from "./env";
+import { talkingdataID, wxID } from "./env";
 
 //console.disableYellowBox = true;
 Text.defaultProps.allowFontScaling = false;
 console.disableYellowBox = true;
 
 //talkingdata
-RNTalkingdataGame.onStart("B7E8A44ADCCE4C9ABBC2A9391E05E6A4", DeviceInfo.getApplicationName(), true);
+RNTalkingdataGame.onStart(talkingdataID, DeviceInfo.getApplicationName(), true);
+
+//WeChat
+WeChat.registerApp(wxID);
 
 configureStore(
   // rehydration callback (after async compatibility and persistStore)

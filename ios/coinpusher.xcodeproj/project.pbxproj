@@ -60,6 +60,7 @@
 		E7A7519395434E6D94215956 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC3BDE9AAA5E44CF8E6808ED /* Octicons.ttf */; };
 		EBD7F0D149C94F1F99416715 /* libRNBugly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C5BCC7AE534020B38207AA /* libRNBugly.a */; };
 		EF873C87205542A200ECB884 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EF873C86205542A200ECB884 /* libz.tbd */; };
+		EFDD30552062839100962C22 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFAAAA6920623690008F1A97 /* libRCTWeChat.a */; };
 		F7B1E0B0405F49DB7D6F7148 /* libPods-coinpusher-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A50C7C4F755AFE5BF4807F /* libPods-coinpusher-tvOS.a */; };
 		F918D851A0024197B0FD4322 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88471ADC217B4E96B6C7A86A /* MaterialCommunityIcons.ttf */; };
 		F9AF209305DA45C28B30D1CF /* libRNTalkingdataGame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D42F327E0F54F25BA19DA12 /* libRNTalkingdataGame.a */; };
@@ -499,6 +500,7 @@
 				E1079DC600FB4D89B4480A42 /* libRNGestureHandler.a in Frameworks */,
 				EBD7F0D149C94F1F99416715 /* libRNBugly.a in Frameworks */,
 				16383B6A69484F0188A51E35 /* libRNNeteaseIm.a in Frameworks */,
+				EFDD30552062839100962C22 /* libRCTWeChat.a in Frameworks */,
 				F9AF209305DA45C28B30D1CF /* libRNTalkingdataGame.a in Frameworks */,
 				D5E4F4433E094968BDD98479 /* libyoga.a in Frameworks */,
 				0BB3269D1299476E90574B61 /* libcxxreact.a in Frameworks */,
@@ -1844,7 +1846,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.coinpusher;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DigitalForge.Pilgrimage;
 				PRODUCT_NAME = coinpusher;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1874,7 +1876,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.coinpusher;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DigitalForge.Pilgrimage;
 				PRODUCT_NAME = coinpusher;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

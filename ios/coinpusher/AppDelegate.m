@@ -16,6 +16,7 @@
 #import <NIMSDK/NIMSDK.h>
 #import <CodePush/CodePush.h>
 #import <React/RCTLog.h>
+#import "RCTLinkingManager.h"
 
 #import "RNBugly.h"
 
@@ -118,6 +119,12 @@
 -(void)applicationDidEnterBackground:(UIApplication *)application {
   NSInteger count = [[[NIMSDK sharedSDK] conversationManager] allUnreadCount];
   [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 @end
