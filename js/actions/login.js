@@ -28,7 +28,7 @@ import { APIRequest, configureAPIToken } from '../api';
 import { STATUS_OK } from '../env';
 import { NimUtils, NimSession } from 'react-native-netease-im';
 import type { Action, ThunkAction } from "./types";
-import Toast from 'react-native-root-toast';
+import { toastShow } from './../util';
 import { showRoomList } from './lobby';
 import { refreshMsgs } from './msgs';
 import { getCheckinInfo, checkin } from './checkin';
@@ -135,10 +135,10 @@ function loggedOut(): Action {
   }
 }
 
-async function _reg(account: string, pwd: string) : Promise<Action> {
+async function _mobileCodeReq(mobilePhone: string) : Promise<Action> {
   try {
-    let response = await APIRequest('account/regist', {
-        account:account, password:pwd
+    let response = await APIRequest('account/phoneRegist', {
+        phone:mobilePhone
        });
 
     if(response.StatusCode != STATUS_OK){
@@ -151,17 +151,51 @@ async function _reg(account: string, pwd: string) : Promise<Action> {
   };
 }
 
-function reg(account: string, pwd: string): ThunkAction {
-  // return (dispatch, getState) => {
-  //   //let name = getState().user.name || "there";
-  //   //dispatch(logOut())
-  //
-  //   const response = _reg(account, pwd);
-  //   response.then(result => {
-  //     Toast.show('注册成功');
-  //     dispatch(loggedIn(result.account, result.token))
-  //   },  err => {Alert.alert(err.message)});
-  // };
+function mobileCodeReq(mobilePhone: string): ThunkAction {
+  return (dispatch, getState) => {
+    const response = _mobileCodeReq(mobilePhone);
+    response.then(result => {
+      toastShow('验证码发送成功');
+    },
+    err => {
+      //Alert.alert(err.message)
+      toastShow("验证码发送失败:" + err.message);
+    });
+
+    return response;
+  };
+}
+
+async function _mobileLogin(mobilePhone: string, code: string) : Promise<Action> {
+  try {
+    let response = await APIRequest('account/phoneLogin', {
+        phone:mobilePhone, code:code
+       });
+
+    if(response.StatusCode != STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  };
+}
+
+function mobileLogin(mobilePhone: string, code: string): ThunkAction {
+  return (dispatch, getState) => {
+    const response = _mobileLogin(mobilePhone, code);
+    response.then(result => {
+      toastShow('登录成功');
+      dispatch(loggedIn(result.account, result.token));
+    },
+    err => {
+      //Alert.alert(err.message)
+      toastShow("登录失败:" + err.message);
+    });
+
+    return response;
+  };
 }
 
 async function _getAccountInfo() : Promise<Action> {
@@ -212,4 +246,4 @@ function getAccountInfo(): ThunkAction {
   }
 }
 
-module.exports = { logIn, loggedOut, getAccountInfo };
+module.exports = { logIn, loggedOut, getAccountInfo, mobileCodeReq, mobileLogin };

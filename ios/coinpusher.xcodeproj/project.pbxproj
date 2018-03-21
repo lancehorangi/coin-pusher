@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -13,6 +14,7 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* coinpusherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* coinpusherTests.m */; };
 		0345D2799A6B47919EB95AB5 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D129CBE05D324B5CBD787347 /* Feather.ttf */; };
+		0BB3269D1299476E90574B61 /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7180181B5761489383928F2B /* libcxxreact.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -23,6 +25,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		16383B6A69484F0188A51E35 /* libRNNeteaseIm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE88594E18AA460FB6A8009F /* libRNNeteaseIm.a */; };
+		176296F1549949C59E4C07A1 /* libthird-party.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C25428BE7FE64510AAD47522 /* libthird-party.a */; };
 		1AB8716B5E6F48B0A63DDD32 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57D76F5945A145D68F696EDA /* Foundation.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -35,6 +38,7 @@
 		2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E941DF850E9000B6D8A /* libRCTText-tvOS.a */; };
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
+		2D23A9758F694F48B9150E7E /* libdouble-conversion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D13671BE013840A2B2AAE32D /* libdouble-conversion.a */; };
 		2D5518B1F44323ACC71853F6 /* libPods-coinpusherTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5C463F01BFDC11ED98934E /* libPods-coinpusherTests.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* coinpusherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* coinpusherTests.m */; };
 		31A76C56291A4D70922080E8 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4601EC615EC7434F89322646 /* SimpleLineIcons.ttf */; };
@@ -44,9 +48,11 @@
 		5E43B5568228EA3DB1502354 /* libPods-coinpusher.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C0E56F4BC2C3647CDB81A7 /* libPods-coinpusher.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		90AA4CEA0E5F43FD905F6B6C /* libjschelpers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CAFA200FEBCB4006BE7797AB /* libjschelpers.a */; };
 		9749E9AFCEB440978A4FC80F /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AE27C43151B415FA235B66E /* libReactNativeNavigation.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		C557F235ACCB447D99CB5441 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01E8EEE6885E493098D6EB3B /* EvilIcons.ttf */; };
+		D5E4F4433E094968BDD98479 /* libyoga.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DDC5F85475046179CB3874E /* libyoga.a */; };
 		DF79C44CA9A54C86A9E93E14 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1908738FF8B48A48E62AB6F /* Zocial.ttf */; };
 		E1079DC600FB4D89B4480A42 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40DCF893A0B6446981BC9C11 /* libRNGestureHandler.a */; };
 		E3FB5A5231FB47F888E5960B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07C4BFC205EE475BA07A33C9 /* FontAwesome.ttf */; };
@@ -347,6 +353,20 @@
 			remoteGlobalIDString = 4E5B47411EC1788F00D74E72;
 			remoteInfo = RNNeteaseIm;
 		};
+		EFAAAA6820623690008F1A97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A6607EFDB27B4DA8B0BB00D7 /* RCTWeChat.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 86D238421BD0BB9E00C75D01;
+			remoteInfo = RCTWeChat;
+		};
+		EFAAAA6A20623690008F1A97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A6607EFDB27B4DA8B0BB00D7 /* RCTWeChat.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
+			remoteInfo = RCTWeChatTests;
+		};
 		EFC547B0205572B60051E56B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B96FBAEDBED540638F553BAD /* RNGestureHandler.xcodeproj */;
@@ -391,6 +411,7 @@
 		045000279D78474C9E9E4D6C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		07C4BFC205EE475BA07A33C9 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		0A7B06BF9278C988F88F611D /* Pods-coinpusher-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusher-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusher-tvOS/Pods-coinpusher-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		0DDC5F85475046179CB3874E /* libyoga.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libyoga.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* coinpusher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = coinpusher.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -416,6 +437,7 @@
 		5B38B0B2425AE84592BBE40F /* Pods-coinpusher-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusher-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusher-tvOSTests/Pods-coinpusher-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		68C96597230A46E72F3AC8C5 /* Pods-coinpusherTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusherTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusherTests/Pods-coinpusherTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7180181B5761489383928F2B /* libcxxreact.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libcxxreact.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		78C5BCC7AE534020B38207AA /* libRNBugly.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBugly.a; sourceTree = "<group>"; };
 		7AE27C43151B415FA235B66E /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = "<group>"; };
@@ -427,11 +449,15 @@
 		97BB0C62AE78E6DEA3D1A0F8 /* Pods-coinpusher-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusher-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusher-tvOS/Pods-coinpusher-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		9BE77C686E49E672352A9008 /* Pods-coinpusher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusher.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusher/Pods-coinpusher.debug.xcconfig"; sourceTree = "<group>"; };
 		A6473ACED13FBA3ABCED345E /* Pods-coinpusher-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusher-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusher-tvOSTests/Pods-coinpusher-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A6607EFDB27B4DA8B0BB00D7 /* RCTWeChat.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTWeChat.xcodeproj; path = "../node_modules/react-native-wechat/ios/RCTWeChat.xcodeproj"; sourceTree = "<group>"; };
 		A6A50C7C4F755AFE5BF4807F /* libPods-coinpusher-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coinpusher-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD5C463F01BFDC11ED98934E /* libPods-coinpusherTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coinpusherTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B96FBAEDBED540638F553BAD /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
+		C25428BE7FE64510AAD47522 /* libthird-party.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libthird-party.a"; sourceTree = "<group>"; };
+		CAFA200FEBCB4006BE7797AB /* libjschelpers.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libjschelpers.a; sourceTree = "<group>"; };
 		D129CBE05D324B5CBD787347 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		D13671BE013840A2B2AAE32D /* libdouble-conversion.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libdouble-conversion.a"; sourceTree = "<group>"; };
 		DC3BDE9AAA5E44CF8E6808ED /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		E7CBE3D00B6F46929A3FD9C1 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		EF873C86205542A200ECB884 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -474,6 +500,11 @@
 				EBD7F0D149C94F1F99416715 /* libRNBugly.a in Frameworks */,
 				16383B6A69484F0188A51E35 /* libRNNeteaseIm.a in Frameworks */,
 				F9AF209305DA45C28B30D1CF /* libRNTalkingdataGame.a in Frameworks */,
+				D5E4F4433E094968BDD98479 /* libyoga.a in Frameworks */,
+				0BB3269D1299476E90574B61 /* libcxxreact.a in Frameworks */,
+				90AA4CEA0E5F43FD905F6B6C /* libjschelpers.a in Frameworks */,
+				176296F1549949C59E4C07A1 /* libthird-party.a in Frameworks */,
+				2D23A9758F694F48B9150E7E /* libdouble-conversion.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -704,6 +735,7 @@
 				B96FBAEDBED540638F553BAD /* RNGestureHandler.xcodeproj */,
 				39F7EA3B7D9D4E03982E34E3 /* RNNeteaseIm.xcodeproj */,
 				59AB8CA69B0140268CC311BF /* RNTalkingdataGame.xcodeproj */,
+				A6607EFDB27B4DA8B0BB00D7 /* RCTWeChat.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -762,6 +794,11 @@
 				78C5BCC7AE534020B38207AA /* libRNBugly.a */,
 				FE88594E18AA460FB6A8009F /* libRNNeteaseIm.a */,
 				2D42F327E0F54F25BA19DA12 /* libRNTalkingdataGame.a */,
+				0DDC5F85475046179CB3874E /* libyoga.a */,
+				7180181B5761489383928F2B /* libcxxreact.a */,
+				CAFA200FEBCB4006BE7797AB /* libjschelpers.a */,
+				C25428BE7FE64510AAD47522 /* libthird-party.a */,
+				D13671BE013840A2B2AAE32D /* libdouble-conversion.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -778,6 +815,15 @@
 			isa = PBXGroup;
 			children = (
 				EF85939F205FFE7000B3879E /* libRNNeteaseIm.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EFAAAA6420623690008F1A97 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EFAAAA6920623690008F1A97 /* libRCTWeChat.a */,
+				EFAAAA6B20623690008F1A97 /* RCTWeChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -980,6 +1026,10 @@
 				{
 					ProductGroup = 139FDEE71B06529A00C62182 /* Products */;
 					ProjectRef = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
+				},
+				{
+					ProductGroup = EFAAAA6420623690008F1A97 /* Products */;
+					ProjectRef = A6607EFDB27B4DA8B0BB00D7 /* RCTWeChat.xcodeproj */;
 				},
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
@@ -1284,6 +1334,20 @@
 			fileType = archive.ar;
 			path = libRNNeteaseIm.a;
 			remoteRef = EF85939E205FFE7000B3879E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EFAAAA6920623690008F1A97 /* libRCTWeChat.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTWeChat.a;
+			remoteRef = EFAAAA6820623690008F1A97 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EFAAAA6B20623690008F1A97 /* RCTWeChatTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RCTWeChatTests.xctest;
+			remoteRef = EFAAAA6A20623690008F1A97 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		EFC547B1205572B60051E56B /* libRNGestureHandler.a */ = {
@@ -1688,12 +1752,18 @@
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 				);
 				INFOPLIST_FILE = coinpusherTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1722,12 +1792,18 @@
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 				);
 				INFOPLIST_FILE = coinpusherTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1759,6 +1835,7 @@
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 				);
 				INFOPLIST_FILE = coinpusher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1767,6 +1844,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.coinpusher;
 				PRODUCT_NAME = coinpusher;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1787,6 +1865,7 @@
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 				);
 				INFOPLIST_FILE = coinpusher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1795,6 +1874,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.coinpusher;
 				PRODUCT_NAME = coinpusher;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1820,11 +1900,17 @@
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 				);
 				INFOPLIST_FILE = "coinpusher-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1863,11 +1949,17 @@
 					"$(SRCROOT)/../node_modules/react-native-bugly/ios",
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 				);
 				INFOPLIST_FILE = "coinpusher-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1907,6 +1999,11 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.coinpusher-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1932,6 +2029,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

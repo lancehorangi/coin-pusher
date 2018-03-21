@@ -86,7 +86,7 @@ class MineScreen extends ScreenComponent {
           source={{uri:this.props.headUrl}}
           //overlayContainerStyle={{backgroundColor: 'grey'}}
           activeOpacity={0.7}
-          containerStyle={{width:80, marginTop: 20, marginLeft:20}}
+          containerStyle={{width:80, height:80, marginTop: 20, marginLeft:20}}
           />
         <View style={{flex:0, marginLeft: 10, marginTop:20, alignItems:'flex-start'}}>
             <Text style={{color:'white', marginLeft:10, fontSize:20}}> {"" + this.props.nickName} </Text>
@@ -207,7 +207,7 @@ class MineScreen extends ScreenComponent {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{width:'100%', backgroundColor: F8Colors.mainBgColor2, height: isIphoneX() ? IPHONE_X_HEAD : 0}}>
+        <View style={{width:'100%', backgroundColor: F8Colors.mainBgColor2, height: isIphoneX() ? IPHONE_X_HEAD : 10}}>
         </View>
           {this.renderHead()}
           {this.renderCurr()}
