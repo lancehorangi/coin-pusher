@@ -61,7 +61,7 @@ function logIn(account: string, pwd: string, source: ?string): ThunkAction {
   };
 }
 
-function loggedIn(account: string, token: string, source: ?string): ThunkAction {
+function loggedIn(account: string, token: string, id: ?number, source: ?string): ThunkAction {
   return (dispatch, getState) => {
     NimSession.logout();
     console.log("Netease IM login account=" + account + ", token=" + token);
@@ -85,6 +85,7 @@ function loggedIn(account: string, token: string, source: ?string): ThunkAction 
       type: "LOGGED_IN",
       account,
       token,
+      id,
       source
     })
 
@@ -178,7 +179,7 @@ function mobileLogin(mobilePhone: string, code: string): ThunkAction {
     const response = _mobileLogin(mobilePhone, code);
     response.then(result => {
       toastShow('登录成功');
-      dispatch(loggedIn(result.account, result.token));
+      dispatch(loggedIn(result.account, result.token, result.id));
     },
     err => {
       //Alert.alert(err.message)
@@ -210,7 +211,7 @@ function wxLogin(code: string): ThunkAction {
     const response = _wxLogin(code);
     response.then(result => {
       console.log()
-      dispatch(loggedIn(result.openID, result.token));
+      dispatch(loggedIn(result.account, result.token, result.id));
     },
     err => {
       //Alert.alert(err.message)

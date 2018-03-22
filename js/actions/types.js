@@ -31,6 +31,7 @@ export type Action =
       type: "LOGGED_IN",
       token: string,
       account: string,
+      id: ?number,
       source: ?string,
     }
   | {

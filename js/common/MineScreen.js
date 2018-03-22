@@ -90,7 +90,7 @@ class MineScreen extends ScreenComponent {
           />
         <View style={{flex:0, marginLeft: 10, marginTop:20, alignItems:'flex-start'}}>
             <Text style={{color:'white', marginLeft:10, fontSize:20}}> {"" + this.props.nickName} </Text>
-            <Text style={{color:'white', marginLeft:10, marginTop:5, fontSize:15}}> {"id:" + this.props.account}  </Text>
+            <Text style={{color:'white', marginLeft:10, marginTop:5, fontSize:15}}> {"" + this.props.accountID}  </Text>
             <Text style={{color:'white', marginLeft:10, marginTop:5, fontSize:15}}>
              {this.getCardDesc()}
             </Text>
@@ -265,6 +265,7 @@ function select(store) {
     //checkinInfo: store.user.checkinInfo,
     headUrl: store.user.headUrl,
     items: store.user.items,
+    accountID: store.user.id,
   };
 }
 

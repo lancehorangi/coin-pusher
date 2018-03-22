@@ -40,6 +40,7 @@ export type State = {
   checkinInfo: ?Array<Object>,
   accountGameHistory: ?Array<Object>,
   items: ?Array<Object>,
+  id: ?number,
 };
 
 const initialState = {
@@ -54,11 +55,12 @@ const initialState = {
   checkinInfo: null,
   accountGameHistory: null,
   items: null,
+  id: 0,
 };
 
 function user(state: State = initialState, action: Action): State {
   if (action.type === "LOGGED_IN") {
-    let { token, account } = action;
+    let { token, account, id } = action;
 
     configureAPIToken(token);
 
@@ -66,6 +68,7 @@ function user(state: State = initialState, action: Action): State {
       ...initialState,
       isLoggedIn: true,
       token,
+      id,
       account
     };
   }
