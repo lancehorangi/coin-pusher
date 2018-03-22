@@ -29,7 +29,7 @@ import type { Action } from "../actions/types";
 import { configureAPIToken } from '../api';
 
 export type State = {
-  msgs: Object,
+  msgs: null | Object,
   unreadNum: ?number,
   openMail: ?Object,
 };

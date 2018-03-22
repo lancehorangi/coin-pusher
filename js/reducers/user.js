@@ -30,8 +30,8 @@ import { configureAPIToken } from '../api';
 
 export type State = {
   isLoggedIn: boolean,
-  token: string,
-  account: string,
+  token: null | string,
+  account: null | string,
   nickName: ?string,
   diamond: ?number,
   gold: ?number,

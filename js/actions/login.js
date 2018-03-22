@@ -19,7 +19,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE
  */
-
+//@flow
 "use strict";
 
 import { Platform, Alert } from "react-native";
@@ -35,7 +35,7 @@ import { getCheckinInfo, checkin } from './checkin';
 import { showModal, showLoginModal, hideLoginModal, dismissModal } from './../navigator';
 import { freshMoney, freshItems } from './user';
 
-async function _logIn(username: string, pwd: string) : Promise<Action> {
+async function _logIn(username: string, pwd: string) : Promise<Object> {
   try {
     let response = await APIRequest('account/getToken', {
         account:username, password:pwd
@@ -59,15 +59,6 @@ function logIn(account: string, pwd: string, source: ?string): ThunkAction {
         Alert.alert("登录失败(" + err.message + ")");
       });
   };
-}
-
-async function _loggedIn( ) : Promise<Action> {
-  // try {
-  //   await ;
-  //
-  // } catch(e) {
-  //   throw Error(e.message);
-  // };
 }
 
 function loggedIn(account: string, token: string, source: ?string): ThunkAction {
@@ -135,7 +126,7 @@ function loggedOut(): Action {
   }
 }
 
-async function _mobileCodeReq(mobilePhone: string) : Promise<Action> {
+async function _mobileCodeReq(mobilePhone: string) : Promise<Object> {
   try {
     let response = await APIRequest('account/phoneRegist', {
         phone:mobilePhone
@@ -166,7 +157,7 @@ function mobileCodeReq(mobilePhone: string): ThunkAction {
   };
 }
 
-async function _mobileLogin(mobilePhone: string, code: string) : Promise<Action> {
+async function _mobileLogin(mobilePhone: string, code: string) : Promise<Object> {
   try {
     let response = await APIRequest('account/phoneLogin', {
         phone:mobilePhone, code:code
@@ -198,7 +189,7 @@ function mobileLogin(mobilePhone: string, code: string): ThunkAction {
   };
 }
 
-async function _wxLogin(code: string) : Promise<Action> {
+async function _wxLogin(code: string) : Promise<Object> {
   try {
     let response = await APIRequest('account/wxLogin', {
         code
@@ -230,7 +221,7 @@ function wxLogin(code: string): ThunkAction {
   };
 }
 
-async function _getAccountInfo() : Promise<Action> {
+async function _getAccountInfo() : Promise<Object> {
   try {
     let response = await APIRequest('account/accountInfo', {}, true);
 

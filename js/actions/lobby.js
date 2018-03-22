@@ -20,6 +20,7 @@
  * DEALINGS IN THE SOFTWARE
  */
 
+//@flow
 "use strict";
 
 import { Platform, Alert } from "react-native";
@@ -31,7 +32,7 @@ import { toastShow } from '../util';
 import { heartRequest } from './user';
 import type { Action, ThunkAction } from "./types";
 
-async function _roomList(roomType: number) : Promise<Action> {
+async function _roomList(roomType: number) : Promise<Object> {
   try {
     let response = await APIRequest('room/list', {type:roomType}, true);
 
@@ -60,7 +61,7 @@ function showRoomList(roomType: number): ThunkAction {
   };
 }
 
-async function _enterRoom(roomID: string) : Promise<Action> {
+async function _enterRoom(roomID: string) : Promise<Object> {
   try {
     let response = await APIRequest('room/enter', {roomid: roomID}, true);
 
@@ -157,7 +158,7 @@ function pushCoin(): ThunkAction {
   };
 }
 
-async function _getRoomHistory(id: number) : Promise<Action> {
+async function _getRoomHistory(id: number) : Promise<Object> {
   try {
     let response = await APIRequest('machine/getHistory', {id}, true);
 

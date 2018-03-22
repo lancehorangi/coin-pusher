@@ -1,3 +1,5 @@
+//@flow
+
 "use strict";
 
 import { Platform, Alert } from "react-native";
@@ -8,7 +10,7 @@ import type { Action, ThunkAction } from "./types";
 import { toastShow } from './../util';
 import { freshMoney, freshItems } from './user';
 
-async function _getChargeList(): Promise<Action> {
+async function _getChargeList(): Promise<Object> {
   try {
     let response = await APIRequest('recharge/list', {}, true);
 
@@ -39,7 +41,7 @@ function getChargeList(): ThunkAction {
   }
 }
 
-async function _getMarketList(): Promise<Action> {
+async function _getMarketList(): Promise<Object> {
   try {
     let response = await APIRequest('market/list', {}, true);
 

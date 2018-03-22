@@ -20,6 +20,8 @@
  * DEALINGS IN THE SOFTWARE
  */
 
+//@flow
+
 "use strict";
 
 import { Platform, Alert } from "react-native";
@@ -29,7 +31,7 @@ import { STATUS_OK } from '../env';
 import type { Action, ThunkAction } from "./types";
 import { toastShow } from './../util';
 
-async function _refreshMsgs() : Promise<Action> {
+async function _refreshMsgs() : Promise<Object> {
   try {
     let response = await APIRequest('account/mailList', { }, true);
 
@@ -56,7 +58,7 @@ function refreshMsgs(): ThunkAction {
   };
 }
 
-async function _openMsg(mailID: number): Promise<Action>{
+async function _openMsg(mailID: number): Promise<Object>{
   try {
     let response = await APIRequest('account/mailRead', {id:mailID }, true);
 
@@ -70,7 +72,7 @@ async function _openMsg(mailID: number): Promise<Action>{
   };
 }
 
-function openMsg(mailID: nubmer): ThunkAction {
+function openMsg(mailID: number): ThunkAction {
   return (dispatch, getState) => {
     let response = _openMsg(mailID);
     response.then( result => dispatch({
@@ -86,7 +88,7 @@ function openMsg(mailID: nubmer): ThunkAction {
   };
 }
 
-async function _getMailAcessory(mailID: number): Promise<Action> {
+async function _getMailAcessory(mailID: number): Promise<Object> {
   try {
     let response = await APIRequest('mail/pull', {id:mailID}, true);
 

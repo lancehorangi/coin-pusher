@@ -19,7 +19,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE
  *
- * @flow
+ *
  */
 "use strict";
 
@@ -354,7 +354,7 @@ class LoginScreen extends React.Component {
 
     try {
       let result = await WeChat.sendAuthRequest("snsapi_userinfo");
-      
+
       console.log('Weixin: code=' + result.code);
       if (result.errCode != 0) {
         toastShow("登录失败")

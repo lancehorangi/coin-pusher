@@ -1,3 +1,4 @@
+//@flow
 "use strict";
 
 import { Platform, Alert } from "react-native";
@@ -8,7 +9,7 @@ import type { Action, ThunkAction } from "./types";
 import { toastShow } from './../util';
 import { freshMoney, freshItems } from './user';
 
-async function _getCheckinInfo() : Promise<Action> {
+async function _getCheckinInfo() : Promise<Object> {
   try {
     let response = await APIRequest('account/getCheckinInfo', { }, true);
 
@@ -38,7 +39,7 @@ function getCheckinInfo(): ThunkAction {
   };
 }
 
-async function _checkin(type: number) : Promise<Action> {
+async function _checkin(type: number) : Promise<Object> {
   try {
     let response = await APIRequest('account/checkin', { type }, true);
 

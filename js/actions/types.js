@@ -57,7 +57,7 @@ export type Action =
   | {
       type: "ACCOUNT_UPDATE_MONEY",
       gold: number,
-      intergral: number,
+      integral: number,
       diamond: number,
     }
   | {
@@ -66,7 +66,7 @@ export type Action =
     }
   | {
       type: "CHECKIN_INFO",
-      checkinInfos: Array<Object>,
+      checkinInfo: Array<Object>,
     }
   | { type: "LOGGED_OUT" }
   | { type: "MSG_LIST", msgs:Object, unreadNum: number }

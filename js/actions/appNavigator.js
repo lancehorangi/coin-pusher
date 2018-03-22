@@ -20,6 +20,8 @@
  * DEALINGS IN THE SOFTWARE
  */
 
+ //@flow
+
 "use strict";
 
 import { Platform, Alert } from "react-native";

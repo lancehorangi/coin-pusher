@@ -1,4 +1,3 @@
-//@flow
 "use strict";
 
 import { NativeAppEventEmitter, Alert, AppState } from 'react-native';

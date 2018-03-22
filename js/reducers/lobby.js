@@ -28,10 +28,14 @@ import { Alert } from 'react-native';
 import type { Action } from "../actions/types";
 
 export type State = {
-  list: Array<Object>
+  list: null | Array<Object>
 };
 
-function lobby(state: State = {}, action: Action): State {
+const initialState = {
+  list: null,
+};
+
+function lobby(state: State = initialState, action: Action): State {
   if (action.type === "ROOM_LIST") {
     return {
       ...state,
@@ -49,7 +53,7 @@ function lobby(state: State = {}, action: Action): State {
   }
 
   if(action.type === "LOGGED_OUT"){
-    return {}
+    return initialState;
   }
 
   return state;

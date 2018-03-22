@@ -20,6 +20,8 @@
  * DEALINGS IN THE SOFTWARE
  */
 
+//@flow
+
 "use strict";
 
 import { Platform, Alert } from "react-native";
@@ -29,7 +31,7 @@ import { STATUS_OK } from '../env';
 import type { Action, ThunkAction } from "./types";
 import { toastShow } from './../util';
 
-async function _getAccountHistory(): Promise<Action>{
+async function _getAccountHistory(): Promise<Object>{
   try {
     let response = await APIRequest('account/getHistory', {}, true);
 
