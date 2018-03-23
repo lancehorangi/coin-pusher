@@ -88,25 +88,6 @@ configureStore(
                 navigatorStyle: {
                   navBarHidden: false
                 },
-                // navigatorButtons: {
-                //   rightButtons: [
-                //     {
-                //       id: 'add', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
-                //       buttonColor: '#ffffff', // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
-                //       //icon: require('./img/header/add.png'),
-                //       component: 'CP.CustomMainScreenTabButton',
-                //       disableIconTint: true,
-                //     }
-                //   ],
-                //   leftButtons: [
-                //     {
-                //       id: 'message', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
-                //       buttonColor: '#ffffff', // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
-                //       icon: require('./common/img/header/news.png'),
-                //       disableIconTint: true,
-                //     }
-                //   ]
-                // }
               },
               {
                   label: '商城',

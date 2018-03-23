@@ -128,6 +128,7 @@ export class MainScreen extends React.Component {
                             }}
                             labelStyle={{color: '#d1d3e8', margin:1}}
                             scrollEnabled={false}
+                            useNativeDriver={true}
                             { ...props }/>;
   }
 

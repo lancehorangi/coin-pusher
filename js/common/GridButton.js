@@ -96,7 +96,7 @@ class GridButton extends React.Component {
 /* constants ================================================================ */
 
 const BUTTON_WIDTH = 62;
-const IMAGE_WIDTH = 31;
+const IMAGE_WIDTH = 25;
 
 /* StyleSheet
 ============================================================================= */
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
   caption: {
     //fontFamily: F8Fonts.button,
-    fontSize: 13,
+    fontSize: 12,
     textAlign: "center",
     color: "#d1d3e8"
   }
