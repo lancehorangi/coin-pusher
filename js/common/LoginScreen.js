@@ -208,7 +208,7 @@ class LoginScreen extends React.Component {
         </TouchableOpacity>
         </View>
         <Button
-          title={'手机登录2'}
+          title={'手机登录'}
           titleStyle={{color:"white", fontSize:15}}
           buttonStyle={{backgroundColor:"blue", borderRadius:10, marginTop: 30, width:250}}
           onPress={this.mobileLogin}

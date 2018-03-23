@@ -88,7 +88,14 @@ class MineScreen extends ScreenComponent {
           activeOpacity={0.7}
           containerStyle={{width:80, height:80, marginTop: 20, marginLeft:20}}
           />
-        <View style={{flex:0, marginLeft: 10, marginTop:20, alignItems:'flex-start'}}>
+        <View style={{
+              flex:0,
+              marginLeft: 10,
+              marginTop:20,
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              alignContent: 'flex-start'
+            }}>
             <Text style={{color:'white', marginLeft:10, fontSize:20}}> {"" + this.props.nickName} </Text>
             <Text style={{color:'white', marginLeft:10, marginTop:5, fontSize:15}}> {"" + this.props.accountID}  </Text>
             <Text style={{color:'white', marginLeft:10, marginTop:5, fontSize:15}}>

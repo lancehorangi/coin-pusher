@@ -32,10 +32,5 @@ module.exports = {
   talkingdataID: 'B7E8A44ADCCE4C9ABBC2A9391E05E6A4',
   wxID: "wx064e8b51fe46ccc9",
   compatibleStoreVersion: "0.10",
-  gcmSenderId: "336769939688",
-  timezone: "America/Los_Angeles",
-  dayLabel(num) {
-    const days = { 1: "Tue 4/18", 2: "Wed 4/19" };
-    return days[num] || `Day ${num}`;
-  }
+  updateToggleAddress: "https://circus.oss-cn-hangzhou.aliyuncs.com/toggle.json",
 };

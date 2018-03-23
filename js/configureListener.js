@@ -70,9 +70,7 @@ let _appState = AppState.currentState;
 let _handleAppStateChange = (nextAppState) => {
   if (_appState.match(/inactive|background/) && nextAppState === 'active') {
     console.log('App has come to the foreground!')
-    codePushSync().then( _ => {
-      BuglyUpdateVersion();
-    });
+    codePushSync();
   }
   _appState = nextAppState;
 }

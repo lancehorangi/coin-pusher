@@ -70,9 +70,7 @@ configureStore(
 
         let { token, account } = store.getState().user;
         let bLogin = token && token.length != 0;
-        codePushSync().then( _ => {
-          BuglyUpdateVersion();
-        });
+        codePushSync();
 
         if (bLogin) {
           RNTalkingdataGame.setAccountName(account, account);

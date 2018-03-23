@@ -3,7 +3,7 @@ import { Dimensions, Platform } from 'react-native';
 import codePush from "react-native-code-push";
 import RNBugly from 'react-native-bugly';
 import DeviceInfo from 'react-native-device-info';
-
+import { updateToggleAddress } from './env';
 
 export function isIphoneX() {
   const dimen = Dimensions.get('window');
@@ -54,27 +54,52 @@ export function getCurrFormat(count: number) {
   }
 }
 
-export function codePushSync() {
-  return codePush.sync({
-              // updateDialog: {
-              //   descriptionPrefix: '描述:',
-              //   mandatoryContinueButtonLabel:'继续',
-              //   mandatoryUpdateMessage:'这是一个必须要安装的更新',
-              //   optionalIgnoreButtonLabel: '忽略',
-              //   optionalInstallButtonLabel: '安装',
-              //   optionalUpdateMessage: '发现一个更新,是否要安装?',
-              //   title: '更新',
-              // },
-              checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-              //installMode: codePush.InstallMode.IMMEDIATE
-              installMode: codePush.InstallMode.ON_NEXT_RESUME,
-          },
-          (syncStatus) => { // status callback
-            // do smthing with the sync status
-          },
-          (progress) => {
-              console.log("codePush:" + progress.receivedBytes + " of " + progress.totalBytes + " received.");
-          });
+export async function codePushSync() {
+  try {
+    let response = await fetch( updateToggleAddress, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json, text/plain',
+          'Content-Type': 'application/json',
+        }
+    });
+
+    let toggleData = await response.json();
+
+    let name = DeviceInfo.getBundleId();
+    console.log("codePushSync bundleId:" + name);
+    console.log("codePushSync toggleData:" + JSON.stringify(toggleData));
+
+    if (toggleData[name] && toggleData[name]['enabled']) {
+      console.log("codePushSync enabled");
+      await codePush.sync({
+                  // updateDialog: {
+                  //   descriptionPrefix: '描述:',
+                  //   mandatoryContinueButtonLabel:'继续',
+                  //   mandatoryUpdateMessage:'这是一个必须要安装的更新',
+                  //   optionalIgnoreButtonLabel: '忽略',
+                  //   optionalInstallButtonLabel: '安装',
+                  //   optionalUpdateMessage: '发现一个更新,是否要安装?',
+                  //   title: '更新',
+                  // },
+                  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+                  //installMode: codePush.InstallMode.IMMEDIATE
+                  installMode: codePush.InstallMode.ON_NEXT_RESUME,
+              },
+              (syncStatus) => { // status callback
+                // do smthing with the sync status
+              },
+              (progress) => {
+                  console.log("codePushSync:" + progress.receivedBytes + " of " + progress.totalBytes + " received.");
+              });
+    }
+  } catch (e) {
+
+  } finally {
+    BuglyUpdateVersion();
+  }
+
+  return;
 }
 
 export function BuglyUpdateVersion() {
