@@ -32,6 +32,9 @@ const initialLayout = {
   width: Dimensions.get('window').width,
 };
 
+const ROOM_TYPE_GOLD = 0;
+const ROOM_TYPE_GOLD10 = 1;
+
 // const {width: SCREEN_WIDTH} = Dimensions.get("window");
 // const HEADER_HEIGHT = Platform.OS === "ios" ? 64 : 50;
 Navigation.registerComponent('CP.CustomMainScreenTabButton', () => CustomMainScreenTabButton);
@@ -116,9 +119,17 @@ export class MainScreen extends React.Component {
     }
   }
 
-  _handleIndexChange = index => {
-    this.setState({ index });
-    this.props.dispatch(showRoomList(this.state.index));
+  _handleIndexChange = async (index) => {
+    await this.setState({ index });
+    let {routes} = this.state;
+
+    routes.map((route, refIndex) => {
+      if(refIndex == index){
+        let key = route['key']
+        this._refs[key].loadInfo();
+        return;
+      }
+    });
   }
 
   _renderHeaderTabBar = props => {
@@ -136,14 +147,16 @@ export class MainScreen extends React.Component {
     switch (route.key) {
     case 'first':
       return <RoomList ref={(tabScene) => {
-            if(tabScene){
-              this._refs[route.key] = tabScene.getWrappedInstance();
-            }}}/>;
+                if(tabScene){
+                  this._refs[route.key] = tabScene.getWrappedInstance();
+                }}}
+                displayRoomType={ROOM_TYPE_GOLD}/>;
     case 'second':
       return <RoomList ref={(tabScene) => {
-            if(tabScene){
-              this._refs[route.key] = tabScene.getWrappedInstance();
-            }}}/>;
+                if(tabScene){
+                  this._refs[route.key] = tabScene.getWrappedInstance();
+                }}}
+                displayRoomType={ROOM_TYPE_GOLD10}/>;
     default:
       return null;
     }
@@ -196,7 +209,6 @@ export class MainScreen extends React.Component {
   async initInfo() {
     try {
       await NimSession.login(this.props.account, this.props.token);
-      this.props.dispatch(showRoomList(this.state.index));
       this.props.dispatch(refreshMsgs());
       this.props.dispatch(getAccountInfo());
       this.props.dispatch(getCheckinInfo());
@@ -213,8 +225,6 @@ export class MainScreen extends React.Component {
   componentDidMount() {
     if(this.props.loggedIn){
       this.initInfo();
-      //Alert.alert("MainScreen componentDidMount loggedIn:" + this.props.loggedIn)
-
     }
     else {
       this.props.dispatch(loggedOut());

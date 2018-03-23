@@ -73,12 +73,6 @@ function loggedIn(account: string, token: string, id: ?number, source: ?string):
       console.warn("Netease IM login failed=" + e.message);
     });
 
-    // Navigation.dismissModal({
-    //   animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-    // });
-
-    //Toast.show('登录成功');
-
     hideLoginModal();
 
     dispatch({
@@ -89,7 +83,6 @@ function loggedIn(account: string, token: string, id: ?number, source: ?string):
       source
     })
 
-    dispatch(showRoomList(0));
     dispatch(refreshMsgs());
     dispatch(getAccountInfo());
     dispatch(getCheckinInfo());

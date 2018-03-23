@@ -25,24 +25,36 @@ class RoomList extends Component {
     constructor() {
       super();
       this.state = {
-
+        bLoading: true,
       };
     }
 
     onEndReached() {
     }
 
+    loadInfo = async () => {
+      await this.setState({bLoading:true})
+      try {
+        await this.props.dispatch(showRoomList(this.props.displayRoomType));
+      } catch (e) {
+
+      } finally {
+        this.setState({bLoading:false})
+      }
+    }
+
     componentDidMount() {
-      //this.props.dispatch(showRoomList());
+      console.log("RoomList componentDidMount")
+      this.loadInfo();
     }
 
     _renderRoomThumbnail() {
       let { roomList } = this.props;
 
-      if (!roomList || roomList.length == 0) {
+      if ( this.state.bLoading ) {
         return (
-          <View style={{width:"100%", height:"100%", justifyContent:'center', alignContent:'center'}}>
-          <ActivityIndicator style={{alignSelf:'center', marginTop: 100}} animating size="large" color='white'/>
+          <View style={{width:"100%", height:300, justifyContent:'center', alignContent:'center'}}>
+          <ActivityIndicator animating size="large" color='white'/>
           </View>
         )
       }

@@ -28,7 +28,9 @@ import { Alert } from 'react-native';
 import type { Action } from "../actions/types";
 
 export type State = {
-  list: null | Array<Object>
+  list: null | Array<Object>,
+  roomType: number,
+  baseCost: number
 };
 
 const initialState = {
@@ -37,6 +39,7 @@ const initialState = {
 
 function lobby(state: State = initialState, action: Action): State {
   if (action.type === "ROOM_LIST") {
+    let roomType = action.roomType;
     return {
       ...state,
       list: action.list,
@@ -48,7 +51,6 @@ function lobby(state: State = initialState, action: Action): State {
   if(action.type === "CLEAR_ROOM_LIST"){
     return {
       list: null,
-      roomType: null
     }
   }
 

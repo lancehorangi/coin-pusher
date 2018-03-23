@@ -57,7 +57,10 @@ function showRoomList(roomType: number): ThunkAction {
       roomType: roomType
     }), err => {
       console.warn("showRoomList failed=" + err.message);
+      toastShow('刷新房间列表失败:' + err.message);
     });
+
+    return response;
   };
 }
 
@@ -86,6 +89,9 @@ function enterRoom(roomID: string): ThunkAction {
         type: "CURR_ROOM_INFO",
         roomInfo: result.info,
       })
+    }, err => {
+      console.warn("enterRoom failed=" + err.message);
+      toastShow('进入房间失败:' + err.message);
     });
     return response;
   };
