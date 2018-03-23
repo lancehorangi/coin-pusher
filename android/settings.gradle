@@ -1,4 +1,6 @@
 rootProject.name = 'coinpusher'
+include ':react-native-payfubao'
+project(':react-native-payfubao').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-payfubao/android')
 include ':react-native-wechat'
 project(':react-native-wechat').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wechat/android')
 include ':react-native-talkingdata-game'

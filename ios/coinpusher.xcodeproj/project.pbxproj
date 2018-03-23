@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -61,6 +60,7 @@
 		EBD7F0D149C94F1F99416715 /* libRNBugly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C5BCC7AE534020B38207AA /* libRNBugly.a */; };
 		EF873C87205542A200ECB884 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EF873C86205542A200ECB884 /* libz.tbd */; };
 		EFDD30552062839100962C22 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFAAAA6920623690008F1A97 /* libRCTWeChat.a */; };
+		F274F68E4A434A26B0E63DA6 /* libRNPayfubao.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B26D5E91BED485BA29514DE /* libRNPayfubao.a */; };
 		F7B1E0B0405F49DB7D6F7148 /* libPods-coinpusher-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A50C7C4F755AFE5BF4807F /* libPods-coinpusher-tvOS.a */; };
 		F918D851A0024197B0FD4322 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88471ADC217B4E96B6C7A86A /* MaterialCommunityIcons.ttf */; };
 		F9AF209305DA45C28B30D1CF /* libRNTalkingdataGame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D42F327E0F54F25BA19DA12 /* libRNTalkingdataGame.a */; };
@@ -442,6 +442,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		78C5BCC7AE534020B38207AA /* libRNBugly.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBugly.a; sourceTree = "<group>"; };
 		7AE27C43151B415FA235B66E /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = "<group>"; };
+		7B26D5E91BED485BA29514DE /* libRNPayfubao.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPayfubao.a; sourceTree = "<group>"; };
 		8106A0824E571D7A85D66F06 /* Pods-coinpusherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coinpusherTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-coinpusherTests/Pods-coinpusherTests.release.xcconfig"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		88471ADC217B4E96B6C7A86A /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -507,6 +508,7 @@
 				90AA4CEA0E5F43FD905F6B6C /* libjschelpers.a in Frameworks */,
 				176296F1549949C59E4C07A1 /* libthird-party.a in Frameworks */,
 				2D23A9758F694F48B9150E7E /* libdouble-conversion.a in Frameworks */,
+				F274F68E4A434A26B0E63DA6 /* libRNPayfubao.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,6 +803,7 @@
 				CAFA200FEBCB4006BE7797AB /* libjschelpers.a */,
 				C25428BE7FE64510AAD47522 /* libthird-party.a */,
 				D13671BE013840A2B2AAE32D /* libdouble-conversion.a */,
+				7B26D5E91BED485BA29514DE /* libRNPayfubao.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1755,12 +1758,14 @@
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-payfubao/ios/**",
 				);
 				INFOPLIST_FILE = coinpusherTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1795,12 +1800,14 @@
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-payfubao/ios/**",
 				);
 				INFOPLIST_FILE = coinpusherTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1838,6 +1845,7 @@
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-payfubao/ios/**",
 				);
 				INFOPLIST_FILE = coinpusher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1868,6 +1876,7 @@
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-payfubao/ios/**",
 				);
 				INFOPLIST_FILE = coinpusher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1903,11 +1912,13 @@
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-payfubao/ios/**",
 				);
 				INFOPLIST_FILE = "coinpusher-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1952,11 +1963,13 @@
 					"$(SRCROOT)/../node_modules/react-native-netease-im/ios/RNNeteaseIm/**",
 					"$(SRCROOT)/../node_modules/react-native-talkingdata-game/ios",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-payfubao/ios/**",
 				);
 				INFOPLIST_FILE = "coinpusher-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2006,6 +2019,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.coinpusher-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2031,6 +2045,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

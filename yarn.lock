@@ -3797,6 +3797,10 @@ react-native-navigation@^1.1.375:
   version "2.0.6"
   resolved "git+https://git@github.com/canyara/react-native-netease-im.git#030ac88433dcceffb76529a3aed130b7bd96c0f6"
 
+"react-native-payfubao@git+https://git@github.com/canyara/react-native-payfubao.git":
+  version "1.0.0"
+  resolved "git+https://git@github.com/canyara/react-native-payfubao.git#382b89b9511bc2261dcef94e5f1d2b28f66d4ad9"
+
 react-native-root-siblings@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-native-root-siblings/-/react-native-root-siblings-3.0.0.tgz#049f584f83ec5c18f16c5cfe1ef9aada26f685bf"

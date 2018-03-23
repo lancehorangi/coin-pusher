@@ -40,6 +40,8 @@ pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
 
   pod 'RNBugly', :path => '../node_modules/react-native-bugly'
 
+  pod 'RNPayfubao', :path => '../node_modules/react-native-payfubao'
+
   target 'coinpusherTests' do
     inherit! :search_paths
     # Pods for testing
