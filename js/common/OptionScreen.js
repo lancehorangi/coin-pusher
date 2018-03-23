@@ -58,7 +58,7 @@ class OptionScreen extends ScreenComponent {
           titleStyle={{color: '#d1d3e8', fontSize: 15}}
           key={1}
           title={"声音"}
-          leftIcon={{name: "music"}}
+          //leftIcon={{name: "music"}}
           hideChevron={true}
           switchButton={true}
           onSwitch={this.toggleSound}
@@ -71,7 +71,7 @@ class OptionScreen extends ScreenComponent {
           titleStyle={{color: '#d1d3e8', fontSize: 15}}
           key={2}
           title={"版本"}
-          leftIcon={{name: "music"}}
+          //leftIcon={{name: "music"}}
           hideChevron={true}
           rightTitle={"有限公司\n版本:" + DeviceInfo.getVersion() + " " + this.state.jsVersion}
           //rightTitle={item.sendTime}
@@ -83,7 +83,7 @@ class OptionScreen extends ScreenComponent {
           titleStyle={{color: '#d1d3e8', fontSize: 15}}
           key={3}
           title={"退出登录"}
-          leftIcon={{name: "music"}}
+          //leftIcon={{name: "music"}}
           hideChevron={true}
           onPress={this.pressLogout}
         />

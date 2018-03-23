@@ -21,6 +21,7 @@ import BannerCarousel from './BannerCarousel';
 import RoomList from './RoomList';
 import GridButton from './GridButton';
 import CustomMainScreenTabButton from './CustomMainScreenTabButton';
+import { showModal } from './../navigator';
 
 import F8Colors from './F8Colors';
 import { Text, HeaderTitle } from "./F8Text";
@@ -154,6 +155,22 @@ export class MainScreen extends React.Component {
     });
   }
 
+  _onPressTutorial = () => {
+    showModal({
+      screen: 'CP.ImageSwiperScreen', // unique ID registered with Navigation.registerScreen
+      title: "教程",
+      passProps: {
+        images: [
+          require("./img/tutorial1.png"),
+          require("./img/tutorial2.png"),
+        ]
+      },
+      navigatorStyle: { navBarHidden: true },
+      //animationType: 'fade',
+    });
+
+  }
+
   _renderHeader = () => { return (
       <View style={{backgroundColor: F8Colors.mainBgColor}}>
       <StatusBar barStyle="light-content"/>
@@ -166,7 +183,7 @@ export class MainScreen extends React.Component {
           <GridButton
             icon={require('./img/buttons/course.png')}
             caption={'教程'}
-            onPress={_ => toastShow('教程', {position: -470})}/>
+            onPress={_ => this._onPressTutorial()}/>
           <GridButton
             icon={require('./img/buttons/more.png')}
             caption={'敬请期待'}/>

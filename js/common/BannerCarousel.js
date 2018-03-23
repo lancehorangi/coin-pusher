@@ -1,11 +1,20 @@
-import { View, Image, StyleSheet, Dimensions, Text } from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator
+} from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
-const BANNER_HEIGHT = WIN_WIDTH / 4;
+const BANNER_HEIGHT = WIN_WIDTH * 0.36;
 
 class BannerCarousel extends Component {
     props: {
@@ -20,25 +29,53 @@ class BannerCarousel extends Component {
       super();
       this.state = {
         activeSlide: 0,
-        entries: [{image: 'https://www.baidu.com/img/bd_logo1.png' }, {image: 'https://www.baidu.com/img/bd_logo1.png' }]
+        entries: [
+          {image: 'https://www.baidu.com/img/bd_logo1.png' },
+          {image: 'https://www.baidu.com/img/bd_logo1.png' }
+        ]
       };
     }
 
-    _renderItem ({item, index}) {
+    _onPress = (index) => {
+      Alert.alert("Press:" + index);
+    }
+
+    _renderItem = ({item, index}) => {
       return (
-          <View style={styles.image}>
-              <Image style={{width:WIN_WIDTH, height:BANNER_HEIGHT, resizeMode: "stretch"}} source={{ uri: item.image }} />
-          </View>
+          <TouchableOpacity
+          style={styles.image}
+          activeOpacity={1}
+          onPress={() => { this._onPress(index) }}>
+              <Image style={{width:WIN_WIDTH, height:BANNER_HEIGHT, resizeMode: "stretch"}}
+                source={{ uri: item.image }}
+                loadingIndicatorSource={<ActivityIndicator size='small' color='white' />}
+              />
+          </TouchableOpacity>
       );
     }
 
     pagination = () => {
         const { entries, activeSlide } = this.state;
         return (
+          <View stule={{
+            position: 'absolute',
+            top:0,
+            backgroundColor: 'transparent',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignContent: 'center',
+          }}>
             <Pagination
               dotsLength={entries.length}
               activeDotIndex={activeSlide}
-              containerStyle={{ backgroundColor: 'transparent', height:5, width:50}}
+              containerStyle={{
+                backgroundColor: 'transparent',
+                height:5,
+                width:50,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center',
+              }}
               dotStyle={{
                   width: 10,
                   height: 10,
@@ -52,6 +89,7 @@ class BannerCarousel extends Component {
               inactiveDotOpacity={0.4}
               inactiveDotScale={0.6}
             />
+          </View>
         );
     }
 
@@ -66,7 +104,7 @@ class BannerCarousel extends Component {
                   onSnapToItem={(index) => this.setState({ activeSlide: index }) }
                   loop={true}
                   autoplay={true}
-                  autoplayInterval={1000}
+                  autoplayInterval={5000}
                 />
             </View>
         );
@@ -77,7 +115,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         height: BANNER_HEIGHT,
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         justifyContent: 'center'
     },
     pagination: {
@@ -88,7 +126,7 @@ const styles = StyleSheet.create({
     },
     image: {
       height: BANNER_HEIGHT,
-      backgroundColor: 'white',
+      backgroundColor: 'transparent',
       justifyContent: 'center'
     }
 });
