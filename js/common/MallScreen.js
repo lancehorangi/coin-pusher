@@ -67,7 +67,7 @@ class MallScreen extends ScreenComponent {
     else {
       return (
         <View style={[styles.loadingCotainer]}>
-            <ActivityIndicator animating size="large" color='white'/>
+          <ActivityIndicator animating size="large" color='white'/>
         </View>
       )
     }
@@ -138,7 +138,11 @@ const styles = StyleSheet.create({
   },
   loadingCotainer: {
     flex: 1,
+    width: '100%',
+    height: WIN_HEIGHT,
     justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
     backgroundColor: F8Colors.mainBgColor,
   }
 });

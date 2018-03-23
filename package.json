@@ -36,6 +36,7 @@
     "react-native-root-toast": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-snap-carousel": "^3.6.0",
+    "react-native-spinkit": "^1.1.1",
     "react-native-swiper": "^1.5.13",
     "react-native-tab-view": "^0.0.74",
     "react-native-talkingdata-game": "git+https://git@github.com/canyara/react-native-talkingdata-game.git",

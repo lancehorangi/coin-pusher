@@ -219,7 +219,6 @@ export class MainScreen extends React.Component {
     } finally {
 
     }
-
   }
 
   componentDidMount() {

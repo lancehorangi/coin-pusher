@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
-const BANNER_HEIGHT = WIN_WIDTH * 0.36;
+const BANNER_HEIGHT = WIN_WIDTH * 0.25;
 
 class BannerCarousel extends Component {
     props: {
@@ -30,14 +30,26 @@ class BannerCarousel extends Component {
       this.state = {
         activeSlide: 0,
         entries: [
-          {image: 'https://www.baidu.com/img/bd_logo1.png' },
-          {image: 'https://www.baidu.com/img/bd_logo1.png' }
+          {
+            image: require('./img/banner1.png'),
+            press: _ => {
+              this.props.navigator.push({
+                screen: 'CP.IAPScreen', // unique ID registered with Navigation.registerScreen
+                title: "商城",
+              });
+            }
+          },
+          {
+            image: require('./img/banner2.png'),
+            press: _ => {
+              this.props.navigator.push({
+                screen: 'CP.MallScreen', // unique ID registered with Navigation.registerScreen
+                title: "积分商城",
+              });
+            }
+          }
         ]
       };
-    }
-
-    _onPress = (index) => {
-      Alert.alert("Press:" + index);
     }
 
     _renderItem = ({item, index}) => {
@@ -45,9 +57,9 @@ class BannerCarousel extends Component {
           <TouchableOpacity
           style={styles.image}
           activeOpacity={1}
-          onPress={() => { this._onPress(index) }}>
+          onPress={item.press}>
               <Image style={{width:WIN_WIDTH, height:BANNER_HEIGHT, resizeMode: "stretch"}}
-                source={{ uri: item.image }}
+                source={ item.image }
                 loadingIndicatorSource={<ActivityIndicator size='small' color='white' />}
               />
           </TouchableOpacity>
@@ -133,7 +145,8 @@ const styles = StyleSheet.create({
 
 function select(store) {
   return {
-    token: store.user.token
+    token: store.user.token,
+    navigator: store.appNavigator.navigator,
   };
 }
 

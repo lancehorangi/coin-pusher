@@ -21,6 +21,8 @@ PODS:
   - Reachability (3.1.1)
   - React (0.52.0):
     - React/Core (= 0.52.0)
+  - react-native-spinkit (1.0.2):
+    - React
   - React/Core (0.52.0):
     - yoga (= 0.52.0.React)
   - React/DevSupport (0.52.0):
@@ -71,6 +73,7 @@ DEPENDENCIES:
   - FMDB (~> 2.5)
   - NIMSDK (= 4.4.0)
   - Reachability (~> 3.1.1)
+  - react-native-spinkit (from `../node_modules/react-native-spinkit`)
   - React/Core (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
@@ -98,6 +101,8 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native-code-push
   React:
     :path: ../node_modules/react-native
+  react-native-spinkit:
+    :path: ../node_modules/react-native-spinkit
   RNBugly:
     :path: ../node_modules/react-native-bugly
   RNDeviceInfo:
@@ -118,6 +123,7 @@ SPEC CHECKSUMS:
   NIMSDK: 670ac5de3069534b10e274e2db51eb47dab0d3f9
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   React: 43e97926f429d846050880666de1809e22dd5cc5
+  react-native-spinkit: c9f5826e1a0bf0da889b3795278eb96ae15c1350
   RNBugly: f5980a181f91674cfce7c073749b3fcc24a47fd4
   RNDeviceInfo: c0c3ef10e6c65609f81a04477c7bab4447751d28
   RNPayfubao: 9d8122552db2bb2b5db5af2e8071d38f266b5954
@@ -125,6 +131,6 @@ SPEC CHECKSUMS:
   SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: ffcba6abcee94f4a96ef7e883c6fb4ee66ad0a23
+PODFILE CHECKSUM: 4028dc6eb7ea7f5ac36a70c3da7aa6ec9e449975
 
 COCOAPODS: 1.4.0

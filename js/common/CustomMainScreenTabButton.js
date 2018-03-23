@@ -62,28 +62,6 @@ class CustomMainScreenTabButton extends Component {
     }
 
     render () {
-        // return (
-        //   <TouchableOpacity
-        //     style={[styles.button]}
-        //     onPress={this.onPress}
-        //   >
-        //     <View style={styles.button}>
-        //       <Image
-        //         source={require('./img/header/add.png')}
-        //         style={styles.img}
-        //         />
-        //       <Text style={styles.label}>
-        //         {this.state.diamond}
-        //       </Text>
-        //     </View>
-        //   </TouchableOpacity>
-        // );
-        // let diamond = 0;
-        //
-        // if (this.state && this.state.diamond) {
-        //   diamond = this.state.diamond;
-        // }
-
         let {diamond} = this.state;
 
         return (

@@ -32,6 +32,7 @@ import { createLogger } from "redux-logger";
 import { persistStore, persistReducer } from "redux-persist";
 import { AsyncStorage } from "react-native";
 import { ensureCompatibility } from "./compatibility";
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 const isDebuggingInChrome = true;
 
@@ -44,7 +45,8 @@ const logger = createLogger({
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['lobby', 'appNavigator', 'mall', 'room']
+  blacklist: ['lobby', 'appNavigator', 'mall', 'room'],
+  stateReconciler: autoMergeLevel2,
 }
 
 const createF8Store = applyMiddleware(thunk, promise, array, analytics, logger)(
