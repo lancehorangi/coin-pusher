@@ -1,3 +1,5 @@
+//@flow
+
 import {
   View,
   Image,
@@ -24,15 +26,18 @@ function select(state) {
   }
 }
 
-class CustomMainScreenTabButton extends Component {
-    props: {
-      store: ?Object,
-      onPress: () => mixed,
-    };
-    state: {
-      diamond: number,
-    };
+type Props = {
+  store: ?Object,
+  onPress: () => mixed,
+}
 
+type State = {
+  diamond: number,
+}
+
+class CustomMainScreenTabButton extends Component<Props, State> {
+    store: any;
+    
     constructor() {
       super();
       this.state = {

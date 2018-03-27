@@ -1,3 +1,5 @@
+//@flow
+
 import React, { Component } from "react";
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, ScrollView } from "react-native";
 import { List, ListItem, SearchBar, Button, Avatar } from "react-native-elements";
@@ -5,8 +7,18 @@ import { refreshMsgs, setNavigator } from "../actions";
 import { connect } from "react-redux";
 import dateFormat from 'dateformat';
 
-class ScreenComponent extends Component {
-  constructor(props) {
+type navigatorType = {
+  setOnNavigatorEvent: any => any,
+  switchToTab: any => any,
+}
+
+type Props = {
+  dispatch: (action: any) => Promise<any>,
+  navigator: navigatorType
+}
+
+class ScreenComponent extends Component<Props> {
+  constructor(props: Props) {
     super(props);
 
     if (this.props.navigator) {
@@ -17,7 +29,7 @@ class ScreenComponent extends Component {
   RNNDidAppear = () => {}
   RNNWillDisappear = () => {}
 
-  onNavigatorEvent(event) {
+  onNavigatorEvent(event:any) {
     //console.log(this.constructor.name + ':' + JSON.stringify(event));
     switch(event.id) {
       case 'willAppear':
@@ -37,5 +49,13 @@ class ScreenComponent extends Component {
   }
 }
 
+declare class React$ScreenComponent<Props, State = void>
+  extends React$Component<Props, State> {
+  props: Props;
+  state: State;
+}
+
 /* exports ================================================================== */
 module.exports = ScreenComponent;
+
+declare module.exports: typeof React$ScreenComponent;

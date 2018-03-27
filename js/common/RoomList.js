@@ -59,22 +59,26 @@ class RoomList extends Component {
         )
       }
 
-      return roomList.map((room, idx) => {
-        return (
-          <RoomThumbnail
-            roomID={room.roomID}
-            meetingName={room.nimName}
-            key={room.roomID}
-            integralRate={room.integralRate}
-            currCost={room.coins}
-            baseCost={this.props.baseCost}
-            bPlaying={room.entityID !== 0}
-            queueList={room.queueList}
-            style={{width:THUMB_WIDTH, height:THUMB_HEIGHT, marginLeft:10}}
-            picUrl={room.roomSnapshoot}
-            />
-        );
-      });
+      if (roomList) {
+        return roomList.map((room, idx) => {
+          return (
+            <RoomThumbnail
+              roomID={room.roomID}
+              meetingName={room.nimName}
+              key={room.roomID}
+              integralRate={room.integralRate}
+              currCost={room.coins}
+              baseCost={this.props.baseCost}
+              bPlaying={room.entityID !== 0}
+              queueList={room.queueList}
+              style={{width:THUMB_WIDTH, height:THUMB_HEIGHT, marginLeft:10}}
+              picUrl={room.roomSnapshoot}
+              />
+          );
+        });
+      }
+
+      return;
     }
 
     render () {

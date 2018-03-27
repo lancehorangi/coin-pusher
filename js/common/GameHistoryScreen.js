@@ -1,3 +1,5 @@
+//@flow
+
 import React, { Component } from "react";
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, Image, Alert } from "react-native";
 import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
@@ -8,13 +10,21 @@ import ScreenComponent from './ScreenComponent';
 import F8Colors from './F8Colors';
 import { getMachineName } from './../util';
 
-class GameHistoryScreen extends ScreenComponent {
+type Props = {
+  dispatch: (action: any) => Promise<any>,
+}
+
+type State = {
+  bLoading: boolean,
+  page: number
+}
+
+class GameHistoryScreen extends ScreenComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
       bLoading: false,
       page: 1,
-      error: null,
     };
   }
 

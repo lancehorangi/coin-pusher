@@ -28,8 +28,13 @@ import { Alert } from 'react-native';
 import type { Action } from "../actions/types";
 import { configureAPIToken } from '../api';
 
+type navigatorType = {
+  popToRoot: any => any,
+  switchToTab: any => any,
+}
+
 export type State = {
-  navigator: null | Object,
+  navigator: null | navigatorType,
 };
 
 const initialState = {
@@ -48,6 +53,7 @@ function appNavigator(state: State = initialState, action: Action): State {
       state.navigator.popToRoot({
         animated: false
       });
+
       state.navigator.switchToTab({
         tabIndex: 0 // (optional) if missing, this screen's tab will become selected
       });

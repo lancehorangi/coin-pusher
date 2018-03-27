@@ -29,8 +29,8 @@ import type { Action } from "../actions/types";
 
 export type State = {
   list: null | Array<Object>,
-  roomType: number,
-  baseCost: number
+  roomType?: number,
+  baseCost?: number
 };
 
 const initialState = {

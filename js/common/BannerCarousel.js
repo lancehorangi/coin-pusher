@@ -1,3 +1,5 @@
+//@flow
+
 import {
   View,
   Image,
@@ -16,17 +18,23 @@ const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 const BANNER_HEIGHT = WIN_WIDTH * 0.25;
 
-class BannerCarousel extends Component {
-    props: {
-      dispatch: (action: any) => Promise,
-    };
-    state: {
-      activeSlide: number,
-      entries: Array<Object>
-    };
+type navigatorType = {
+  push: any => any,
+}
 
-    constructor() {
-      super();
+type Props = {
+  dispatch: (action: any) => Promise<any>,
+  navigator: navigatorType
+};
+
+type state = {
+  activeSlide: number,
+  entries: Array<Object>
+};
+
+class BannerCarousel extends Component<Props, state> {
+    constructor(props) {
+      super(props);
       this.state = {
         activeSlide: 0,
         entries: [
@@ -113,7 +121,7 @@ class BannerCarousel extends Component {
                   renderItem={this._renderItem}
                   sliderWidth={WIN_WIDTH}
                   itemWidth={WIN_WIDTH}
-                  onSnapToItem={(index) => this.setState({ activeSlide: index }) }
+                  onSnapToItem={(index: number) => this.setState({ activeSlide: index }) }
                   loop={true}
                   autoplay={true}
                   autoplayInterval={5000}

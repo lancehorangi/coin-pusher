@@ -44,7 +44,6 @@ const TYPE_IMG = {
   3: require('./img/month.png'),
 }
 
-// Our custom component we want as a button in the nav bar
 const NormalItem = ({ text, bAvaiable, onPress, icon, btnText }) =>
   <TouchableOpacity
     style={styles.card}
@@ -101,11 +100,11 @@ class SignScreen extends ScreenComponent {
 
   }
 
-  onPress = (type: number, avaiable) => {
-    if (avaiable) {
+  onPress = (type: number, avaiable, receive) => {
+    if (avaiable && receive != 1) {
       this.props.dispatch(checkin(type));
     }
-    else {
+    else if (!avaiable) {
       this.props.navigator.push({
         screen: 'CP.IAPScreen', // unique ID registered with Navigation.registerScreen
         title: "商城",
@@ -136,7 +135,7 @@ class SignScreen extends ScreenComponent {
               bAvaiable={data.days != 0}
               icon={TYPE_IMG[data.type.toString()]}
               btnText={this.getBtnText(data.type, data.receive, data.days != 0)}
-              onPress={() => { this.onPress(data.type, data.days != 0) }}
+              onPress={() => { this.onPress(data.type, data.days != 0, data.receive) }}
               />
               <View
                 style={{
