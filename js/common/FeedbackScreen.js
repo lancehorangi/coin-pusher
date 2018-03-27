@@ -1,3 +1,5 @@
+//@flow
+
 import React, { Component } from "react";
 import {
   View,
@@ -18,7 +20,12 @@ import F8Colors from './F8Colors';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { isIphoneX } from './../util';
 
-class FeedbackScreen extends ScreenComponent {
+type State = {
+  text: string,
+  phone: string,
+}
+
+class FeedbackScreen extends ScreenComponent<Object, State> {
   constructor(props) {
     super(props);
 

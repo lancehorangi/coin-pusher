@@ -1,0 +1,25 @@
+{
+  "name": "react-native-ksyvideo",
+  "version": "2.0.0",
+  "summary": "A <Video /> element for react-native",
+  "authors": "ksyun",
+  "homepage": "https://github.com/ksvc",
+  "license": "MIT",
+  "platforms": {
+    "ios": "7.0",
+    "tvos": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/ksvc/react-native-video-player",
+    "tag": "2.0.0"
+  },
+  "source_files": "ios/RCTKSYVideo/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ],
+    "KSYMediaPlayer_iOS": [
+
+    ]
+  }
+}

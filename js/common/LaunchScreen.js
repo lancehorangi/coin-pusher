@@ -33,6 +33,7 @@ import { logIn, showRoomList, enterRoom } from '../actions'
 import ScreenComponent from './ScreenComponent';
 import { Navigation } from 'react-native-navigation';
 import RoomHistory from './RoomHistory';
+import KSYVideo from 'react-native-ksyvideo';
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -50,13 +51,44 @@ class LaunchScreen extends ScreenComponent {
     super(props);
   }
 
+  _onLoadStart = (event) => {
+    console.warn('_onLoadStart:' + JSON.stringify(event))
+  }
+
+  _onLoad = (event) => {
+    console.warn('_onLoad:' + JSON.stringify(event))
+  }
+
+  _onError = (event)=>{
+    console.warn('_onError:' + JSON.stringify(event))
+  }
+
+  _onReadyForDisplay = (event) => {
+    console.warn('_onReadyForDisplay:' + JSON.stringify(event))
+  };
+
   render() {
     return (
       <ScrollView style={[styles.container, this.props.style]}>
-        <Image
-          source={require("./img/launchscreen.png")}
-          style={styles.image}
-        />
+      <KSYVideo source={{uri: "rtmp://v02225181.live.126.net/live/073afa1b14d04e2a9ac6106b7bb98326"}}   // Can be a URL or a local file.
+         ref={(ref) => {
+           this.player = ref
+         }}                                      // Store reference
+         volume={1.0}
+         muted={true}
+         paused={false}                          // Pauses playback entirely.
+         resizeMode="cover"                      // Fill the whole screen at aspect ratio.*
+         repeat={true}                           // Repeat forever.
+         playInBackground={false}                // Audio continues to play when app entering background.
+         progressUpdateInterval={250.0}          // Interval to fire onProgress (default to ~250ms)
+         onLoadStart={this._onLoadStart}            // Callback when video starts to load
+         onLoad={this._onLoad}               // Callback when video loads
+         //onProgress={this.setTime}               // Callback every ~250ms with currentTime
+         //onEnd={this.onEnd}                      // Callback when playback finishes
+         onError={this._onError}               // Callback when video cannot be loaded
+         onBuffer={this._onReadyForDisplay}                // Callback when remote video is buffering
+         style={styles.video} />
+
         <F8Button
           theme="bordered"
           type="default"
@@ -93,7 +125,6 @@ class LaunchScreen extends ScreenComponent {
           caption="登录失效"
           onPress={() => this.logout()}
         />
-
       </ScrollView>
     );
   }
@@ -217,9 +248,9 @@ const styles = StyleSheet.create({
     resizeMode: "cover"
   },
   video: {
-    position: "absolute",
-    left: 0,
-    top: WIN_HEIGHT / 4,
+    //position: "absolute",
+    // left: 0,
+    // top: WIN_HEIGHT / 4,
     width: WIN_WIDTH,
     height: WIN_WIDTH / 4 * 3,
     resizeMode: "cover"

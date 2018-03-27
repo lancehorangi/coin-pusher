@@ -3,6 +3,7 @@ package com.coinpusher;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.ksyun.media.reactnative.ReactKSYVideoPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.reactlibrary.RNPayfubaoPackage;
 import com.theweflex.react.WeChatPackage;
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactKSYVideoPackage(),
             new RNSpinkitPackage(),
             new RNPayfubaoPackage(),
             new WeChatPackage(),
