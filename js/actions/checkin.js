@@ -1,17 +1,15 @@
 //@flow
 "use strict";
 
-import { Platform, Alert } from "react-native";
-import { Navigation } from 'react-native-navigation';
-import { APIRequest, configureAPIToken } from '../api';
-import { STATUS_OK } from '../env';
-import type { Action, ThunkAction } from "./types";
-import { toastShow } from './../util';
-import { freshMoney, freshItems } from './user';
+import { APIRequest } from "../api";
+import { STATUS_OK } from "../env";
+import type { ThunkAction, Dispatch } from "./types";
+import { toastShow } from "./../util";
+import { freshMoney, freshItems } from "./user";
 
-async function _getCheckinInfo() : Promise<Object> {
+async function _getCheckinInfo(): Promise<Object> {
   try {
-    let response = await APIRequest('account/getCheckinInfo', { }, true);
+    let response = await APIRequest("account/getCheckinInfo", { }, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -20,28 +18,28 @@ async function _getCheckinInfo() : Promise<Object> {
     return response;
   } catch(e) {
     throw Error(e.message);
-  };
+  }
 }
 
 function getCheckinInfo(): ThunkAction {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch): any => {
     const response = _getCheckinInfo();
 
-    response.then(result => dispatch({
+    response.then((result: Object): any => dispatch({
       type: "CHECKIN_INFO",
       checkinInfo: result.checkinList,
     }),
-      err => {
-        console.log('getCheckinInfo failed reason=' + err.message);
-      });
+    (err: Error) => {
+      console.log("getCheckinInfo failed reason=" + err.message);
+    });
 
     return response;
   };
 }
 
-async function _checkin(type: number) : Promise<Object> {
+async function _checkin(type: number): Promise<Object> {
   try {
-    let response = await APIRequest('account/checkin', { type }, true);
+    let response = await APIRequest("account/checkin", { type }, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -50,25 +48,25 @@ async function _checkin(type: number) : Promise<Object> {
     return response;
   } catch(e) {
     throw Error(e.message);
-  };
+  }
 }
 
 function checkin(type: number): ThunkAction {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch): any => {
     const response = _checkin(type);
-    response.then(result => {
-      toastShow('签到成功');
+    response.then((result: Object) => {
+      toastShow("签到成功");
       dispatch(freshMoney());
       dispatch(freshItems());
       dispatch({
         type: "CHECKIN_INFO",
         checkinInfo: result.checkinList,
-      })
-    },
-      err => {
-        toastShow('签到失败(' + err.message + ')');
-        console.log('getCheckinInfo failed reason=' + err.message);
       });
+    },
+    (err: Error) => {
+      toastShow("签到失败(" + err.message + ")");
+      console.log("getCheckinInfo failed reason=" + err.message);
+    });
 
     return response;
   };

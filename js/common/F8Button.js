@@ -25,7 +25,7 @@
 import React from "react";
 import F8Colors from "./F8Colors";
 import F8Fonts from "./F8Fonts";
-import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Text } from "./F8Text";
 
 /* constants ================================================================ */
@@ -218,10 +218,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 30,
     borderRadius: BUTTON_HEIGHT / 2
-  },
-  buttonRound: {
-    width: BUTTON_HEIGHT,
-    paddingHorizontal: 0
   },
   icon: {
     marginRight: 12

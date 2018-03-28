@@ -24,16 +24,14 @@
 
 "use strict";
 
-import { Platform, Alert } from "react-native";
-import { Navigation } from 'react-native-navigation';
-import { APIRequest, configureAPIToken } from '../api';
-import { STATUS_OK } from '../env';
-import type { Action, ThunkAction } from "./types";
-import { toastShow } from './../util';
+import { APIRequest } from "../api";
+import { STATUS_OK } from "../env";
+import type { Action, ThunkAction, Dispatch } from "./types";
+import { toastShow } from "./../util";
 
-async function _refreshMsgs() : Promise<Object> {
+async function _refreshMsgs(): Promise<Object> {
   try {
-    let response = await APIRequest('account/mailList', { }, true);
+    let response = await APIRequest("account/mailList", { }, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -42,17 +40,19 @@ async function _refreshMsgs() : Promise<Object> {
     return response;
   } catch(e) {
     throw Error(e.message);
-  };
+  }
 }
 
 function refreshMsgs(): ThunkAction {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch): Object => {
     const response = _refreshMsgs();
-    response.then(result => dispatch(_succ(result.mailList, result.unreadNum)),
-      err => {
-        console.log('mailList failed reason=' + err.message);
-        toastShow('邮件刷新失败:' + err.message)
-      });
+    response.then((result: Object): any => {
+      dispatch(_succ(result.mailList, result.unreadNum));
+    },
+    (err: Error) => {
+      console.log("mailList failed reason=" + err.message);
+      toastShow("邮件刷新失败:" + err.message);
+    });
 
     return response;
   };
@@ -60,7 +60,7 @@ function refreshMsgs(): ThunkAction {
 
 async function _openMsg(mailID: number): Promise<Object>{
   try {
-    let response = await APIRequest('account/mailRead', {id:mailID }, true);
+    let response = await APIRequest("account/mailRead", {id:mailID }, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -69,19 +69,19 @@ async function _openMsg(mailID: number): Promise<Object>{
     return response;
   } catch(e) {
     throw Error(e.message);
-  };
+  }
 }
 
 function openMsg(mailID: number): ThunkAction {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch): Object => {
     let response = _openMsg(mailID);
-    response.then( result => dispatch({
+    response.then((result: Object): any => dispatch({
       type: "OPEN_MSG",
       openMail: result.info
     }),
-    err => {
-      console.log('openMsg failed reason=' + err.message);
-      toastShow('打开邮件失败:' + err.message)
+    (err: Error) => {
+      console.log("openMsg failed reason=" + err.message);
+      toastShow("打开邮件失败:" + err.message);
     });
 
     return response;
@@ -90,7 +90,7 @@ function openMsg(mailID: number): ThunkAction {
 
 async function _getMailAcessory(mailID: number): Promise<Object> {
   try {
-    let response = await APIRequest('mail/pull', {id:mailID}, true);
+    let response = await APIRequest("mail/pull", {id:mailID}, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -99,24 +99,24 @@ async function _getMailAcessory(mailID: number): Promise<Object> {
     return response;
   } catch(e) {
     throw Error(e.message);
-  };
+  }
 }
 
 function getMailAccessory(mailID: number): ThunkAction {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch): Object => {
     let response = _getMailAcessory(mailID);
 
-    response.then( result => dispatch({
+    response.then((result: Object): any => dispatch({
       type: "OPEN_MSG",
       openMail: result.info
     }),
-    err => {
-      console.log('pullMsg failed reason=' + err.message);
-      toastShow('领取附件失败:' + err.message)
+    (err: Error) => {
+      console.log("pullMsg failed reason=" + err.message);
+      toastShow("领取附件失败:" + err.message);
     });
 
     return response;
-  }
+  };
 }
 
 function _succ(msgs: Object, unreadNum: number): Action {

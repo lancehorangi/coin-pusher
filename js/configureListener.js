@@ -1,10 +1,8 @@
 "use strict";
 
-import { NativeAppEventEmitter, Alert, AppState } from 'react-native';
-import { Navigation } from 'react-native-navigation';
-import { NIMLoginDescrib, NIMAVChatDescrib } from './nativeEventDescribe';
-import type { Action, ThunkAction } from "./actions/types";
-import { toastShow, codePushSync, BuglyUpdateVersion } from './util';
+import { NativeAppEventEmitter, AppState } from "react-native";
+import {  NIMAVChatDescrib } from "./nativeEventDescribe";
+import { toastShow, codePushSync } from "./util";
 
 let _store = null;
 
@@ -30,6 +28,7 @@ function configureListener(store): void {
 
   //NIM 用户相关事件
   NativeAppEventEmitter.addListener("observeOnlineStatus",(data)=>{
+    console.log("observeOnlineStatus:" + data.status);
     //store.getState().dispatch();
 
     //data.status 为连接状态
@@ -45,7 +44,7 @@ function configureListener(store): void {
 
   //NIM AVChat 相关事件
   NativeAppEventEmitter.addListener("observeAVChatStatus",(data)=>{
-    toastShow('NIM AV STATUS=' + data);
+    toastShow("NIM AV STATUS=" + data);
     if (NIMAVChatDescrib[data]) {
       // Navigation.showInAppNotification({
       //     screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
@@ -57,24 +56,24 @@ function configureListener(store): void {
 
   //NIM AVChat 中断出错
   NativeAppEventEmitter.addListener("observeAVChatError",(data)=>{
-    toastShow('NIM AV ERROR=' + NIMAVChatDescrib[data]);
-      // Navigation.showInAppNotification({
-      //     screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
-      //     passProps: {text:NIMAVChatDescrib[data]}, // simple serializable object that will pass as props to the in-app notification (optional)
-      //     autoDismissTimerSec: 1 // auto dismiss notification in seconds
-      //   });
+    toastShow("NIM AV ERROR=" + NIMAVChatDescrib[data]);
+    // Navigation.showInAppNotification({
+    //     screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
+    //     passProps: {text:NIMAVChatDescrib[data]}, // simple serializable object that will pass as props to the in-app notification (optional)
+    //     autoDismissTimerSec: 1 // auto dismiss notification in seconds
+    //   });
   });
 }
 
 let _appState = AppState.currentState;
 let _handleAppStateChange = (nextAppState) => {
-  if (_appState.match(/inactive|background/) && nextAppState === 'active') {
-    console.log('App has come to the foreground!')
+  if (_appState.match(/inactive|background/) && nextAppState === "active") {
+    console.log("App has come to the foreground!");
     codePushSync();
   }
   _appState = nextAppState;
-}
+};
 
-AppState.addEventListener('change', _handleAppStateChange);
+AppState.addEventListener("change", _handleAppStateChange);
 
 module.exports = {configureListener, getStoreDispatch, getStore};

@@ -24,16 +24,14 @@
 
 "use strict";
 
-import { Platform, Alert } from "react-native";
-import { Navigation } from 'react-native-navigation';
-import { APIRequest, configureAPIToken } from '../api';
-import { STATUS_OK } from '../env';
-import type { Action, ThunkAction } from "./types";
-import { toastShow } from './../util';
+import { APIRequest } from "../api";
+import { STATUS_OK } from "../env";
+import type { Action, ThunkAction, Dispatch } from "./types";
+import { toastShow } from "./../util";
 
 async function _getAccountHistory(): Promise<Object>{
   try {
-    let response = await APIRequest('account/getHistory', {}, true);
+    let response = await APIRequest("account/getHistory", {}, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -42,26 +40,27 @@ async function _getAccountHistory(): Promise<Object>{
     return response;
   } catch(e) {
     throw Error(e.message);
-  };
+  }
 }
 
 function getAccountHistory(): ThunkAction {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch): Object => {
     let responese = _getAccountHistory();
-    responese.then( result => dispatch({
+    responese.then((result: Object): any => dispatch({
       type: "ACCOUNT_GAME_HISTORY",
       accountGameHistory: result.list
     }),
-    err => {
-      console.log('getAccountHistory failed reason=' + err.message);
-      toastShow('获取个人游戏记录失败:' + err.message)
+    (err: Error) => {
+      console.log("getAccountHistory failed reason=" + err.message);
+      toastShow("获取个人游戏记录失败:" + err.message);
     });
+    return responese;
   };
 }
 
-async function _heartRequest() {
+async function _heartRequest(): Promise<Object> {
   try {
-    let response = await APIRequest('account/heart', {}, true);
+    let response = await APIRequest("account/heart", {}, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -70,26 +69,28 @@ async function _heartRequest() {
     return response;
   } catch(e) {
     throw Error(e.message);
-  };
+  }
 }
 
 function heartRequest(): ThunkAction {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch): Object => {
     let responese = _heartRequest();
-    responese.then( result => dispatch({
+    responese.then((result: Object): any => dispatch({
       type: "TICK_INFO",
       gold: result.gold,
       integral: result.integral,
     }),
-    err => {
-      console.warn('heartRequest failed reason=' + err.message);
+    (err: Error) => {
+      console.warn("heartRequest failed reason=" + err.message);
     });
-  }
+
+    return responese;
+  };
 }
 
-async function _freshMoney() {
+async function _freshMoney(): Promise<Object> {
   try {
-    let response = await APIRequest('account/moneyInfo', {}, true);
+    let response = await APIRequest("account/moneyInfo", {}, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -98,27 +99,29 @@ async function _freshMoney() {
     return response;
   } catch(e) {
     throw Error(e.message);
-  };
+  }
 }
 
 function freshMoney(): ThunkAction {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch): Object => {
     let responese = _freshMoney();
-    responese.then( result => dispatch({
+    responese.then((result: Object): any => dispatch({
       type: "ACCOUNT_UPDATE_MONEY",
       gold: result.gold,
       integral: result.integral,
       diamond: result.diamond,
     }),
-    err => {
-      console.warn('moneyFresh failed reason=' + err.message);
+    (err: Error) => {
+      console.warn("moneyFresh failed reason=" + err.message);
     });
-  }
+
+    return responese;
+  };
 }
 
-async function _freshItems() {
+async function _freshItems(): Promise<Action> {
   try {
-    let response = await APIRequest('account/bagInfo', {}, true);
+    let response = await APIRequest("account/bagInfo", {}, true);
 
     if(response.StatusCode != STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -127,20 +130,22 @@ async function _freshItems() {
     return response;
   } catch(e) {
     throw Error(e.message);
-  };
+  }
 }
 
 function freshItems(): ThunkAction {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch): Object => {
     let responese = _freshItems();
-    responese.then( result => dispatch({
+    responese.then((result: Object): any => dispatch({
       type: "ACCOUNT_UPDATE_ITEMS",
       items: result.bag,
     }),
-    err => {
-      console.warn('freshItems failed reason=' + err.message);
+    (err: Error) => {
+      console.warn("freshItems failed reason=" + err.message);
     });
-  }
+
+    return responese;
+  };
 }
 
 module.exports = { getAccountHistory, heartRequest, freshMoney, freshItems };

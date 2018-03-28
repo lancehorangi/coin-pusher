@@ -1,22 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  StyleSheet,
-  ScrollView,
-  Alert
+  StyleSheet
 } from "react-native";
-import { List, ListItem, SearchBar, Button, Avatar } from "react-native-elements";
+import { List, ListItem } from "react-native-elements";
 import { loggedOut } from "../actions";
 import { connect } from "react-redux";
-import dateFormat from 'dateformat';
-import ScreenComponent from './ScreenComponent';
-import F8Colors from './F8Colors';
-import { isIphoneX } from './../util';
+import ScreenComponent from "./ScreenComponent";
+import F8Colors from "./F8Colors";
 import codePush from "react-native-code-push";
-import DeviceInfo from 'react-native-device-info';
+import DeviceInfo from "react-native-device-info";
 
 class OptionScreen extends ScreenComponent {
   constructor(props) {
@@ -29,16 +22,16 @@ class OptionScreen extends ScreenComponent {
   }
 
   static navigatorStyle = {
-    navBarTextColor: '#ffffff',
+    navBarTextColor: "#ffffff",
     navBarBackgroundColor: F8Colors.mainBgColor2,
-    navBarButtonColor: '#ffffff'
+    navBarButtonColor: "#ffffff"
   };
 
   componentDidMount() {
     codePush.getUpdateMetadata(codePush.UpdateState.RUNNING).then((update) => {
-    if (update) {
+      if (update) {
         this.setState({jsVersion:update.label});
-        }
+      }
     });
   }
 
@@ -55,7 +48,7 @@ class OptionScreen extends ScreenComponent {
       <List containerStyle={styles.listContainer}>
         <ListItem
           containerStyle={{borderTopWidth: 0, borderBottomWidth: 1, borderBottomColor: F8Colors.mainBgColor2}}
-          titleStyle={{color: '#d1d3e8', fontSize: 15}}
+          titleStyle={{color: "#d1d3e8", fontSize: 15}}
           key={1}
           title={"声音"}
           //leftIcon={{name: "music"}}
@@ -68,7 +61,7 @@ class OptionScreen extends ScreenComponent {
 
         <ListItem
           containerStyle={{borderTopWidth: 0, borderBottomWidth: 1, borderBottomColor: F8Colors.mainBgColor2}}
-          titleStyle={{color: '#d1d3e8', fontSize: 15}}
+          titleStyle={{color: "#d1d3e8", fontSize: 15}}
           key={2}
           title={"版本"}
           //leftIcon={{name: "music"}}
@@ -80,21 +73,21 @@ class OptionScreen extends ScreenComponent {
 
         <ListItem
           containerStyle={{borderTopWidth: 0, borderBottomWidth: 1, borderBottomColor: F8Colors.mainBgColor2, backgroundColor:"#ee4943"}}
-          titleStyle={{color: '#d1d3e8', fontSize: 15}}
+          titleStyle={{color: "#d1d3e8", fontSize: 15}}
           key={3}
           title={"退出登录"}
           //leftIcon={{name: "music"}}
           hideChevron={true}
           onPress={this.pressLogout}
         />
-    </List>
-    )
+      </List>
+    );
   }
 
   render() {
     return (
       <View style={styles.container}>
-          {this.renderBtn()}
+        {this.renderBtn()}
       </View>
     );
   }
@@ -106,26 +99,26 @@ class OptionScreen extends ScreenComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     backgroundColor: F8Colors.mainBgColor,
     //height: '100%',
   },
   header: {
-    width: '100%',
+    width: "100%",
     //height: 150,
     paddingBottom: 15,
     backgroundColor: F8Colors.mainBgColor2,
     flexDirection: "row",
   },
   currContainer: {
-    width: '100%',
+    width: "100%",
     height: 50,
     flexDirection: "row",
     marginTop: 10,
     backgroundColor: F8Colors.mainBgColor2,
     //justifyContent: 'center',
     //alignContent: 'center',
-    alignItems: 'center',
+    alignItems: "center",
     justifyContent: "space-between",
   },
   listContainer: {
@@ -139,11 +132,5 @@ const styles = StyleSheet.create({
   }
 });
 
-function select(store) {
-  return {
-
-  };
-}
-
 /* exports ================================================================== */
-module.exports = connect(select)(OptionScreen);
+module.exports = connect()(OptionScreen);

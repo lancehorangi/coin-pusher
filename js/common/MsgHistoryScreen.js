@@ -1,25 +1,30 @@
+//@flow
+"use strict";
+
 import React, { Component } from "react";
 import {
   View,
-  Text,
   FlatList,
-  ActivityIndicator,
   StyleSheet,
   Image,
-  Alert,
 } from "react-native";
 import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
-import { refreshMsgs, setNavigator } from "../actions";
+import { refreshMsgs } from "../actions";
 import { connect } from "react-redux";
-import dateFormat from 'dateformat';
-import ScreenComponent from './ScreenComponent';
-import F8Colors from './F8Colors';
+import dateFormat from "dateformat";
+import ScreenComponent from "./ScreenComponent";
+import F8Colors from "./F8Colors";
 
-class MsgHistoryScreen extends ScreenComponent {
-  constructor(props) {
+type States = {
+  page: number,
+  error: null | Object,
+  bRefreshing: boolean,
+  bLoading: boolean
+};
+
+class MsgHistoryScreen extends ScreenComponent<{}, States> {
+  constructor(props: Object) {
     super(props);
-
-    //props.bLoading=false;
 
     this.state = {
       page: 1,
@@ -30,9 +35,9 @@ class MsgHistoryScreen extends ScreenComponent {
   }
 
   static navigatorStyle = {
-    navBarTextColor: '#ffffff',
+    navBarTextColor: "#ffffff",
     navBarBackgroundColor: F8Colors.mainBgColor2,
-    navBarButtonColor: '#ffffff'
+    navBarButtonColor: "#ffffff"
   };
 
   RNNDidAppear = () => {
@@ -43,15 +48,15 @@ class MsgHistoryScreen extends ScreenComponent {
     //this.makeRemoteRequest();
   }
 
-  makeRemoteRequest = async () => {
-    this.setState({bRefreshing:true})
+  makeRemoteRequest = async (): void => {
+    this.setState({bRefreshing:true});
 
     try {
-      let response = await this.props.dispatch(refreshMsgs());
+      await this.props.dispatch(refreshMsgs());
     } catch (e) {
-
+      //
     } finally {
-      this.setState({bRefreshing:false})
+      this.setState({bRefreshing:false});
     }
   };
 
@@ -78,9 +83,9 @@ class MsgHistoryScreen extends ScreenComponent {
     // );
   };
 
-  onPress = (mailID) => {
+  onPress = (mailID: number) => {
     this.props.navigator.push({
-      screen: 'CP.MsgDetailScreen', // unique ID registered with Navigation.registerScreen
+      screen: "CP.MsgDetailScreen", // unique ID registered with Navigation.registerScreen
       title: "邮件详情",
       passProps: {
         mailID
@@ -88,7 +93,7 @@ class MsgHistoryScreen extends ScreenComponent {
     });
   }
 
-  renderSeparator = () => {
+  renderSeparator = (): Component => {
     return (
       <View
         style={{
@@ -101,12 +106,12 @@ class MsgHistoryScreen extends ScreenComponent {
     );
   };
 
-  renderHeader = () => {
+  renderHeader = (): Component => {
     return <SearchBar placeholder="Type Here..." lightTheme round />;
   };
 
-  renderFooter = () => {
-    return null;
+  renderFooter = (): Component => {
+    return;
     // if (!this.props.bLoading) return null;
     //
     // return (
@@ -122,14 +127,14 @@ class MsgHistoryScreen extends ScreenComponent {
     // );
   };
 
-  renderItem = ({item}) => {
+  renderItem = ({item}: Object): Component => {
     let accessoryContent = item.items && item.items.length > 0 ? (
       <Avatar
         containerStyle={{marginRight:5, marginLeft:5}}
-        overlayContainerStyle={{backgroundColor: 'transparent'}}
+        overlayContainerStyle={{backgroundColor: "transparent"}}
         width={20}
         height={20}
-        source={require('./img/mail_x.png')}
+        source={require("./img/mail_x.png")}
       />
     ) : null;
 
@@ -139,49 +144,41 @@ class MsgHistoryScreen extends ScreenComponent {
           containerStyle={{borderTopWidth: 0, borderBottomWidth: 0}}
           //title={item.sender}
           title={item.title}
-          titleStyle={{color: '#d1d3e8', fontSize: 17}}
+          titleStyle={{color: "#d1d3e8", fontSize: 17}}
           //subtitle={item.content}
-          rightTitle={dateFormat(new Date(item.sendTime * 1000), 'UTC:yyyy/mm/dd\nHH:MM')}
+          rightTitle={dateFormat(new Date(item.sendTime * 1000), "UTC:yyyy/mm/dd\nHH:MM")}
           //rightTitle={item.sendTime}
           rightTitleNumberOfLines={2}
           avatar={accessoryContent}
           leftIcon={
             <Image
-            style={{width:20, height:20, marginRight:5, marginLeft:5}}
-            source={item.mark ? require('./img/header/news.png') : require('./img/news_y.png')}/>
+              style={{width:20, height:20, marginRight:5, marginLeft:5}}
+              source={item.mark ? require("./img/header/news.png") : require("./img/news_y.png")}/>
           }
           onPress={() => this.onPress(item.id)}
         />
       )
-    )
+    );
   }
 
-  render() {
-    // if (this.state.bRefreshing) {
-    //   return (
-    //     <View style={[styles.loadingCotainer]}>
-    //         <ActivityIndicator animating size="large" color='white'/>
-    //     </View>
-    //   );
-    // }
-    // else {
-      return (
-        <List containerStyle={styles.container}>
-          <FlatList
-            data={this.props.msgs}
-            renderItem={this.renderItem}
-            keyExtractor={item => item.id}
-            ItemSeparatorComponent={this.renderSeparator}
-            //ListHeaderComponent={this.renderHeader}
-            //ListFooterComponent={this.renderFooter}
-            refreshControl={{tintColor:'white'}}
-            onRefresh={this.handleRefresh}
-            refreshing={this.state.bLoading}
-            onEndReached={this.handleLoadMore}
-            onEndReachedThreshold={0}
-          />
-        </List>
-      );
+  render(): Component {
+    return (
+      <List containerStyle={styles.container}>
+        <FlatList
+          data={this.props.msgs}
+          renderItem={this.renderItem}
+          keyExtractor={item => item.id}
+          ItemSeparatorComponent={this.renderSeparator}
+          //ListHeaderComponent={this.renderHeader}
+          //ListFooterComponent={this.renderFooter}
+          refreshControl={{tintColor:"white"}}
+          onRefresh={this.handleRefresh}
+          refreshing={this.state.bLoading}
+          onEndReached={this.handleLoadMore}
+          onEndReachedThreshold={0}
+        />
+      </List>
+    );
     //}
   }
 }
@@ -198,15 +195,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     borderBottomColor: "#45474D",
     backgroundColor: F8Colors.mainBgColor,
-  },
-  loadingCotainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: F8Colors.mainBgColor,
   }
 });
 
-function select(store) {
+function select(store: Object): Object {
   return {
     msgs: store.msgs.msgs,
   };

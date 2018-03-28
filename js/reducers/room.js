@@ -1,6 +1,5 @@
 "use strict";
 
-import { Alert } from 'react-native';
 import type { Action } from "../actions/types";
 
 export type State = {
@@ -18,7 +17,7 @@ function room(state: State = initialState, action: Action): State {
     return {
       ...state,
       roomInfo: action.roomInfo,
-    }
+    };
   }
 
   if(action.type === "ROOM_HISTORY_INFO")
@@ -26,7 +25,7 @@ function room(state: State = initialState, action: Action): State {
     return {
       ...state,
       roomGameHistory: action.roomGameHistory,
-    }
+    };
   }
 
   if(action.type === "LOGGED_OUT"){

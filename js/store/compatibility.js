@@ -10,7 +10,9 @@ export async function ensureCompatibility() {
     if (stored && stored === JSON.stringify(compatibleStoreVersion)) {
       return false; // no need to update
     }
-  } catch (error) {}
+  } catch (error) {
+    console.wanr(error.message);
+  }
   return await resetCompatibility();
 }
 
@@ -24,7 +26,9 @@ async function resetCompatibility() {
     }
     // after storage reset, update the compatibility to the current storage version
     return await updateCompatibility();
-  } catch (error) {}
+  } catch (error) {
+    console.wanr(error.message);
+  }
   return false;
 }
 
@@ -35,6 +39,8 @@ async function updateCompatibility() {
       JSON.stringify(compatibleStoreVersion)
     );
     return true;
-  } catch (error) {}
+  } catch (error) {
+    console.wanr(error.message);
+  }
   return false;
 }

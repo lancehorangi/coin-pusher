@@ -24,8 +24,6 @@
 
 "use strict";
 
-type ParseObject = Object;
-
 export type Action =
   | {
       type: "LOGGED_IN",

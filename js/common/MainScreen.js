@@ -1,162 +1,174 @@
-import * as React from 'react';
+//@flow
+"use strict";
+
+import * as React from "react";
+import { Component } from "react";
 import { View,
   StyleSheet,
   Dimensions,
   Animated,
-  Platform,
-  ScrollView,
-  Image,
   Alert,
-  StatusBar } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+  StatusBar } from "react-native";
+import { TabViewAnimated, TabBar } from "react-native-tab-view";
 import { connect } from "react-redux";
-import { Navigation } from 'react-native-navigation';
-import { NimSession } from 'react-native-netease-im';
-import { loggedOut, setNavigator, showRoomList,
-  refreshMsgs, getAccountInfo, getCheckinInfo, freshItems, freshMoney } from './../actions';
-
-import { toastShow } from './../util';
-import LaunchScreen from './LaunchScreen';
-import BannerCarousel from './BannerCarousel';
-import RoomList from './RoomList';
-import GridButton from './GridButton';
-import CustomMainScreenTabButton from './CustomMainScreenTabButton';
-import { showModal } from './../navigator';
-
-import F8Colors from './F8Colors';
-import { Text, HeaderTitle } from "./F8Text";
+import { Navigation } from "react-native-navigation";
+import { NimSession } from "react-native-netease-im";
+import {
+  loggedOut,
+  setNavigator,
+  refreshMsgs,
+  getAccountInfo,
+  getCheckinInfo,
+  freshItems,
+  freshMoney
+} from "./../actions";
+import BannerCarousel from "./BannerCarousel";
+import RoomList from "./RoomList";
+import GridButton from "./GridButton";
+import CustomMainScreenTabButton from "./CustomMainScreenTabButton";
+import { showModal } from "./../navigator";
+import F8Colors from "./F8Colors";
 
 
 const initialLayout = {
   height: 0,
-  width: Dimensions.get('window').width,
+  width: Dimensions.get("window").width,
 };
 
 const ROOM_TYPE_GOLD = 0;
 const ROOM_TYPE_GOLD10 = 1;
 
-// const {width: SCREEN_WIDTH} = Dimensions.get("window");
-// const HEADER_HEIGHT = Platform.OS === "ios" ? 64 : 50;
-Navigation.registerComponent('CP.CustomMainScreenTabButton', () => CustomMainScreenTabButton);
+Navigation.registerComponent("CP.CustomMainScreenTabButton", (): Object => CustomMainScreenTabButton);
 
-export class MainScreen extends React.Component {
+type Props = {
+  dispatch: ?() => mixed,
+  navigator: Object
+};
+
+type States = {
+  index: number,
+  routes: Array<Object>,
+  tabY: number,
+  bInitFinish: boolean
+};
+
+export class MainScreen extends React.Component<Props, States> {
   nScroll = new Animated.Value(0);
   _refs = {}
   state = {
     index: 0,
     routes: [
-      { key: 'first', title: '金币1倍场' },
-      { key: 'second', title: '金币10倍场' },
+      { key: "first", title: "金币1倍场" },
+      { key: "second", title: "金币10倍场" },
     ],
     tabY: 0,
-    index: 0,
     bInitFinish: false
   };
 
   static navigatorButtons = {
     rightButtons: [
       {
-        id: 'add', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
-        buttonColor: '#ffffff', // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
+        id: "add", // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
+        buttonColor: "#ffffff", // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
         //icon: require('./img/header/add.png'),
-        component: 'CP.CustomMainScreenTabButton',
+        component: "CP.CustomMainScreenTabButton",
         disableIconTint: true,
         passProps: {}
       }
     ],
     leftButtons: [
       {
-        id: 'message', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
-        buttonColor: '#ffffff', // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
-        icon: require('./img/header/news.png'),
+        id: "message", // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
+        buttonColor: "#ffffff", // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
+        icon: require("./img/header/news.png"),
         disableIconTint: true,
       }
     ]
   };
 
   static navigatorStyle = {
-    navBarTextColor: '#ffffff',
+    navBarTextColor: "#ffffff",
     navBarBackgroundColor: F8Colors.mainBgColor2
   };
 
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
     // if you want to listen on navigator events, set this up
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
-  onNavigatorEvent(event) {
+  onNavigatorEvent(event: Object) {
     //console.log('MainScreen:' + JSON.stringify(event));
     switch(event.id) {
-      case 'willAppear':
-       break;
-      case 'didAppear':
-        this.props.dispatch(setNavigator(this.props.navigator));
-        this.props.dispatch(freshMoney());
-        this.props.dispatch(freshItems());
-        break;
-      case 'willDisappear':
-        break;
-      case 'didDisappear':
-        break;
-      case 'willCommitPreview':
-        break;
+    case "willAppear":
+      break;
+    case "didAppear":
+      this.props.dispatch(setNavigator(this.props.navigator));
+      this.props.dispatch(freshMoney());
+      this.props.dispatch(freshItems());
+      break;
+    case "willDisappear":
+      break;
+    case "didDisappear":
+      break;
+    case "willCommitPreview":
+      break;
     }
 
-    if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
-      if (event.id == 'add') { // this is the same id field from the static navigatorButtons definition
+    if (event.type == "NavBarButtonPress") { // this is the event type for button presses
+      if (event.id == "add") { // this is the same id field from the static navigatorButtons definition
         this.props.navigator.push({
-          screen: 'CP.IAPScreen', // unique ID registered with Navigation.registerScreen
+          screen: "CP.IAPScreen", // unique ID registered with Navigation.registerScreen
           title: "商城",
         });
       }
-      if (event.id == 'message') {
+      if (event.id == "message") {
         this.props.navigator.push({
-          screen: 'CP.MsgHistoryScreen', // unique ID registered with Navigation.registerScreen
+          screen: "CP.MsgHistoryScreen", // unique ID registered with Navigation.registerScreen
           title: "邮件",
         });
       }
     }
   }
 
-  _handleIndexChange = async (index) => {
+  _handleIndexChange = async (index: number): void => {
     await this.setState({ index });
     let {routes} = this.state;
 
-    routes.map((route, refIndex) => {
+    routes.map((route: Object, refIndex: number) => {
       if(refIndex == index){
-        let key = route['key']
+        let key = route["key"];
         this._refs[key].loadInfo();
         return;
       }
     });
   }
 
-  _renderHeaderTabBar = props => {
-      return <TabBar style={{
-                              transform: [{translateY: this.state.tabY}],
-                              backgroundColor: '#292d36'
-                            }}
-                            labelStyle={{color: '#d1d3e8', margin:1}}
-                            scrollEnabled={false}
-                            useNativeDriver={true}
-                            { ...props }/>;
+  _renderHeaderTabBar = (props: Object): Component => {
+    return <TabBar style={{
+      transform: [{translateY: this.state.tabY}],
+      backgroundColor: "#292d36"
+    }}
+    labelStyle={{color: "#d1d3e8", margin:1}}
+    scrollEnabled={false}
+    useNativeDriver={true}
+    { ...props }/>;
   }
 
-  _renderScene = ({ route }) => {
+  _renderScene = ({ route }: Object): Component => {
     switch (route.key) {
-    case 'first':
-      return <RoomList ref={(tabScene) => {
-                if(tabScene){
-                  this._refs[route.key] = tabScene.getWrappedInstance();
-                }}}
-                displayRoomType={ROOM_TYPE_GOLD}/>;
-    case 'second':
-      return <RoomList ref={(tabScene) => {
-                if(tabScene){
-                  this._refs[route.key] = tabScene.getWrappedInstance();
-                }}}
-                displayRoomType={ROOM_TYPE_GOLD10}/>;
+    case "first":
+      return <RoomList ref={(tabScene: Object) => {
+        if(tabScene){
+          this._refs[route.key] = tabScene.getWrappedInstance();
+        }}}
+      displayRoomType={ROOM_TYPE_GOLD}/>;
+    case "second":
+      return <RoomList ref={(tabScene: Object) => {
+        if(tabScene){
+          this._refs[route.key] = tabScene.getWrappedInstance();
+        }}}
+      displayRoomType={ROOM_TYPE_GOLD10}/>;
     default:
       return null;
     }
@@ -164,14 +176,14 @@ export class MainScreen extends React.Component {
 
   _onPressSign = () => {
     this.props.navigator.push({
-      screen: 'CP.SignScreen', // unique ID registered with Navigation.registerScreen
+      screen: "CP.SignScreen", // unique ID registered with Navigation.registerScreen
       title: "签到",
     });
   }
 
   _onPressTutorial = () => {
     showModal({
-      screen: 'CP.ImageSwiperScreen', // unique ID registered with Navigation.registerScreen
+      screen: "CP.ImageSwiperScreen", // unique ID registered with Navigation.registerScreen
       title: "教程",
       passProps: {
         images: [
@@ -185,28 +197,28 @@ export class MainScreen extends React.Component {
 
   }
 
-  _renderHeader = () => { return (
-      <View style={{backgroundColor: F8Colors.mainBgColor}}>
+  _renderHeader = (): Component => { return (
+    <View style={{backgroundColor: F8Colors.mainBgColor}}>
       <StatusBar barStyle="light-content"/>
-        <BannerCarousel/>
-        <View style={styles.gridContainer}>
-          <GridButton
-            icon={require('./img/buttons/sign.png')}
-            caption={'签到'}
-            onPress={_ => this._onPressSign()}/>
-          <GridButton
-            icon={require('./img/buttons/course.png')}
-            caption={'教程'}
-            onPress={_ => this._onPressTutorial()}/>
-          <GridButton
-            icon={require('./img/buttons/more.png')}
-            caption={'敬请期待'}/>
-        </View>
+      <BannerCarousel/>
+      <View style={styles.gridContainer}>
+        <GridButton
+          icon={require("./img/buttons/sign.png")}
+          caption={"签到"}
+          onPress={(): void => this._onPressSign()}/>
+        <GridButton
+          icon={require("./img/buttons/course.png")}
+          caption={"教程"}
+          onPress={(): void => this._onPressTutorial()}/>
+        <GridButton
+          icon={require("./img/buttons/more.png")}
+          caption={"敬请期待"}/>
       </View>
-    )
+    </View>
+  );
   }
 
-  async initInfo() {
+  async initInfo(): any {
     try {
       await NimSession.login(this.props.account, this.props.token);
       this.props.dispatch(refreshMsgs());
@@ -215,9 +227,9 @@ export class MainScreen extends React.Component {
       this.props.dispatch(freshItems());
 
     } catch (e) {
-      Alert.alert("account:" + this.props.account + ', token:' + this.props.token + ', err=' + e.message);
+      Alert.alert("account:" + this.props.account + ", token:" + this.props.token + ", err=" + e.message);
     } finally {
-
+      //
     }
   }
 
@@ -233,16 +245,16 @@ export class MainScreen extends React.Component {
   _onEndReached = () => {
     let {routes, index} = this.state;
 
-    routes.map((route, refIndex) => {
+    routes.map((route: Object, refIndex: number) => {
       if(refIndex == index){
-        let key = route['key']
+        let key = route["key"];
         this._refs[key].onEndReached();
         return;
       }
     });
   }
 
-  _renderTabView = () => {
+  _renderTabView = (): Component => {
     if (this.state.bInitFinish) {
       return <TabViewAnimated
         style={styles.container}
@@ -273,33 +285,33 @@ export class MainScreen extends React.Component {
     }
   }
 
-  isReachEnd = ({layoutMeasurement, contentOffset, contentSize}) => {
-                      const paddingToBottom = 0;
-                      return layoutMeasurement.height + contentOffset.y >=
+  isReachEnd = ({layoutMeasurement, contentOffset, contentSize}: Object): Component => {
+    const paddingToBottom = 0;
+    return layoutMeasurement.height + contentOffset.y >=
                         contentSize.height - paddingToBottom;
-                    };
+  };
 
-  render() {
-      return (
-        <Animated.ScrollView
-            alwaysBounceVertical={false}
-            alwaysBounceHorizontal={false}
-            bounces={false}
-            scrollEventThrottle={5}
-            showsVerticalScrollIndicator={false}
-            onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.nScroll}}}], {useNativeDriver: true,
-            listener: (event) => {
-              if(this.isReachEnd(event.nativeEvent))
-                this._onEndReached();
-            }})}
-            style={styles.container}>
-            <View onLayout={this.onHeaderLayout}>
-              {this._renderHeader()}
-            </View>
-            {this._renderTabView()}
-        </Animated.ScrollView>
-      );
-    }
+  render(): Component {
+    return (
+      <Animated.ScrollView
+        alwaysBounceVertical={false}
+        alwaysBounceHorizontal={false}
+        bounces={false}
+        scrollEventThrottle={5}
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.nScroll}}}], {useNativeDriver: true,
+          listener: (event: Object) => {
+            if(this.isReachEnd(event.nativeEvent))
+              this._onEndReached();
+          }})}
+        style={styles.container}>
+        <View onLayout={this.onHeaderLayout}>
+          {this._renderHeader()}
+        </View>
+        {this._renderTabView()}
+      </Animated.ScrollView>
+    );
+  }
 }
 
 const GRID_HEIGHT = 62;
@@ -314,17 +326,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height:GRID_HEIGHT,
     flexDirection: "row",
-  },
-  image: {
-    left: 0,
-    top: 0,
-    width: initialLayout.width,
-    height: initialLayout.width,
-    resizeMode: "cover"
-  },
+  }
 });
 
-function select(store) {
+function select(store: Object): Object {
   return {
     account: store.user.account,
     token: store.user.token

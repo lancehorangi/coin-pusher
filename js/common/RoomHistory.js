@@ -1,3 +1,6 @@
+//@flow
+"use strict";
+
 import React, { Component } from "react";
 import {
   View,
@@ -5,25 +8,23 @@ import {
   FlatList,
   ActivityIndicator,
   StyleSheet,
-  Image,
-  Alert,
-  ScrollView,
   Dimensions
 } from "react-native";
-import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
+import { ListItem, Avatar } from "react-native-elements";
 import { getRoomHistory } from "../actions";
 import { connect } from "react-redux";
-import dateFormat from 'dateformat';
-import ScreenComponent from './ScreenComponent';
-import F8Colors from './F8Colors';
-import { getMachineName } from './../util';
+import dateFormat from "dateformat";
 
-class RoomHistory extends React.Component {
+type Props = {
+  id: number
+};
+
+class RoomHistory extends React.Component<Props> {
   props: {
     id: number
   }
 
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -35,22 +36,22 @@ class RoomHistory extends React.Component {
     this.makeRemoteRequest();
   }
 
-  async makeRemoteRequest() {
+  async makeRemoteRequest(): void {
     try {
       await this.setState({bLoading:true});
 
-      console.log("makeRemoteRequest id=" + this.props.id)
+      console.log("makeRemoteRequest id=" + this.props.id);
       if (this.props.id) {
         this.props.dispatch(getRoomHistory(this.props.id));
       }
     } catch (e) {
-
+      //
     } finally {
       this.setState({bLoading:false});
     }
-  };
+  }
 
-  renderSeparator = () => {
+  renderSeparator = (): Component => {
     return (
       <View
         style={{
@@ -63,18 +64,18 @@ class RoomHistory extends React.Component {
     );
   };
 
-  renderItem = ({item, index}) => {
+  renderItem = ({item, index}: Object): Component => {
     return (
       (
         <ListItem
           containerStyle={{borderTopWidth: 0, borderBottomWidth: 0}}
           title={item.account}
-          titleStyle={{color: '#d1d3e8', fontSize: 13}}
+          titleStyle={{color: "#d1d3e8", fontSize: 13}}
           subtitle={"获得" + item.integral + "积分"}
-          subtitleStyle={{color: '#d1d3e8', fontSize: 13}}
+          subtitleStyle={{color: "#d1d3e8", fontSize: 13}}
           rightTitle={
-            dateFormat(new Date(item.enterTime * 1000), 'UTC:yyyy/mm/dd HH:MM') + '\n'
-             + dateFormat(new Date(item.leaveTime * 1000), 'UTC:yyyy/mm/dd HH:MM')
+            dateFormat(new Date(item.enterTime * 1000), "UTC:yyyy/mm/dd HH:MM") + "\n"
+             + dateFormat(new Date(item.leaveTime * 1000), "UTC:yyyy/mm/dd HH:MM")
           }
           rightTitleStyle={{fontSize:13}}
           rightTitleNumberOfLines={2}
@@ -84,7 +85,7 @@ class RoomHistory extends React.Component {
             <Avatar
               rounded
               containerStyle={{marginRight:5, marginLeft:5}}
-              overlayContainerStyle={{backgroundColor: 'transparent'}}
+              overlayContainerStyle={{backgroundColor: "transparent"}}
               // width={20}
               // height={20}
               source={{uri:item.headUrl}}
@@ -92,48 +93,47 @@ class RoomHistory extends React.Component {
           }
         />
       )
-    )
+    );
   }
 
-  render() {
-      if (this.state.bLoading) {
+  render(): Component {
+    if (this.state.bLoading) {
+      return (
+        <View style={[styles.loadingCotainer]}>
+          <ActivityIndicator animating size="large" color='white'/>
+        </View>
+      );
+    }
+    else {
+      if (this.props.items && this.props.items.length > 0) {
         return (
-          <View style={[styles.loadingCotainer]}>
-              <ActivityIndicator animating size="large" color='white'/>
+          <View style={[styles.container, this.props.style]}>
+            <FlatList
+              data={this.props.items}
+              renderItem={this.renderItem}
+              keyExtractor={(item: Object): number => item.id}
+              ItemSeparatorComponent={this.renderSeparator}
+              //refreshControl={{tintColor:'white'}}
+              //onRefresh={this.handleRefresh}
+              //refreshing={this.state.bLoading}
+            />
           </View>
-        )
+        );
       }
       else {
-        if (this.props.items && this.props.items.length > 0) {
-          return (
-            <View style={[styles.container, this.props.style]}>
-              <FlatList
-                data={this.props.items}
-                renderItem={this.renderItem}
-                keyExtractor={item => item.id}
-                ItemSeparatorComponent={this.renderSeparator}
-                //refreshControl={{tintColor:'white'}}
-                //onRefresh={this.handleRefresh}
-                //refreshing={this.state.bLoading}
-              />
-            </View>
-          );
-        }
-        else {
-          return (
-            <View style={[styles.emptyContainer, this.props.style, {height:150}]}>
-              <Text style={{color:'white', fontSize:20}}>
+        return (
+          <View style={[styles.emptyContainer, this.props.style, {height:150}]}>
+            <Text style={{color:"white", fontSize:20}}>
               {"无"}
-              </Text>
-            </View>
-          )
-        }
+            </Text>
+          </View>
+        );
       }
+    }
   }
 }
 
-const WIN_WIDTH = Dimensions.get("window").width,
-  WIN_HEIGHT = Dimensions.get("window").height;
+const WIN_HEIGHT = Dimensions.get("window").height;
 
 /* StyleSheet
 ============================================================================= */
@@ -148,18 +148,10 @@ const styles = StyleSheet.create({
     borderBottomColor: "#45474D",
     backgroundColor: "transparent",
   },
-  historyContainer: {
-    height: WIN_HEIGHT,
-    marginTop: 0,
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
-    borderBottomColor: "#45474D",
-    backgroundColor: "transparent",
-  },
   loadingCotainer: {
     flex: 1,
     height: 150,
-    justifyContent: 'center',
+    justifyContent: "center",
     backgroundColor: "transparent",
   },
   emptyContainer: {
@@ -171,7 +163,7 @@ const styles = StyleSheet.create({
   }
 });
 
-function select(store) {
+function select(store: Object): Object {
   return {
     items: store.room.roomGameHistory
   };

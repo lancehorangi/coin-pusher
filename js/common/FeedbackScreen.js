@@ -4,67 +4,61 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  FlatList,
-  ActivityIndicator,
   StyleSheet,
-  ScrollView,
   Alert,
   TextInput,
 } from "react-native";
-import { List, ListItem, SearchBar, Button, Avatar } from "react-native-elements";
-import { loggedOut } from "../actions";
+import { Button } from "react-native-elements";
 import { connect } from "react-redux";
-import dateFormat from 'dateformat';
-import ScreenComponent from './ScreenComponent';
-import F8Colors from './F8Colors';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { isIphoneX } from './../util';
+import ScreenComponent from "./ScreenComponent";
+import F8Colors from "./F8Colors";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 type State = {
   text: string,
-  phone: string,
-}
+  phone: string
+};
 
 class FeedbackScreen extends ScreenComponent<Object, State> {
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
 
     this.state = {
-        text: "",
-        phone: "",
+      text: "",
+      phone: "",
     };
   }
 
   static navigatorStyle = {
-    navBarTextColor: '#ffffff',
+    navBarTextColor: "#ffffff",
     navBarBackgroundColor: F8Colors.mainBgColor2,
-    navBarButtonColor: '#ffffff'
+    navBarButtonColor: "#ffffff"
   };
 
   componentDidMount() {
   }
 
-  onTextChange = (text) => {
+  onTextChange = (text: string) => {
     this.setState({text});
   }
 
-  onPhoneChange = (phone) => {
+  onPhoneChange = (phone: string) => {
     this.setState({phone});
   }
 
   onSubmit = () => {
-    let {text, phone} = this.state;
+    let {phone} = this.state;
 
     let pattern = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
     if (pattern.test(phone)) {
-
+      //console.log("");
     }
     else {
       Alert.alert("请输入正确的手机号");
     }
   }
 
-  render() {
+  render(): Component<{}> {
     return (
       <KeyboardAwareScrollView style={{backgroundColor: F8Colors.mainBgColor}}>
         <View style={styles.container}>
@@ -82,30 +76,30 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
           <TextInput
             style={[styles.input]}
             onChangeText={this.onPhoneChange}
-            keyboardType={'numeric'}
+            keyboardType={"numeric"}
           />
           <Button
-              title="提交"
-              // loading
-              // loadingProps={{ size: "large", color: "rgba(111, 202, 186, 1)" }}
-              //titleStyle={{ fontWeight: "700" }}
-              buttonStyle={{
-                backgroundColor: '#ee4943',
-                height: 45,
-                borderColor: "transparent",
-                borderWidth: 0,
-                borderRadius: 5,
-                marginTop: 20,
-                marginLeft: 50,
-                marginRight: 50,
-              }}
-              containerStyle={{
-                marginTop: 40,
-                marginLeft: 50,
-                marginRight: 50,
-              }}
-              onPress={this.onSubmit}
-            />
+            title="提交"
+            // loading
+            // loadingProps={{ size: "large", color: "rgba(111, 202, 186, 1)" }}
+            //titleStyle={{ fontWeight: "700" }}
+            buttonStyle={{
+              backgroundColor: "#ee4943",
+              height: 45,
+              borderColor: "transparent",
+              borderWidth: 0,
+              borderRadius: 5,
+              marginTop: 20,
+              marginLeft: 50,
+              marginRight: 50,
+            }}
+            containerStyle={{
+              marginTop: 40,
+              marginLeft: 50,
+              marginRight: 50,
+            }}
+            onPress={this.onSubmit}
+          />
         </View>
       </KeyboardAwareScrollView>
     );
@@ -118,12 +112,12 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     backgroundColor: F8Colors.mainBgColor,
     //height: '100%',
   },
   label: {
-    color: 'white',
+    color: "white",
     fontSize: 15,
     marginTop: 10,
     marginLeft: 10,
@@ -134,15 +128,10 @@ const styles = StyleSheet.create({
     marginRight: 20,
     borderWidth: 1,
     borderColor: "#45474d",
-    color: 'white',
+    color: "white",
   }
 });
 
-function select(store) {
-  return {
-
-  };
-}
 
 /* exports ================================================================== */
-module.exports = connect(select)(FeedbackScreen);
+module.exports = connect()(FeedbackScreen);

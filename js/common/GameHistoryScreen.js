@@ -1,26 +1,27 @@
 //@flow
 
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, Image, Alert } from "react-native";
-import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
+//import type { Element } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import { List, ListItem } from "react-native-elements";
 import { getAccountHistory } from "../actions";
 import { connect } from "react-redux";
-import dateFormat from 'dateformat';
-import ScreenComponent from './ScreenComponent';
-import F8Colors from './F8Colors';
-import { getMachineName } from './../util';
+import dateFormat from "dateformat";
+import ScreenComponent from "./ScreenComponent";
+import F8Colors from "./F8Colors";
+import { getMachineName } from "./../util";
 
 type Props = {
-  dispatch: (action: any) => Promise<any>,
-}
+  dispatch: (action: any) => Promise<any>
+};
 
 type State = {
   bLoading: boolean,
   page: number
-}
+};
 
 class GameHistoryScreen extends ScreenComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
     this.state = {
       bLoading: false,
@@ -29,9 +30,9 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
   }
 
   static navigatorStyle = {
-    navBarTextColor: '#ffffff',
+    navBarTextColor: "#ffffff",
     navBarBackgroundColor: F8Colors.mainBgColor2,
-    navBarButtonColor: '#ffffff'
+    navBarButtonColor: "#ffffff"
   };
 
   RNNDidAppear = () => {
@@ -42,15 +43,15 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
     //this.makeRemoteRequest();
   }
 
-  async makeRemoteRequest() {
+  async makeRemoteRequest(): void {
     try {
       this.props.dispatch(getAccountHistory());
     } catch (e) {
-
+      //
     } finally {
       this.setState({bLoading:false});
     }
-  };
+  }
 
   handleRefresh = () => {
     this.setState(
@@ -75,7 +76,7 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
     // );
   };
 
-  renderSeparator = () => {
+  renderSeparator = (): Component<View> => {
     return (
       <View
         style={{
@@ -88,18 +89,18 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
     );
   };
 
-  renderItem = ({item}) => {
+  renderItem = ({item}: Object): Component<ListItem>  => {
     return (
       (
         <ListItem
           containerStyle={{borderTopWidth: 0, borderBottomWidth: 0}}
           title={getMachineName(item.machine, true)}
-          titleStyle={{color: '#d1d3e8', fontSize: 15}}
+          titleStyle={{color: "#d1d3e8", fontSize: 15}}
           subtitle={"获得" + item.integral + "积分"}
-          subtitleStyle={{color: '#d1d3e8', fontSize: 17}}
+          subtitleStyle={{color: "#d1d3e8", fontSize: 17}}
           rightTitle={
-            "始:" + dateFormat(new Date(item.enterTime * 1000), 'UTC:yyyy/mm/dd HH:MM') + '\n'
-            + "终:" + dateFormat(new Date(item.leaveTime * 1000), 'UTC:yyyy/mm/dd HH:MM')
+            "始:" + dateFormat(new Date(item.enterTime * 1000), "UTC:yyyy/mm/dd HH:MM") + "\n"
+            + "终:" + dateFormat(new Date(item.leaveTime * 1000), "UTC:yyyy/mm/dd HH:MM")
           }
           rightTitleNumberOfLines={2}
           hideChevron={true}
@@ -115,34 +116,34 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
           // }
         />
       )
-    )
+    );
   }
 
-  render() {
-      if (this.props.items && this.props.items.length > 0) {
-        return (
-          <List containerStyle={styles.container}>
-            <FlatList
-              data={this.props.items}
-              renderItem={this.renderItem}
-              keyExtractor={item => item.id}
-              ItemSeparatorComponent={this.renderSeparator}
-              refreshControl={{tintColor:'white'}}
-              onRefresh={this.handleRefresh}
-              refreshing={this.state.bLoading}
-            />
-          </List>
-        );
-      }
-      else {
-        return (
-          <View style={styles.emptyContainer}>
-            <Text style={{color:'white', fontSize:20}}>
+  render(): Component<{}> {
+    if (this.props.items && this.props.items.length > 0) {
+      return (
+        <List containerStyle={styles.container}>
+          <FlatList
+            data={this.props.items}
+            renderItem={this.renderItem}
+            keyExtractor={(item: Object): any => item.id}
+            ItemSeparatorComponent={this.renderSeparator}
+            refreshControl={{tintColor:"white"}}
+            onRefresh={this.handleRefresh}
+            refreshing={this.state.bLoading}
+          />
+        </List>
+      );
+    }
+    else {
+      return (
+        <View style={styles.emptyContainer}>
+          <Text style={{color:"white", fontSize:20}}>
             {"无"}
-            </Text>
-          </View>
-        )
-      }
+          </Text>
+        </View>
+      );
+    }
   }
 }
 
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
   }
 });
 
-function select(store) {
+function select(store: Object): Object {
   return {
     items: store.user.accountGameHistory
   };

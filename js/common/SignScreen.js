@@ -1,3 +1,6 @@
+//@flow
+"use strict";
+
 import React, { Component } from "react";
 import {
   View,
@@ -11,40 +14,37 @@ import {
 } from "react-native";
 
 import { connect } from "react-redux";
-import { refreshMsgs, checkin, getCheckinInfo } from "../actions";
-import ScreenComponent from './ScreenComponent';
-import F8Colors from './F8Colors';
+import { checkin, getCheckinInfo } from "../actions";
+import ScreenComponent from "./ScreenComponent";
+import F8Colors from "./F8Colors";
 
-const WIN_WIDTH = Dimensions.get("window").width,
-  WIN_HEIGHT = Dimensions.get("window").height;
+const WIN_WIDTH = Dimensions.get("window").width;
 
-cardWidth = (WIN_WIDTH - 50) / 2;
-
-renderUnavaibleMark = (bAvaiable) => {
+let renderUnavaibleMark = (bAvaiable: boolean): Component => {
   if (bAvaiable) {
     return null;
   }
 
   return (
-    <Image source={require('./img/wlq.png')}
-          style={{
-            position: "absolute",
-            left: 20,
-            height: 50,
-            width: 50,
-            resizeMode: "stretch"
-          }}/>
-  )
-}
+    <Image source={require("./img/wlq.png")}
+      style={{
+        position: "absolute",
+        left: 20,
+        height: 50,
+        width: 50,
+        resizeMode: "stretch"
+      }}/>
+  );
+};
 
 const TYPE_IMG = {
-  0: require('./img/new.png'),
-  1: require('./img/gift.png'),
-  2: require('./img/week.png'),
-  3: require('./img/month.png'),
-}
+  0: require("./img/new.png"),
+  1: require("./img/gift.png"),
+  2: require("./img/week.png"),
+  3: require("./img/month.png"),
+};
 
-const NormalItem = ({ text, bAvaiable, onPress, icon, btnText }) =>
+const NormalItem = ({ text, bAvaiable, onPress, icon, btnText }: Object): Component =>
   <TouchableOpacity
     style={styles.card}
     activeOpacity={1}
@@ -52,21 +52,25 @@ const NormalItem = ({ text, bAvaiable, onPress, icon, btnText }) =>
     <Image source={icon} style={{width:40, resizeMode: "stretch"}} />
     {renderUnavaibleMark(bAvaiable)}
     <Text style={{
-      color:'#d3d3e8',
+      color:"#d3d3e8",
       marginLeft: 50}}
-      numberOfLines={2}> {text} </Text>
+    numberOfLines={2}> {text} </Text>
     <TouchableOpacity
       style={styles.cardBtn}
-      onPress={() => onPress()}
+      onPress={(): void => onPress()}
     >
       <Text style={{
-        color:'#d3d3e8'
+        color:"#d3d3e8"
       }}> {btnText} </Text>
     </TouchableOpacity>
   </TouchableOpacity>;
 
-class SignScreen extends ScreenComponent {
-  constructor(props) {
+type States = {
+    bLoading: boolean
+};
+
+class SignScreen extends ScreenComponent<{}, States> {
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -75,22 +79,22 @@ class SignScreen extends ScreenComponent {
   }
 
   static navigatorStyle = {
-    navBarTextColor: '#ffffff',
+    navBarTextColor: "#ffffff",
     navBarBackgroundColor: F8Colors.mainBgColor2,
-    navBarButtonColor: '#ffffff'
+    navBarButtonColor: "#ffffff"
   };
 
   RNNDidAppear = () => {
     this.initInfo();
   }
 
-  async initInfo(){
+  async initInfo(): void {
     await this.setState({bLoading:true});
 
     try {
-      let result = await this.props.dispatch(getCheckinInfo());
+      await this.props.dispatch(getCheckinInfo());
     } catch (e) {
-
+      //
     } finally {
       this.setState({bLoading:false});
     }
@@ -100,19 +104,19 @@ class SignScreen extends ScreenComponent {
 
   }
 
-  onPress = (type: number, avaiable, receive) => {
+  onPress = (type: number, avaiable: boolean, receive: number) => {
     if (avaiable && receive != 1) {
       this.props.dispatch(checkin(type));
     }
     else if (!avaiable) {
       this.props.navigator.push({
-        screen: 'CP.IAPScreen', // unique ID registered with Navigation.registerScreen
+        screen: "CP.IAPScreen", // unique ID registered with Navigation.registerScreen
         title: "商城",
       });
     }
   }
 
-  renderSeparator = () => {
+  renderSeparator = (): Component => {
     return (
       <View
         style={{
@@ -124,18 +128,18 @@ class SignScreen extends ScreenComponent {
     );
   };
 
-  renderContent = () => {
+  renderContent = (): Component => {
     if (this.props.checkinInfo) {
-      return this.props.checkinInfo.map((data, idx) => {
+      return this.props.checkinInfo.map((data: Object) => {
         if(data.type != 0 || data.days != 0 && TYPE_IMG[data.type.toString()]) {
           return (
             <View>
               <NormalItem
-              text={this.getItemText(data.integral, data.days, data.type)}
-              bAvaiable={data.days != 0}
-              icon={TYPE_IMG[data.type.toString()]}
-              btnText={this.getBtnText(data.type, data.receive, data.days != 0)}
-              onPress={() => { this.onPress(data.type, data.days != 0, data.receive) }}
+                text={this.getItemText(data.integral, data.days, data.type)}
+                bAvaiable={data.days != 0}
+                icon={TYPE_IMG[data.type.toString()]}
+                btnText={this.getBtnText(data.type, data.receive, data.days != 0)}
+                onPress={() => { this.onPress(data.type, data.days != 0, data.receive); }}
               />
               <View
                 style={{
@@ -157,24 +161,24 @@ class SignScreen extends ScreenComponent {
     }
   }
 
-  getItemText(num, leftDays, type) {
-    let text = '';
-    text += '每日奖励:' + num + '钻石';
+  getItemText(num: number, leftDays: number, type: number): string {
+    let text = "";
+    text += "每日奖励:" + num + "钻石";
 
     if(leftDays != 0) {
-      text += '\n 有效期:' + leftDays + '天';
+      text += "\n 有效期:" + leftDays + "天";
     }
 
     return text;
   }
 
-  getBtnText(type, receive, avaiable) {
+  getBtnText(type: number, receive: number, avaiable: boolean): string {
     if (avaiable) {
       if (receive == 1) {
-        return "已领取"
+        return "已领取";
       }
       else {
-        return "领取"
+        return "领取";
       }
     }
     else {
@@ -183,26 +187,24 @@ class SignScreen extends ScreenComponent {
         1: "获得福利",
         2: "获得周卡",
         3: "获得月卡",
-      }
+      };
 
       return BTN_DESC_TEXT[type.toString()];
     }
-
-    return '';
   }
 
-  render() {
+  render(): Component {
     if (this.state.bLoading) {
       return (
         <View style={[styles.loadingCotainer]}>
-            <ActivityIndicator animating size="large" color='white'/>
+          <ActivityIndicator animating size="large" color='white'/>
         </View>
       );
     }
     else {
       return (
         <ScrollView style={styles.container}>
-            {this.renderContent()}
+          {this.renderContent()}
         </ScrollView>
       );
     }
@@ -215,21 +217,21 @@ class SignScreen extends ScreenComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     backgroundColor: F8Colors.mainBgColor
   },
   card: {
-    width: '100%',
+    width: "100%",
     height: 60,
     borderRadius: 13,
     marginTop: 15,
     marginLeft: 30,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     flexDirection: "row",
-    alignContent: 'center',
+    alignContent: "center",
   },
   cardBtn: {
-    position: 'absolute',
+    position: "absolute",
     flex: 0,
     paddingHorizontal: 10,
     paddingVertical: 8,
@@ -238,17 +240,17 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     //height: 23,
     backgroundColor: "#ee4943",
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
   },
   loadingCotainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     backgroundColor: F8Colors.mainBgColor,
   }
 });
 
-function select(store) {
+function select(store: Object): Object {
   return {
     account: store.user.account,
     checkinInfo: store.user.checkinInfo,
