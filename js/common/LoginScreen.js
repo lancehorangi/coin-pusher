@@ -232,7 +232,7 @@ class LoginScreen extends React.Component<Props, Stats> {
           left:0,
           top:0,
           right:0,
-          bottom:-50,
+          bottom:0,
           justifyContent:"center",
           alignItems:"center",
           alignContent:"center",

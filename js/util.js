@@ -94,7 +94,7 @@ export async function codePushSync() {
       });
     }
   } catch (e) {
-
+    //
   } finally {
     BuglyUpdateVersion();
   }
@@ -104,7 +104,7 @@ export async function codePushSync() {
 
 export function BuglyUpdateVersion() {
   codePush.getUpdateMetadata(codePush.UpdateState.RUNNING).then((update) => {
-    let version = DeviceInfo.getVersion() + "/";
+    let version = DeviceInfo.getVersion() + ".";
 
     if (update) {
       version += update.label;

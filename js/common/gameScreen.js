@@ -1,3 +1,4 @@
+//@flow
 "use strict";
 
 import React from "react";
@@ -36,27 +37,28 @@ const IPHONE_X_HEAD = 30;
 * @return {ReactElement}
 * ==============================================================================
 */
+type Props = {
+  roomID: string,
+  meetingName: string
+};
 
-class GameScreen extends ScreenComponent {
-  props: {
-    roomID: string,
-    meetingName: string
-  };
+type States = {
+  bLoading: boolean,
+  autoPlay: boolean,
+  bPlaying: boolean,
+  enterFinished: boolean
+};
 
+class GameScreen extends ScreenComponent<Props, States> {
   _isMounted: boolean;
 
-  state: {
-    bLoading: boolean,
-    autoPlay: boolean,
-    bPlaying: boolean,
-  };
-
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
     this.state = {
       bLoading: true,
       autoPlay: false,
       bPlaying: false,
+      enterFinished: false
     };
     this._isMounted = false;
   }
@@ -71,21 +73,25 @@ class GameScreen extends ScreenComponent {
     clearInterval(this.updateLoop);
     clearInterval(this.heartLoop);
     this.setState({autoPlay:false});
+
     NimUtils.leaveMeeting();
+    //this.props.dispatch(leaveRoom());
   }
 
   componentWillUnmount() {
     clearInterval(this.updateLoop);
     clearInterval(this.heartLoop);
+
+    //this.props.dispatch(leaveRoom());
   }
 
   componentDidMount() {
     this._isMounted = true;
-    //this.reqEnterRoom();
   }
 
-  async reqEnterRoom() {
-    await this.setState({ bLoading:true });
+  async reqEnterRoom(): void {
+    await this.setState({ enterFinished: false});
+    await this.setState({ bLoading: true });
     let { roomID, account, token } = this.props;
 
     try {
@@ -111,10 +117,11 @@ class GameScreen extends ScreenComponent {
       Alert.alert("进入房间失败:" + e.message);
     } finally {
       //
+      await this.setState({ enterFinished: true});
     }
   }
 
-  onAutoPlayValue = (value) => {
+  onAutoPlayValue = (value: boolean) => {
     if (this.state.bPlaying) {
       this.setState({autoPlay:value});
       if (value) {
@@ -129,12 +136,15 @@ class GameScreen extends ScreenComponent {
     }
   }
 
-  onPress = () => {
-    this.props.dispatch(leaveRoom());
-    // Navigation.dismissModal({
-    //   animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-    // });
-    dismissModal();
+  onPress = async (): void => {
+    try {
+      await this.setState({enterState: "exit"});
+      await this.props.dispatch(leaveRoom());
+    } catch (e) {
+      //
+    } finally {
+      dismissModal();
+    }
   }
 
   onPressIAP = () => {
@@ -148,11 +158,9 @@ class GameScreen extends ScreenComponent {
     this.props.dispatch(pushCoin());
   }
 
-  renderHeader = () => {
-    let { roomInfo } = this.props;
-
-    return (
-      <View style={styles.headerContainer}>
+  renderCloseBtn = (): Component => {
+    if (this.state.enterFinished) {
+      return (
         <TouchableOpacity
           accessibilityTraits="button"
           onPress={this.onPress}
@@ -163,6 +171,19 @@ class GameScreen extends ScreenComponent {
             source={require("../common/img/close.png")}
             resizeMode={"stretch"}/>
         </TouchableOpacity>
+      );
+    }
+    else {
+      return;
+    }
+  }
+
+  renderHeader = (): Component => {
+    let { roomInfo } = this.props;
+
+    return (
+      <View style={styles.headerContainer}>
+        { this.renderCloseBtn() }
         <Text
           numberOfLines={2}
           style={{
@@ -175,7 +196,7 @@ class GameScreen extends ScreenComponent {
     );
   }
 
-  renderContent = () => {
+  renderContent = (): Component => {
     if (this.state.bLoading) {
       return (
         <View style={styles.loadingCotainer}>
@@ -195,7 +216,7 @@ class GameScreen extends ScreenComponent {
     }
   }
 
-  renderBottom = () => {
+  renderBottom = (): Component => {
     if (!this.state.bLoading) {
       return (
         <View style={styles.bottomContainer}>
@@ -253,7 +274,7 @@ class GameScreen extends ScreenComponent {
     }
   }
 
-  renderHistory = () => {
+  renderHistory = (): Component => {
     return (
       <View>
         <View style={styles.historyTitle}>
@@ -269,7 +290,7 @@ class GameScreen extends ScreenComponent {
     );
   }
 
-  render() {
+  render(): Component {
     return (
       <ScrollView
         style={[styles.container]}
@@ -350,7 +371,7 @@ const styles = StyleSheet.create({
   }
 });
 
-function select(store) {
+function select(store: Object): Object {
   return {
     account: store.user.account,
     token: store.user.token,

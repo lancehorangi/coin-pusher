@@ -1,5 +1,8 @@
 {
   "com.DigitalForge.Pilgrimage": {
     "enabled": true
+  },
+  "com.happy": {
+    "enabled": true
   }
 }

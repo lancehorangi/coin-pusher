@@ -16,6 +16,7 @@ import DeviceInfo from "react-native-device-info";
 import RNTalkingdataGame from "react-native-talkingdata-game";
 import RNBugly from "react-native-bugly";
 import * as WeChat from "react-native-wechat";
+import { NimUtils } from "react-native-netease-im";
 
 // Config
 import { talkingdataID, wxID } from "./env";
@@ -29,6 +30,9 @@ RNTalkingdataGame.onStart(talkingdataID, DeviceInfo.getApplicationName(), true);
 
 //WeChat
 WeChat.registerApp(wxID);
+
+//热更 或者热载脚本 需要手动先离开NIM会议
+NimUtils.leaveMeeting();
 
 configureStore(
   // rehydration callback (after async compatibility and persistStore)
@@ -57,7 +61,7 @@ configureStore(
           screen: "CP.MainScreen",
           icon: require("./common/img/buttons/hall.png"),
           selectedIcon: require("./common/img/buttons/hall_2.png"),
-          title: "欢乐马戏城",
+          title: "欢乐马戏城V2",
           navigatorStyle: {
             navBarHidden: false
           },
