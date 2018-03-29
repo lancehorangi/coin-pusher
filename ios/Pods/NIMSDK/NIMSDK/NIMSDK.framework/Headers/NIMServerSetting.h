@@ -44,17 +44,26 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic,copy,nullable)     NSString    *nosUploadHost;
 /**
- * NOS 下载 Host,用于拼接下载地址
+ * NOS 下载地址，用于拼接下载地址
  */
-@property (nonatomic,copy)              NSString    *nosDownloadHost;
+@property (nonatomic,copy)              NSString    *nosDownloadAddress;
+
 /**
- * NOS 加速地址
+ * NOS 加速 Host
+ */
+@property (nonatomic,copy,nullable)     NSString    *nosAccelerateHost;
+/**
+ * NOS 加速替换地址
  */
 @property (nonatomic,copy,nullable)     NSString    *nosAccelerateAddress;
 /**
  * NRTC 服务器地址
  */
 @property (nonatomic,copy)              NSString    *nrtcServerAddress;
+/**
+ * NT 服务器地址
+ */
+@property (nonatomic,copy,nullable)     NSString    *ntServerAddress;
 /**
  * module
  */

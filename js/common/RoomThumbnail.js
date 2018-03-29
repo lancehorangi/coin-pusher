@@ -5,6 +5,7 @@ import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { Component } from "react";
 import { Text } from "./F8Text";
 import { showModal } from "./../navigator";
+import { connect } from "react-redux";
 
 type Props = {
   dispatch: (action: any) => Promise,
@@ -16,6 +17,7 @@ type Props = {
   bPlaying: boolean,
   style: null | Object,
   meetingName: string,
+  rmtpUrl: string,
   bgWidth: number,
   bgHeight: number
 };
@@ -27,6 +29,7 @@ class RoomThumbnail extends Component<Props> {
 
   onPress = () => {
     showModal({
+    //this.props.navigator.push({
       screen: "CP.GameScreen", // unique ID registered with Navigation.registerScreen
       title: "游戏", // title of the screen as appears in the nav bar (optional)
       passProps: {roomID:this.props.roomID}, // simple serializable object that will pass as props to the modal (optional)
@@ -159,4 +162,10 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = RoomThumbnail;
+function select(state: Object): Object {
+  return {
+    navigator: state.appNavigator
+  };
+}
+
+module.exports = connect(select)(RoomThumbnail);

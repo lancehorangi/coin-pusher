@@ -6,7 +6,7 @@ target 'coinpusher' do
   # use_frameworks!
 
   # Pods for coinpusher
-pod 'NIMSDK', '4.4.0'
+pod 'NIMSDK', '4.8.0'
 pod 'SSZipArchive', '~> 1.2'
 pod 'Reachability', '~> 3.1.1'
 pod 'CocoaLumberjack', '~> 2.0.0-rc2'

@@ -24,6 +24,7 @@
     "preset": "react-native"
   },
   "dependencies": {
+    "babel-plugin-transform-remove-console": "^6.9.0",
     "dateformat": "^3.0.3",
     "react": "16.2.0",
     "react-native": "0.52.0",
@@ -52,7 +53,7 @@
     "react-timer-mixin": "^0.13.3",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "redux-persist": "^5.6.12",
+    "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0"
   }
 }

@@ -24,6 +24,7 @@ import { isIphoneX, toastShow, getMachineName } from "./../util";
 import { Button } from "react-native-elements";
 import RoomHistory from "./RoomHistory";
 import { dismissModal } from "./../navigator";
+import KSYVideo from "react-native-ksyvideo";
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -86,13 +87,19 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   componentDidMount() {
-    this._isMounted = true;
+    //this._isMounted = true;
   }
 
   async reqEnterRoom(): void {
     await this.setState({ enterFinished: false});
     await this.setState({ bLoading: true });
     let { roomID, account, token } = this.props;
+
+    //test
+    clearInterval(this.heartLoop);
+    this.heartLoop = setInterval(() => {
+      this.props.dispatch(heartRequest());
+    }, 1000);
 
     try {
       let result = await this.props.dispatch(enterRoom(roomID));
@@ -111,12 +118,13 @@ class GameScreen extends ScreenComponent<Props, States> {
         Alert.alert("房间已有玩家\n请稍后再试");
       }
 
-      this.setState({bLoading:false});
+      //this.setState({bLoading:false});
     } catch (e) {
       toastShow("进入房间失败:" + e.message);
       Alert.alert("进入房间失败:" + e.message);
     } finally {
       //
+      this.setState({bLoading:false});
       await this.setState({ enterFinished: true});
     }
   }
@@ -144,6 +152,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       //
     } finally {
       dismissModal();
+      this.props.navigator.pop();
     }
   }
 
@@ -156,6 +165,10 @@ class GameScreen extends ScreenComponent<Props, States> {
 
   coinPush = () => {
     this.props.dispatch(pushCoin());
+  }
+
+  queueReq = () => {
+    //
   }
 
   renderCloseBtn = (): Component => {
@@ -196,6 +209,11 @@ class GameScreen extends ScreenComponent<Props, States> {
     );
   }
 
+  _rmtpError = (event: any) => {
+    console.warn("rmtp player error:" + JSON.stringify(event));
+    Alert.alert("直播拉流失败");
+  }
+
   renderContent = (): Component => {
     if (this.state.bLoading) {
       return (
@@ -204,7 +222,7 @@ class GameScreen extends ScreenComponent<Props, States> {
         </View>
       );
     }
-    else {
+    else if (this.state.bPlaying) {
       return (
         <View style={styles.container}>
           <View style={styles.videoLoading}>
@@ -212,6 +230,60 @@ class GameScreen extends ScreenComponent<Props, States> {
           </View>
           <NTESGLView style={styles.video}/>
         </View>
+      );
+    }
+    //直播
+    else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.videoLoading}>
+            <ActivityIndicator animating size="large" color='white'/>
+          </View>
+          <KSYVideo
+            style={styles.video}
+            //source={{uri: this.props.roomInfo.rtmpUrl}}   // Can be a URL or a local file.
+            source={{uri:"rtmp://v02225181.live.126.net/live/073afa1b14d04e2a9ac6106b7bb98326"}}
+            // ref={(ref: any) => {
+            //   this.player = ref;
+            // }}                                      // Store reference
+            volume={1.0}
+            muted={true}
+            paused={this._isMounted}                          // Pauses playback entirely.
+            resizeMode="stretch"                      // Fill the whole screen at aspect ratio.*
+            repeat={true}                           // Repeat forever.
+            playInBackground={false}                // Audio continues to play when app entering background.
+            progressUpdateInterval={250.0}          // Interval to fire onProgress (default to ~250ms)
+            //onLoadStart={this._onLoadStart}            // Callback when video starts to load
+            //onLoad={this._onLoad}               // Callback when video loads
+            //onProgress={this.setTime}               // Callback every ~250ms with currentTime
+            //onEnd={this.onEnd}                      // Callback when playback finishes
+            onError={this._onError}               // Callback when video cannot be loaded
+            //onBuffer={this._onReadyForDisplay}                // Callback when remote video is buffering
+          />
+        </View>
+      );
+    }
+  }
+
+  renderCenterBtn = (): Component => {
+    if (this.state.bPlaying) {
+      return (
+        <Button
+          title={"投币"}
+          titleStyle={{color:"white", fontSize:25}}
+          buttonStyle={{backgroundColor:"red", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
+          onPress={this.coinPush}
+        />
+      );
+    }
+    else {
+      return (
+        <Button
+          title={"上机"}
+          titleStyle={{color:"white", fontSize:25}}
+          buttonStyle={{backgroundColor:"red", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
+          onPress={this.queueReq}
+        />
       );
     }
   }
@@ -240,12 +312,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             </Text>
           </View>
 
-          <Button
-            title={"投币"}
-            titleStyle={{color:"white", fontSize:25}}
-            buttonStyle={{backgroundColor:"red", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
-            onPress={this.coinPush}
-          />
+          {this.renderCenterBtn()}
 
           <View style={{
             position: "absolute",

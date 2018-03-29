@@ -7,7 +7,7 @@
 //
 
 #import <CoreMedia/CMSampleBuffer.h>
-#import <UIKit/UIKit.h>
+#import <NIMSDK/NIMPlatform.h>
 #import "NIMAVChatDefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -265,7 +265,18 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
 - (void)onRemoteYUVReady:(NSData *)yuvData
                    width:(NSUInteger)width
                   height:(NSUInteger)height
-                    from:(NSString *)user;
+                    from:(NSString *)user API_UNAVAILABLE(macos);;
+
+
+/**
+ *  远程视频 SampleBuffer 数据就绪
+ *
+ *  @param sampleBuffer  远程视频 SampleBuffer 数据
+ *  @param user     远程视频画面属于的用户
+ *
+ */
+- (void)onRemoteVideo:(CMSampleBufferRef)sampleBuffer
+                 from:(NSString *)user API_UNAVAILABLE(ios);;
 
 /**
  *  远程视频画面就绪
@@ -490,7 +501,7 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  *
  *  @discussion 切换网络通话类型将丢失该设置
  */
-- (void)switchCamera:(NIMNetCallCamera)camera;
+- (void)switchCamera:(NIMNetCallCamera)camera API_UNAVAILABLE(macos);
 
 /**
  *  设置摄像头关闭
@@ -560,15 +571,25 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
            type:(NIMNetCallControlType)type;
 
 /**
- *  设置网络通话静音模式
+ *  设置网络通话麦克风静音
  *
- *  @param mute 是否开启静音
+ *  @param mute 是否开启麦克风静音
  *
- *  @return 开启静音是否成功
+ *  @return 开启麦克风静音是否成功
  *
- *  @discussion 切换网络通话类型将丢失该设置
+ *  @discussion 该设置不影响伴音发送, 切换网络通话类型将丢失该设置
  */
 - (BOOL)setMute:(BOOL)mute;
+
+/**
+ *  设置是否关闭语音发送，包含伴音
+ *
+ *  @param mute 是否关闭语音发送
+ *
+ *  @return 设置是否成功
+ *
+ */
+- (BOOL)setAudioSendMute:(BOOL)mute;
 
 /**
  *  设置网络通话扬声器模式
@@ -579,7 +600,7 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  *
  *  @discussion 切换网络通话类型将丢失该设置
  */
-- (BOOL)setSpeaker:(BOOL)useSpeaker;
+- (BOOL)setSpeaker:(BOOL)useSpeaker API_UNAVAILABLE(macos);
 
 /**
  *  切换网络通话类型
@@ -588,7 +609,7 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  *
  *  @discussion 切换通话类型会丢失这些设置: 静音模式, 扬声器模式, 摄像头关闭, 切换摄像头
  */
-- (void)switchType:(NIMNetCallMediaType)type;
+- (void)switchType:(NIMNetCallMediaType)type API_UNAVAILABLE(macos);
 
 
 /**
@@ -625,6 +646,14 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  */
 - (BOOL)switchVideoDecoder:(NIMNetCallVideoCodec)codec;
 
+/**
+ *  选择视频调控策略
+ *
+ *  @param videoAdaptiveStrategy 视频调控策略
+ *
+ *  @return 是否设置成功.
+ */
+- (BOOL)selectVideoAdaptiveStrategy:(NIMAVChatVideoAdaptiveStrategy)videoAdaptiveStrategy;
 
 /**
  *  发送视频 SampleBuffer
@@ -655,7 +684,7 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  
  @discussion 开始新的任务会结束正在进行中的任务
  */
-- (nullable NSError *)startAudioMix:(NIMNetCallAudioFileMixTask *)task;
+- (nullable NSError *)startAudioMix:(NIMNetCallAudioFileMixTask *)task API_UNAVAILABLE(macos);
 
 /**
  更新混音任务
@@ -666,28 +695,28 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  
  @discussion 可以更新循环播放次数和音量等
  */
-- (nullable NSError *)updateAudioMix:(NIMNetCallAudioFileMixTask *)task;
+- (nullable NSError *)updateAudioMix:(NIMNetCallAudioFileMixTask *)task API_UNAVAILABLE(macos);
 
 /**
  暂停混音
  
  @return 是否成功
  */
-- (BOOL)pauseAudioMix;
+- (BOOL)pauseAudioMix API_UNAVAILABLE(macos);
 
 /**
  恢复混音
  
  @return 是否成功
  */
-- (BOOL)resumeAudioMix;
+- (BOOL)resumeAudioMix API_UNAVAILABLE(macos);
 
 /**
  结束混音
  
  @return 是否成功
  */
-- (BOOL)stopAudioMix;
+- (BOOL)stopAudioMix API_UNAVAILABLE(macos);
 
 
 /**
@@ -695,7 +724,7 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
 
  @return 混音任务. 如果没有当前任务则返回 nil
  */
-- (nullable NIMNetCallAudioFileMixTask *)currentAudioMixTask;
+- (nullable NIMNetCallAudioFileMixTask *)currentAudioMixTask API_UNAVAILABLE(macos);
 
 
 /**
@@ -705,7 +734,26 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  
  @return 结果, 如果成功开始了, 返回 nil
  */
-- (nullable NSError *)playSoundEffect:(NIMNetCallAudioFileMixTask *)task;
+- (nullable NSError *)playSoundEffect:(NIMNetCallAudioFileMixTask *)task API_UNAVAILABLE(macos);
+
+/**
+ 打开耳返
+ */
+- (void)startEarBack API_UNAVAILABLE(macos);
+
+/**
+ 关闭耳返
+ */
+- (void)stopEarBack API_UNAVAILABLE(macos);
+
+/**
+ 调节耳返音量
+ 
+ @param volume 耳返音量 接受输入值为 0 到 10
+ 
+ @return 是否调节成功
+ */
+- (BOOL)changeEarBackVolume:(NSUInteger)volume API_UNAVAILABLE(macos);
 
 /**
  *  获得当前视频通话的本地预览层
@@ -756,7 +804,7 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  */
 - (BOOL)startRecording:(nullable NSURL *)filePath
           videoBitrate:(UInt32)videoBitrate
-                   uid:(NSString *)userId;
+                   uid:(NSString *)userId API_UNAVAILABLE(macos);
 /**
  *  停止MP4文件录制
  *
@@ -764,7 +812,7 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  *
  *  @return 是否接受停止录制请求
  */
-- (BOOL)stopRecordingWithUid:(NSString *)userId;
+- (BOOL)stopRecordingWithUid:(NSString *)userId API_UNAVAILABLE(macos);
 
 /**
  开始通话录音. 录制通话中所有参与者的声音, 包含混音任务播放的声音, 录制成 aac 或者 wav 文件
@@ -778,20 +826,20 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  @return 开始通话录音的结果.
  */
 - (BOOL)startAudioRecording:(nullable NSURL *)filePath
-                      error:(NSError * __nullable *)error;
+                      error:(NSError * __nullable *)error API_UNAVAILABLE(macos);
 
 
 /**
  结束通话录音
  */
-- (void)stopAudioRecording;
+- (void)stopAudioRecording API_UNAVAILABLE(macos);
 
 /**
  获取当前通话录音文件路径
  
  @return 当前通话录音文件路径. 如果没有进行中的通话录音则返回 nil
  */
-- (nullable NSURL *)currentAudioRecordingFilePath;
+- (nullable NSURL *)currentAudioRecordingFilePath API_UNAVAILABLE(macos);
 
 
 /**
@@ -819,50 +867,56 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  选择滤镜类型
  
  @param type  滤镜类型
+ 
+ @return 是否设置成功
  */
-- (void)selectBeautifyType:(NIMNetCallFilterType)type;
+- (BOOL)selectBeautifyType:(NIMNetCallFilterType)type;
 
 /**
  改变焦距 实际放大倍数
  
  @param scale 放大倍数
+ 
+ @return 是否设置成功
  */
-- (void)changeLensPosition:(float)scale;
+- (BOOL)changeLensPosition:(float)scale API_UNAVAILABLE(macos);
 
 /**
  设置闪光灯开关
  
  @param isFlashOn  是否开启闪光灯
  */
-- (void)setCameraFlash:(BOOL)isFlashOn;
+- (void)setCameraFlash:(BOOL)isFlashOn API_UNAVAILABLE(macos);
 
 /**
  设置预览镜像
  
  @param isMirrorOn  是否开启预览镜像
  */
-- (void)setPreViewMirror:(BOOL)isMirrorOn;
+- (void)setPreViewMirror:(BOOL)isMirrorOn ;
 
 /**
  设置编码镜像
  
  @param isMirrorOn  是否开启编码镜像
  */
-- (void)setCodeMirror:(BOOL)isMirrorOn;
+- (void)setCodeMirror:(BOOL)isMirrorOn API_UNAVAILABLE(macos);
 
 /**
  设置对焦模式
  
  @param mode  对焦模式
+ 
+ @return 是否设置成功
  */
-- (void)setFocusMode:(NIMNetCallFocusMode)mode;
+- (BOOL)setFocusMode:(NIMNetCallFocusMode)mode API_UNAVAILABLE(macos);
 
 /**
  获取摄像头支持的最大放大倍数
  
  *  @return 放大倍数
  */
-- (CGFloat)getMaxZoomScale;
+- (CGFloat)getMaxZoomScale API_UNAVAILABLE(macos);
 
 /**
  添加静态水印
@@ -872,10 +926,12 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  @param rect   水印具体位置和大小（x，y根据location位置，计算具体的位置信息）
  
  @param location  水印位置
+ 
+ @return 是否设置成功
  */
-- (void)addWaterMark:(UIImage*)image
+- (BOOL)addWaterMark:(UIImage*)image
                 rect:(CGRect)rect
-            location:(NIMNetCallWaterMarkLocation)location;
+            location:(NIMNetCallWaterMarkLocation)location API_UNAVAILABLE(macos);
 
 /**
  添加动态水印
@@ -889,37 +945,43 @@ typedef NS_ENUM(NSInteger, NIMNetCallCamera){
  @param rect 具体位置和大小（x，y根据location位置，计算具体的位置信息）
  
  @param location 位置
+ 
+ @return 是否设置成功
  */
-- (void)addDynamicWaterMarks:(NSArray*)imageArray
+- (BOOL)addDynamicWaterMarks:(NSArray*)imageArray
                     fpsCount:(unsigned int)count
                         loop:(BOOL)looped
                         rect:(CGRect)rect
-                    location:(NIMNetCallWaterMarkLocation)location;
+                    location:(NIMNetCallWaterMarkLocation)location API_UNAVAILABLE(macos);
 /**
  *  清除水印
  */
-- (void)cleanWaterMark;
+- (void)cleanWaterMark API_UNAVAILABLE(macos);
 
 /**
  手动对焦
  
  @param devicePoint 点
  */
-- (void)changeNMCVideoPreViewManualFocusPoint:(CGPoint)devicePoint;
+- (void)changeNMCVideoPreViewManualFocusPoint:(CGPoint)devicePoint API_UNAVAILABLE(macos);
 
 /**
  设置对比度滤镜强度,支持自然 粉嫩 怀旧 黑白模式
  
  @param value 值 [0-4] 默认为 1
+ 
+ @return 是否设置成功
  */
-- (void)setContrastFilterIntensity:(float)value;
+- (BOOL)setContrastFilterIntensity:(float)value API_UNAVAILABLE(macos);
 
 /**
  设置磨皮滤镜强度,支持自然 粉嫩 怀旧 黑白模式
  
  @param value 值 [0-1] 默认为 0
+ 
+ @return 是否设置成功
  */
-- (void)setSmoothFilterIntensity:(float)value;
+- (BOOL)setSmoothFilterIntensity:(float)value API_UNAVAILABLE(macos);
 
 @end
 

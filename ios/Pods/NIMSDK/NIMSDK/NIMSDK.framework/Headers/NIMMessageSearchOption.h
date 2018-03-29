@@ -130,6 +130,13 @@ typedef NS_ENUM(NSInteger,NIMMessageSearchOrder) {
 @property (nonatomic,assign)      BOOL            sync;
 
 
+/**
+ *  查询的消息类型
+ *  @discusssion 消息类型组合，默认为 nil ，搜索全类型。 此参数只对聊天室会话有效
+ */
+@property (nonatomic,copy)    NSArray<NSNumber *> *messageTypes;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

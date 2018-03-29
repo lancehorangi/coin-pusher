@@ -13,7 +13,7 @@ const APICode = {
 // };
 
 
-const LOG_API = true;
+const LOG_API = false;
 /**
  * Parses the JSON returned by a network request
  *
@@ -21,7 +21,7 @@ const LOG_API = true;
  *
  * @return {object}          The parsed JSON, status from the response
  */
-function parseJSON(response) {
+function parseJSON(response): Promise<any> {
   return new Promise((resolve, reject) => response.json()
     .then((json) => {
       if (LOG_API) {console.log("api status=" + response.status);}

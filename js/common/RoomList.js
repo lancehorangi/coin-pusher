@@ -72,6 +72,7 @@ class RoomList extends Component<Props> {
             currCost={room.coins}
             baseCost={this.props.baseCost}
             bPlaying={room.entityID !== 0}
+            rmtpUrl={room.rtmpUrl}
             queueList={room.queueList}
             style={{width:THUMB_WIDTH, height:THUMB_HEIGHT, marginLeft:10}}
             picUrl={room.roomSnapshoot}

@@ -123,6 +123,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)    BOOL   animatedImageThumbnailEnabled;
 
 /**
+ *  是否禁止后台重连
+ *  @discusssion 默认为 NO。即默认情况下，当程序退到后台断开连接后，如果 App 仍能运行，SDK 将继续执行自动重连机制。设置为 YES 后在后台将不自动重连，重连将被推迟到前台进行。
+*                只有特殊用户场景才需要此设置，无明确原因请勿设置。
+ */
+@property (nonatomic,assign)    BOOL    reconnectInBackgroundStateDisabled;
+
+/**
  *  配置项委托
  */
 @property (nullable,nonatomic,weak)    id<NIMSDKConfigDelegate>    delegate;

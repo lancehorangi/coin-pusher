@@ -7,11 +7,13 @@
 import type { Action } from "../actions/types";
 
 export type State = {
-  chargeList: null | Array<Object>
+  chargeList: null | Array<Object>,
+  marketList: null | Array<Object>
 };
 
 const initialState = {
-  chargeList: null,
+  chargeList: [],
+  marketList: []
 };
 
 function mall(state: State = initialState, action: Action): State {
@@ -35,7 +37,8 @@ function mall(state: State = initialState, action: Action): State {
     };
   }
 
-  return state;
+  return initialState;
 }
 
+console.warn("reducer mall call!");
 module.exports = mall;

@@ -216,6 +216,10 @@ typedef NS_ENUM(NSUInteger, NIMAVChatVideoAdaptiveStrategy) {
      *  清晰优先
      */
     NIMAVChatVideoAdaptiveStrategyQuality = 2,
+    /**
+     *  录屏模式
+     */
+    NIMAVChatVideoAdaptiveStrategyScreenRecord = 3,
 };
 
 /**
@@ -321,6 +325,10 @@ typedef NS_ENUM(NSInteger, NIMNetCallErrorCode) {
      */
     NIMNetCallErrorCodeBeKicked           = 20412,
 
+    /**
+     *  房间被关闭
+     */
+    NIMNetCallErrorCodeChannelClosed      = 20413,
 
 };
 
@@ -420,7 +428,7 @@ typedef NS_ENUM(NSInteger, NIMAVLocalErrorCode) {
 
 /**
  *  服务器错误码 （AV） Doamin: NIMRemoteErrorDomain
- *  @discussion 更多错误详见 http://dev.netease.im/docs?doc=nim_status_code#服务器端状态码
+ *  @discussion 更多错误详见 [服务器端状态码](http://dev.netease.im/docs?doc=nim_status_code#服务器端状态码)
  */
 typedef NS_ENUM(NSInteger, NIMAVRemoteErrorCode) {
     /**

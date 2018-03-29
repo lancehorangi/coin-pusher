@@ -13,7 +13,8 @@ import { createLogger } from "redux-logger";
 import { persistStore, persistReducer } from "redux-persist";
 import { AsyncStorage } from "react-native";
 import { ensureCompatibility } from "./compatibility";
-import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
+//import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
+//import hardSet from "redux-persist/lib/stateReconciler/hardSet";
 
 const isDebuggingInChrome = true;
 
@@ -27,7 +28,7 @@ const persistConfig = {
   key: "root",
   storage: AsyncStorage,
   blacklist: ["lobby", "appNavigator", "mall", "room"],
-  stateReconciler: autoMergeLevel2,
+  //stateReconciler: hardSet
 };
 
 const createF8Store = applyMiddleware(thunk, promise, array, analytics, logger)(
@@ -40,6 +41,13 @@ async function configureStore(onComplete: ?() => void) {
   const store = createF8Store(persistedReducer);
   let persistor = persistStore(store, null, () => onComplete(store, didReset));
   //persistStore(store, { storage: AsyncStorage }, _ => onComplete(didReset));
+
+  // const store = createStore(
+  //   reducers,
+  //   // applyMiddleware() tells createStore() how to handle middleware
+  //   applyMiddleware(thunk, promise, array, analytics, logger)
+  // );
+  // onComplete(store);
 
   if (isDebuggingInChrome) {
     window.store = store;

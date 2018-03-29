@@ -25,6 +25,8 @@
 #elif NIM_MAC
 #import <Cocoa/Cocoa.h>
 @compatibility_alias UIImage NSImage;
+@compatibility_alias UIView NSView;
+
 #endif
 
 
