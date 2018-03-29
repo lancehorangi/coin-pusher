@@ -34,7 +34,7 @@
     "react-native-elements": "^0.19.0",
     "react-native-gesture-handler": "^1.0.0-alpha.41",
     "react-native-keyboard-aware-scroll-view": "^0.4.4",
-    "react-native-ksyvideo": "^2.0.0",
+    "react-native-ksyvideo": "git+https://git@github.com/canyara/react-native-video-player.git",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-md5": "^1.0.0",
     "react-native-navigation": "^1.1.375",

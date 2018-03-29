@@ -24,7 +24,9 @@ const LOG_API = false;
 function parseJSON(response): Promise<any> {
   return new Promise((resolve, reject) => response.json()
     .then((json) => {
-      if (LOG_API) {console.log("api status=" + response.status);}
+      if (LOG_API) {
+        console.log("api status=" + response.status);
+      }
 
       resolve({
         status: response.status,

@@ -108,11 +108,6 @@ class GameScreen extends ScreenComponent<Props, States> {
         await NimSession.login(account, token);
         await this.props.dispatch(connectMeeting(result.info.nimName));
         await this.setState({bPlaying:true});
-
-        clearInterval(this.heartLoop);
-        this.heartLoop = setInterval(() => {
-          this.props.dispatch(heartRequest());
-        }, 1000);
       }
       else {
         Alert.alert("房间已有玩家\n请稍后再试");

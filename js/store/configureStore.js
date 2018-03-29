@@ -31,7 +31,13 @@ const persistConfig = {
   //stateReconciler: hardSet
 };
 
-const createF8Store = applyMiddleware(thunk, promise, array, analytics, logger)(
+let middlewares = [thunk, promise, array, analytics];
+
+if ( __DEV__ ) {
+  middlewares.push(logger);
+}
+
+const createF8Store = applyMiddleware( ...middlewares )(
   createStore
 );
 
