@@ -40,7 +40,8 @@ export function hideLoginModal() {
   _bShowLoginModal = false;
   _lastActTime = Date.now();
 
-  Navigation.dismissAllModals();
+  //Navigation.dismissAllModals();
+  Navigation.dismissModal();
 }
 
 
@@ -80,7 +81,8 @@ export function dismissModal() {
 
   if (diff > DelayTime) {
     _lastActTime = Date.now();
-    Navigation.dismissAllModals();
+    //Navigation.dismissAllModals();
+    Navigation.dismissModal();
   }
   else {
     _modalArray.push({dismiss:true});
@@ -100,7 +102,8 @@ function doNext() {
 
   _lastActTime = Date.now();
   if (screenInfo.dismiss) {
-    Navigation.dismissAllModals();
+    //Navigation.dismissAllModals();
+    Navigation.dismissModal();
   }
   else {
     Navigation.showModal(

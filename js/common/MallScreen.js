@@ -14,6 +14,7 @@ import { getMarketList } from "../actions";
 import { connect } from "react-redux";
 import ScreenComponent from "./ScreenComponent";
 import F8Colors from "./F8Colors";
+import ModalYesNo from "./ModalYesNo";
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -31,12 +32,28 @@ const NormalItem = ({ text, price, onPress, icon }: Object): Component =>
     <Text style={{color:"#d3d3e8"}}> {"价格:" + price} </Text>
   </TouchableOpacity>;
 
-class MallScreen extends ScreenComponent {
+type States = {
+  item: Object,
+  modalVisible: boolean
+};
+
+type Props = {
+  dispatch: ?() => mixed,
+  integral: number,
+  items: Array<Object>
+};
+
+class MallScreen extends ScreenComponent<Props, States> {
+  state = {
+    modalVisible: false
+  }
+
   constructor(props: Object) {
     super(props);
 
-    this.state = {
-    };
+    // this.state = {
+    //
+    // };
   }
 
   static navigatorStyle = {
@@ -52,20 +69,21 @@ class MallScreen extends ScreenComponent {
   componentDidMount() {
   }
 
-  onPress = () => {
-
+  onPress = async (item: Object): any => {
+    await this.setState({item});
+    await this.setState({modalVisible: true});
   }
 
   renderContent = (): Component => {
     let { items } = this.props;
-    if (items) {
+    if (items && items.length != 0) {
       return items.map((item: Object, idx: number): Component => {
         return (
           <NormalItem
             text={item.name}
             price={item.cost}
             icon={item.url}
-            onPress={this.onPress}
+            onPress={(): any => this.onPress(item)}
             key={idx}
           />
         );
@@ -94,14 +112,50 @@ class MallScreen extends ScreenComponent {
     );
   }
 
-  render(): Component {
+  getItemModalLabel = (): string => {
+    let {item} = this.state;
+
+    if (item) {
+      return "是否要花" + item.cost + "积分购买道具 " + item.name + " ?";
+    }
+
+    return "无";
+  }
+
+  modalPressYes = () => {
+    let {item} = this.state;
+
+    if (item) {
+      //this.props.dispatch(mallBuy(item.id));
+    }
+  }
+
+  modalPressNo = () => {
+    this.setState({modalVisible: false});
+  }
+
+  render = (): Component => {
     return (
-      <ScrollView style={styles.container}>
-        {this.renderTitle(require("./img/shopmall.png"), "商城兑换")}
-        <View style={styles.cardContainer}>
-          {this.renderContent()}
-        </View>
-      </ScrollView>
+      <View style={{
+        width: "100%",
+        height: "100%",
+        backgroundColor: "transparent"
+      }}>
+        <ModalYesNo
+          onPressYes={this.modalPressYes}
+          onPressNo={this.modalPressNo}
+          visible={this.state.modalVisible}
+          label={this.getItemModalLabel()}
+          yesLabel={"购买"}
+          noLabel={"取消"}
+        />
+        <ScrollView style={styles.container}>
+          {this.renderTitle(require("./img/shopmall.png"), "商城兑换")}
+          <View style={styles.cardContainer}>
+            {this.renderContent()}
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 }

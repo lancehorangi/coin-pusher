@@ -169,7 +169,7 @@ class IAPScreen extends ScreenComponent {
 
   render(): Component {
     let { items } = this.props;
-    if (items) {
+    if (items && items.length != 0) {
       return (
         <ScrollView style={styles.container}>
           {this.renderTitle(require("./img/Recharge1.png"), "超值充值")}
@@ -190,8 +190,6 @@ class IAPScreen extends ScreenComponent {
         </View>
       );
     }
-
-
   }
 }
 

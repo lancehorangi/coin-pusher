@@ -37,6 +37,7 @@
     "react-native-ksyvideo": "git+https://git@github.com/canyara/react-native-video-player.git",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-md5": "^1.0.0",
+    "react-native-modal": "^5.4.0",
     "react-native-navigation": "^1.1.375",
     "react-native-netease-im": "git+https://git@github.com/canyara/react-native-netease-im.git",
     "react-native-payfubao": "git+https://git@github.com/canyara/react-native-payfubao.git",
