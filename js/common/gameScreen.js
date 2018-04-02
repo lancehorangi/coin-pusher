@@ -25,6 +25,7 @@ import { Button } from "react-native-elements";
 import RoomHistory from "./RoomHistory";
 import { dismissModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
+import { Avatar } from "react-native-elements";
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -46,8 +47,7 @@ type Props = {
 type States = {
   bLoading: boolean,
   autoPlay: boolean,
-  bPlaying: boolean,
-  enterFinished: boolean
+  bPlaying: boolean
 };
 
 class GameScreen extends ScreenComponent<Props, States> {
@@ -58,8 +58,7 @@ class GameScreen extends ScreenComponent<Props, States> {
     this.state = {
       bLoading: true,
       autoPlay: false,
-      bPlaying: false,
-      enterFinished: false
+      bPlaying: false
     };
     this._isMounted = false;
   }
@@ -91,7 +90,6 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   async reqEnterRoom(): void {
-    await this.setState({ enterFinished: false});
     await this.setState({ bLoading: true });
     let { roomID, account, token } = this.props;
 
@@ -120,7 +118,6 @@ class GameScreen extends ScreenComponent<Props, States> {
     } finally {
       //
       this.setState({bLoading:false});
-      await this.setState({ enterFinished: true});
     }
   }
 
@@ -167,31 +164,73 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   renderCloseBtn = (): Component => {
-    if (this.state.enterFinished) {
-      return (
-        <TouchableOpacity
-          accessibilityTraits="button"
-          onPress={this.onPress}
-          activeOpacity={0.5}
-          style={styles.closeBtn}
-        >
-          <Image
-            source={require("../common/img/close.png")}
-            resizeMode={"stretch"}/>
-        </TouchableOpacity>
-      );
-    }
-    else {
-      return;
-    }
+    return (
+      <TouchableOpacity
+        accessibilityTraits="button"
+        onPress={this.onPress}
+        activeOpacity={0.5}
+        style={styles.closeBtn}
+      >
+        <Image
+          source={require("../common/img/close.png")}
+          resizeMode={"stretch"}/>
+      </TouchableOpacity>
+    );
+  }
+
+  renderWaitList = (): Component => {
+    const waitList = [
+      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
+      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
+      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
+      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
+      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
+      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
+      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
+      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
+      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png"
+    ];
+
+    let useList = waitList.slice(0, 5);
+    let waitNum = waitList.length;
+
+    return (
+      <View style={styles.waitListContainer}>
+        {
+          useList.map((item: Object, index: number): Component => (
+            <Avatar
+              key={index}
+              width={23}
+              height={23}
+              //large
+              rounded
+              source={{uri:item}}
+              //activeOpacity={0.7}
+              //containerStyle={{width:10, height:10}}
+            />
+          ))
+        }
+        <Text style={{
+          color: "white",
+          marginLeft: 3
+        }}>
+          {waitNum + "人排队中"}
+        </Text>
+      </View>
+    );
   }
 
   renderHeader = (): Component => {
+    if (this.state.bLoading) {
+      return;
+    }
+
     let { roomInfo } = this.props;
 
     return (
       <View style={styles.headerContainer}>
         { this.renderCloseBtn() }
+        { this.renderWaitList() }
         <Text
           numberOfLines={2}
           style={{
@@ -224,6 +263,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             <ActivityIndicator animating size="large" color='white'/>
           </View>
           <NTESGLView style={styles.video}/>
+          {this.renderPlayerInfo()}
         </View>
       );
     }
@@ -235,7 +275,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             <ActivityIndicator animating size="large" color='white'/>
           </View>
           <KSYVideo
-            style={styles.video}
+            style={styles.liveVideo}
             //source={{uri: this.props.roomInfo.rtmpUrl}}   // Can be a URL or a local file.
             source={{uri:"rtmp://v02225181.live.126.net/live/073afa1b14d04e2a9ac6106b7bb98326"}}
             // ref={(ref: any) => {
@@ -255,6 +295,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             onError={this._onError}               // Callback when video cannot be loaded
             //onBuffer={this._onReadyForDisplay}                // Callback when remote video is buffering
           />
+          {this.renderPlayerInfo()}
         </View>
       );
     }
@@ -352,6 +393,30 @@ class GameScreen extends ScreenComponent<Props, States> {
     );
   }
 
+  renderPlayerInfo = (): Component => {
+    if (this.props.roomInfo.entityID != 0) {
+      return (
+        <View style={styles.playerInfoContainer}>
+          <Avatar
+            //large
+            rounded
+            //source={{uri:this.props.roomInfo.headUrl}}
+          />
+          <Text style={{
+            fontSize: 15,
+            color: "white",
+            alignSelf: "center",
+            marginLeft: 5
+          }}>
+            {this.props.roomInfo.entityID}
+          </Text>
+        </View>
+      );
+    }
+
+    return;
+  }
+
   render(): Component {
     return (
       <ScrollView
@@ -359,7 +424,7 @@ class GameScreen extends ScreenComponent<Props, States> {
         //bounces={false}
       >
         <View style={{width:"100%", backgroundColor: F8Colors.mainBgColor2,
-          height: isIphoneX() ? IPHONE_X_HEAD : 0}}/>
+          height: isIphoneX() ? IPHONE_X_HEAD + 15 : 15}}/>
         {this.renderHeader()}
         {this.renderContent()}
         {this.renderBottom()}
@@ -408,6 +473,10 @@ const styles = StyleSheet.create({
     height: WIN_WIDTH / 3 * 4,
     resizeMode: "stretch"
   },
+  liveVideo: {
+    width: WIN_WIDTH,
+    height: WIN_WIDTH / 3 * 4
+  },
   videoLoading: {
     position: "absolute",
     top: 0,
@@ -430,6 +499,21 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     flexDirection: "row",
+  },
+  playerInfoContainer: {
+    position: "absolute",
+    top: -10,
+    left: 10,
+    height: 70,
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center"
+  },
+  waitListContainer: {
+    height: 22,
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center"
   }
 });
 
