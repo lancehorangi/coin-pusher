@@ -51,7 +51,7 @@ class ImageSwiperScreen extends ScreenComponent {
           dotColor={F8Colors.mainBgColor}
           activeDotColor={"#00000088"}>
           {
-            this.props.images.map((item, index): Component => (
+            this.props.images.map((item: Object, index: number): Component => (
               <View style={styles.slide} key={index}>
                 <Image
                   style={styles.Image}
@@ -95,12 +95,16 @@ const styles = StyleSheet.create({
   },
   slide: {
     flex: 1,
+    // width: WIN_WIDTH,
+    // height: WIN_HEIGHT,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: F8Colors.mainBgColor,
   },
   Image: {
     flex: 1,
+    width: "100%",
+    height: "100%",
     backgroundColor: "transparent",
     resizeMode: "contain",
   },
