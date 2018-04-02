@@ -54,6 +54,9 @@ type States = {
 
 export class MainScreen extends React.Component<Props, States> {
   nScroll = new Animated.Value(0);
+  _scrollRef = null;
+  _offsetY = 0;
+
   _refs = {}
   state = {
     index: 0,
@@ -132,6 +135,9 @@ export class MainScreen extends React.Component<Props, States> {
   }
 
   _handleIndexChange = async (index: number): void => {
+    //
+    this._scrollRef.getNode().scrollTo({y: this._offsetY, animated: true});
+
     await this.setState({ index });
     let {routes} = this.state;
 
@@ -274,6 +280,8 @@ export class MainScreen extends React.Component<Props, States> {
   {
     //Alert.alert('layout height:' + e.nativeEvent.layout.height);
     let offsetY = e.nativeEvent.layout.height;
+    this._offsetY = offsetY;
+
     if(this.nScroll){
       this.setState({ tabY:
         this.nScroll.interpolate({
@@ -294,6 +302,9 @@ export class MainScreen extends React.Component<Props, States> {
   render(): Component {
     return (
       <Animated.ScrollView
+        ref={(ref: any) => {
+          this._scrollRef = ref;
+        }}
         alwaysBounceVertical={false}
         alwaysBounceHorizontal={false}
         bounces={false}

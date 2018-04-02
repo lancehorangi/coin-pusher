@@ -10,6 +10,7 @@ import RoomThumbnail from "./RoomThumbnail";
 import F8Colors from "./F8Colors";
 
 const WIN_WIDTH = Dimensions.get("window").width;
+const WIN_HEIGHT = Dimensions.get("window").height;
 
 const THUMB_WIDTH = (WIN_WIDTH - 50) / 2;
 const THUMB_HEIGHT = THUMB_WIDTH / 3 * 4;
@@ -55,7 +56,7 @@ class RoomList extends Component<Props> {
 
     if ( this.state.bLoading ) {
       return (
-        <View style={{width:"100%", height:300, justifyContent:"center", alignContent:"center"}}>
+        <View style={{width:"100%", height:WIN_HEIGHT / 2, justifyContent:"center", alignContent:"center"}}>
           <ActivityIndicator animating size="large" color='white'/>
         </View>
       );
