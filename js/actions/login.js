@@ -1,14 +1,14 @@
 //@flow
 "use strict";
 
-import {  Alert } from "react-native";
-import { APIRequest, configureAPIToken } from "../api";
-import { STATUS_OK } from "../env";
+import { Alert } from "react-native";
+import { APIRequest, configureAPIToken, API_ENUM, API_RESULT } from "../api";
 import { NimSession } from "react-native-netease-im";
 import type { Action, ThunkAction, Dispatch } from "./types";
-import { toastShow } from "./../util";
+import { toastShow, PlatformAlert, getMachineName, GetDeviceToken } from "./../util";
 import { refreshMsgs } from "./msgs";
 import { getCheckinInfo } from "./checkin";
+import { showRoomList, leaveRoom } from "./lobby";
 import { showModal, showLoginModal, hideLoginModal } from "./../navigator";
 import { freshItems } from "./user";
 
@@ -18,7 +18,7 @@ async function _logIn(username: string, pwd: string): Promise<Object> {
       account:username, password:pwd
     });
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -72,6 +72,7 @@ function loggedIn(
     dispatch(getAccountInfo());
     dispatch(getCheckinInfo());
     dispatch(freshItems());
+    dispatch(showRoomList(0));
 
     return;
   });
@@ -107,7 +108,7 @@ async function _mobileCodeReq(mobilePhone: string): Promise<Object> {
       phone:mobilePhone
     });
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -134,11 +135,12 @@ function mobileCodeReq(mobilePhone: string): ThunkAction {
 
 async function _mobileLogin(mobilePhone: string, code: string): Promise<Object> {
   try {
+    let jpushDevice = await GetDeviceToken();
     let response = await APIRequest("account/phoneLogin", {
-      phone:mobilePhone, code:code
+      phone:mobilePhone, code:code, jpushDevice
     });
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -166,11 +168,12 @@ function mobileLogin(mobilePhone: string, code: string): ThunkAction {
 
 async function _wxLogin(code: string): Promise<Object> {
   try {
+    let jpushDevice = await GetDeviceToken();
     let response = await APIRequest("account/wxLogin", {
-      code
+      code, jpushDevice
     });
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -200,7 +203,7 @@ async function _getAccountInfo(): Promise<Object> {
   try {
     let response = await APIRequest("account/accountInfo", {}, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -217,25 +220,74 @@ function getAccountInfo(): ThunkAction {
     response.then((result: Object): any => {
       dispatch({
         type: "ACCOUNT_INFO",
-        nickName: result.nickName,
-        roomID: result.roomID,
-        meetingName: result.roomID,
-        diamond: result.diamond,
-        gold: result.gold,
-        integral: result.integral,
-        entityID: result.entityID,
-        headUrl: result.url,
+        // nickName: result.nickName,
+        // roomID: result.roomID,
+        // meetingName: result.roomID,
+        // diamond: result.diamond,
+        // gold: result.gold,
+        // integral: result.integral,
+        // entityID: result.entityID,
+        // headUrl: result.url,
+        // entityState: result.entityState
+        accountInfo: result.info
       });
 
-      if (result.roomID != 0) {
-        showModal({
-          screen: "CP.GameScreen", // unique ID registered with Navigation.registerScreen
-          title: "游戏", // title of the screen as appears in the nav bar (optional)
-          passProps: {roomID:result.roomID}, // simple serializable object that will pass as props to the modal (optional)
-          navigatorStyle: { navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-          navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-          animationType: "slide-up" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
-        });
+      if (result.roomID != 0 && result.entityState === API_ENUM.ES_Game) {
+        PlatformAlert(
+          "提醒",
+          "检测到您上次在" + getMachineName(result.roomID) + "游戏是否要继续?",
+          "继续",
+          "取消",
+          () => {
+            showModal({
+              screen: "CP.GameScreen",
+              title: "游戏",
+              passProps: {roomID:result.roomID},
+              navigatorStyle: { navBarHidden: true },
+              navigatorButtons: {},
+              animationType: "slide-up"
+            });
+          },
+          () => {
+            dispatch(leaveRoom());
+          }
+        );
+      }
+      else if (result.roomID != 0 && result.entityState === API_ENUM.ES_QueueTimeout) {
+        PlatformAlert(
+          "提醒",
+          "检测到您上次在" + getMachineName(result.roomID) + "排队并且已经超时是否要继续?",
+          "继续",
+          "取消",
+          () => {
+            showModal({
+              screen: "CP.GameScreen",
+              title: "游戏",
+              passProps: {roomID:result.roomID},
+              navigatorStyle: { navBarHidden: true },
+              navigatorButtons: {},
+              animationType: "slide-up"
+            });
+          }
+        );
+      }
+      else if (result.roomID != 0 && result.entityState === API_ENUM.ES_Queue) {
+        PlatformAlert(
+          "提醒",
+          "检测到您上次在" + getMachineName(result.roomID) + "排队是否要进入该房间?",
+          "进入",
+          "取消",
+          () => {
+            showModal({
+              screen: "CP.GameScreen",
+              title: "游戏",
+              passProps: {roomID:result.roomID},
+              navigatorStyle: { navBarHidden: true },
+              navigatorButtons: {},
+              animationType: "slide-up"
+            });
+          }
+        );
       }
     },
     (err: Error) => {

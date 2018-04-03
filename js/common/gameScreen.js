@@ -17,15 +17,24 @@ import {
   Switch
 } from "react-native";
 import { NimUtils, NTESGLView, NimSession } from "react-native-netease-im";
-import { enterRoom, pushCoin, leaveRoom, connectMeeting, heartRequest } from "../actions";
+import {
+  enterRoom,
+  pushCoin,
+  leaveRoom,
+  connectMeeting,
+  heartRequest,
+  roomInfo,
+  queueRoom
+} from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
-import { isIphoneX, toastShow, getMachineName } from "./../util";
+import { isIphoneX, toastShow, getMachineName, PlatformAlert } from "./../util";
 import { Button } from "react-native-elements";
 import RoomHistory from "./RoomHistory";
 import { dismissModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
+import { API_ENUM, API_RESULT } from "../api";
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -47,7 +56,8 @@ type Props = {
 type States = {
   bLoading: boolean,
   autoPlay: boolean,
-  bPlaying: boolean
+  bPlaying: boolean,
+  queuing: boolean
 };
 
 class GameScreen extends ScreenComponent<Props, States> {
@@ -58,7 +68,8 @@ class GameScreen extends ScreenComponent<Props, States> {
     this.state = {
       bLoading: true,
       autoPlay: false,
-      bPlaying: false
+      bPlaying: false,
+      queuing: false
     };
     this._isMounted = false;
   }
@@ -100,23 +111,37 @@ class GameScreen extends ScreenComponent<Props, States> {
     }, 1000);
 
     try {
-      let result = await this.props.dispatch(enterRoom(roomID));
+      let result = await this.props.dispatch(roomInfo(roomID));
+      await this.props.dispatch(enterRoom(roomID));
+      // if (result.info.entityID === this.props.entityID) {
+      //   await NimSession.login(account, token);
+      //   await this.props.dispatch(connectMeeting(result.info.nimName));
+      //   await this.setState({bPlaying:true});
+      // }
+      // else {
+      //   Alert.alert("房间已有玩家\n请稍后再试");
+      // }
 
-      if (result.info.entityID === this.props.entityID) {
-        await NimSession.login(account, token);
-        await this.props.dispatch(connectMeeting(result.info.nimName));
-        await this.setState({bPlaying:true});
-      }
-      else {
-        Alert.alert("房间已有玩家\n请稍后再试");
-      }
+      await NimSession.login(account, token);
+      await this.props.dispatch(connectMeeting(result.info.nimName));
+      await this.setState({bPlaying:true});
 
       //this.setState({bLoading:false});
     } catch (e) {
-      toastShow("进入房间失败:" + e.message);
-      Alert.alert("进入房间失败:" + e.message);
+      //toastShow("进入房间失败:" + e.message);
+      toastShow("房间已有玩家,请排队");
+      let {status} = this.state;
+
+      if (API_ENUM.ES_QueueTimeout == status) {
+        PlatformAlert(
+          "提示",
+          "您上次排队超时本次免费排队,取消之后排队需要支付费用",
+          "排队",
+          "取消",
+          (): any => this._queueReq()
+        );
+      }
     } finally {
-      //
       this.setState({bLoading:false});
     }
   }
@@ -138,13 +163,13 @@ class GameScreen extends ScreenComponent<Props, States> {
 
   onPress = async (): void => {
     try {
-      await this.setState({enterState: "exit"});
-      await this.props.dispatch(leaveRoom());
+      dismissModal();
+      //this.props.navigator.pop();
+      this.props.dispatch(leaveRoom());
     } catch (e) {
       //
     } finally {
-      dismissModal();
-      this.props.navigator.pop();
+      //
     }
   }
 
@@ -159,8 +184,63 @@ class GameScreen extends ScreenComponent<Props, States> {
     this.props.dispatch(pushCoin());
   }
 
-  queueReq = () => {
+  pressQueue = async (): any => {
+    let {status, entityID} = this.state;
+
+    if (API_ENUM.ES_QueueTimeout == status) {
+      PlatformAlert(
+        "提示",
+        "您上次排队超时本次免费排队",
+        "排队",
+        "取消",
+        (): any => this._queueReq()
+      );
+    }
+    else if (API_ENUM.ES_Queue == status && entityID != roomInfo.entityID) {
+      PlatformAlert(
+        "提示",
+        "您已在其他房间排队,是否要支付800钻石费用排队",
+        "排队",
+        "取消",
+        (): any => this._queueReq()
+      );
+    }
+    else {
+      PlatformAlert(
+        "提示",
+        "您需要支付800钻石排队",
+        "排队",
+        "取消",
+        (): any => this._queueReq()
+      );
+    }
+  }
+
+  _queueReq = async (): any => {
     //
+    await this.setState({queuing: true});
+    try {
+      let { roomID } = this.props;
+      await this.props.dispatch(queueRoom(roomID));
+    } catch (e) {
+      //
+      if (e.message === API_RESULT.NOT_ENOUGH_DIAMOND) {
+        PlatformAlert(
+          "钻石不足",
+          "您的钻石不足支付排队消耗",
+          "充值",
+          "取消",
+          () => {
+            this.props.navigator.push({
+              screen: "CP.IAPScreen", // unique ID registered with Navigation.registerScreen
+              title: "商城",
+            });
+          }
+        );
+      }
+    } finally {
+      this.setState({queuing: false});
+    }
   }
 
   renderCloseBtn = (): Component => {
@@ -248,6 +328,16 @@ class GameScreen extends ScreenComponent<Props, States> {
     Alert.alert("直播拉流失败");
   }
 
+  _currQueueStatus = (): boolean => {
+    let {status, entityID, roomInfo} = this.state;
+
+    if (API_ENUM.ES_Queue == status && entityID == roomInfo.entityID) {
+      return true;
+    }
+
+    return false;
+  }
+
   renderContent = (): Component => {
     if (this.state.bLoading) {
       return (
@@ -315,10 +405,11 @@ class GameScreen extends ScreenComponent<Props, States> {
     else {
       return (
         <Button
-          title={"上机"}
+          loading={this.state.queuing}
+          title={this._currQueueStatus() ? "排队中" : "排队"}
           titleStyle={{color:"white", fontSize:25}}
           buttonStyle={{backgroundColor:"red", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
-          onPress={this.queueReq}
+          onPress={this._currQueueStatus() ? null : this.pressQueue}
         />
       );
     }
@@ -394,7 +485,8 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   renderPlayerInfo = (): Component => {
-    if (this.props.roomInfo.entityID != 0) {
+    let {roomInfo} = this.props;
+    if (roomInfo && roomInfo.entityID != 0) {
       return (
         <View style={styles.playerInfoContainer}>
           <Avatar
@@ -413,7 +505,6 @@ class GameScreen extends ScreenComponent<Props, States> {
         </View>
       );
     }
-
     return;
   }
 
@@ -525,6 +616,7 @@ function select(store: Object): Object {
     roomInfo: store.room.roomInfo,
     integral: store.user.integral,
     gold: store.user.gold,
+    status: store.user.entityState
   };
 }
 

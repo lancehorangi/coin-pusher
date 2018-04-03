@@ -17,7 +17,8 @@ import {
   StyleSheet,
   TextInput,
   Alert,
-  Text
+  Text,
+  Dimensions
 } from "react-native";
 import * as WeChat from "react-native-wechat";
 import { Button } from "react-native-elements";
@@ -28,6 +29,8 @@ import Toast from "react-native-root-toast";
 import { isIphoneX, toastShow } from "./../util";
 
 const IPHONE_X_HEAD = 30;
+const WIN_WIDTH = Dimensions.get("window").width,
+  WIN_HEIGHT = Dimensions.get("window").height;
 
 type Stats = {
   anim: Animated.Value,
@@ -231,8 +234,8 @@ class LoginScreen extends React.Component<Props, Stats> {
           position: "absolute",
           left:0,
           top:0,
-          right:0,
-          bottom:0,
+          width: WIN_WIDTH,
+          height: WIN_HEIGHT,
           justifyContent:"center",
           alignItems:"center",
           alignContent:"center",

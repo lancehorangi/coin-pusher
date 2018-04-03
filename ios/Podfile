@@ -46,6 +46,10 @@ pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
 
 pod 'react-native-ksyvideo', :path => '../node_modules/react-native-ksyvideo'
 
+  pod 'JCoreRN', :path => '../node_modules/jcore-react-native'
+
+  pod 'JPushRN', :path => '../node_modules/jpush-react-native'
+
   target 'coinpusherTests' do
     inherit! :search_paths
     # Pods for testing

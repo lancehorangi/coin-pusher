@@ -24,8 +24,7 @@
 
 "use strict";
 
-import { APIRequest } from "../api";
-import { STATUS_OK } from "../env";
+import { APIRequest, API_RESULT } from "../api";
 import type { Action, ThunkAction, Dispatch } from "./types";
 import { toastShow } from "./../util";
 
@@ -33,7 +32,7 @@ async function _getAccountHistory(): Promise<Object>{
   try {
     let response = await APIRequest("account/getHistory", {}, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -62,7 +61,7 @@ async function _heartRequest(): Promise<Object> {
   try {
     let response = await APIRequest("account/heart", {}, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -92,7 +91,7 @@ async function _freshMoney(): Promise<Object> {
   try {
     let response = await APIRequest("account/moneyInfo", {}, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -123,7 +122,7 @@ async function _freshItems(): Promise<Action> {
   try {
     let response = await APIRequest("account/bagInfo", {}, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 

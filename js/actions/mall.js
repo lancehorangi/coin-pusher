@@ -2,8 +2,7 @@
 
 "use strict";
 
-import { APIRequest } from "../api";
-import { STATUS_OK } from "../env";
+import { APIRequest, API_RESULT } from "../api";
 import type { Action, ThunkAction, Dispatch } from "./types";
 import { toastShow } from "./../util";
 import { freshMoney, freshItems } from "./user";
@@ -12,7 +11,7 @@ async function _getChargeList(): Promise<Object> {
   try {
     let response = await APIRequest("recharge/list", {}, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -43,7 +42,7 @@ async function _getMarketList(): Promise<Object> {
   try {
     let response = await APIRequest("market/list", {}, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -74,7 +73,7 @@ async function _mallBuy(id: number): Promise<Action> {
   try {
     let response = await APIRequest("market/buy", {type:"2", id}, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 

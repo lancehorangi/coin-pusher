@@ -9,6 +9,11 @@
 #import "RCCManager.h"
 
 #import "AppDelegate.h"
+#import <RCTJPushModule.h>
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#import <UserNotifications/UserNotifications.h>
+#endif
+
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -21,9 +26,14 @@
 #import "RNBugly.h"
 
 @implementation AppDelegate
-
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+  entity.types = UNAuthorizationOptionAlert|UNAuthorizationOptionBadge|UNAuthorizationOptionSound;
+  [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+  [JPUSHService setupWithOption:launchOptions appKey:@"7cae59627a6b8ce1a0116fde"
+                        channel:nil apsForProduction:nil];
+
   //RELEASE日志
   //RCTSetLogThreshold(RCTLogLevelInfo);
   
@@ -103,12 +113,14 @@
 -(void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
   //[[NIMSDK sharedSDK] updateApnsToken:deviceToken];
+  [JPUSHService registerDeviceToken:deviceToken];
 }
     
 //在后台时处理点击推送消息
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
   [[NSNotificationCenter defaultCenter]postNotificationName:@"ObservePushNotification" object:@{@"dict":userInfo,@"type":@"background"}];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object:userInfo];
 }
     
 -(void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
@@ -125,6 +137,38 @@
             options:(NSDictionary<NSString*, id> *)options
 {
   return [RCTLinkingManager application:application openURL:url options:options];
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+  [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object: notification.userInfo];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)   (UIBackgroundFetchResult))completionHandler
+{
+  [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object:userInfo];
+}
+
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler
+{
+  NSDictionary * userInfo = notification.request.content.userInfo;
+  if ([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    [JPUSHService handleRemoteNotification:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object:userInfo];
+  }
+  
+  completionHandler(UNNotificationPresentationOptionAlert);
+}
+
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
+{
+  NSDictionary * userInfo = response.notification.request.content.userInfo;
+  if ([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    [JPUSHService handleRemoteNotification:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kJPFOpenNotification object:userInfo];
+  }
+  
+  completionHandler();
 }
 
 @end

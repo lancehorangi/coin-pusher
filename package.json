@@ -26,6 +26,8 @@
   "dependencies": {
     "babel-plugin-transform-remove-console": "^6.9.0",
     "dateformat": "^3.0.3",
+    "jcore-react-native": "^1.2.5",
+    "jpush-react-native": "^2.1.12",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-bugly": "git+https://git@github.com/canyara/react-native-bugly.git",

@@ -1,8 +1,7 @@
 //@flow
 "use strict";
 
-import { APIRequest } from "../api";
-import { STATUS_OK } from "../env";
+import { APIRequest, API_RESULT } from "../api";
 import type { ThunkAction, Dispatch } from "./types";
 import { toastShow } from "./../util";
 import { freshMoney, freshItems } from "./user";
@@ -11,7 +10,7 @@ async function _getCheckinInfo(): Promise<Object> {
   try {
     let response = await APIRequest("account/getCheckinInfo", { }, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -41,7 +40,7 @@ async function _checkin(type: number): Promise<Object> {
   try {
     let response = await APIRequest("account/checkin", { type }, true);
 
-    if(response.StatusCode != STATUS_OK){
+    if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 

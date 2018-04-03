@@ -19,7 +19,8 @@ export type State = {
   checkinInfo: ?Array<Object>,
   accountGameHistory: ?Array<Object>,
   items: ?Array<Object>,
-  id: ?number
+  id: ?number,
+  status: ?number
 };
 
 const initialState = {
@@ -35,6 +36,7 @@ const initialState = {
   accountGameHistory: null,
   items: null,
   id: 0,
+  status: 0
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -59,14 +61,15 @@ function user(state: State = initialState, action: Action): State {
   if(action.type === "ACCOUNT_INFO") {
     return {
       ...state,
-      nickName: action.nickName,
-      //roomID: action.roomID,
+      nickName: action.accountInfo.nickName,
+      roomID: action.accountInfo.roomID,
       //meetingName: action.roomID,
-      diamond: action.diamond,
-      gold: action.gold,
-      integral: action.integral,
-      entityID: action.entityID,
-      headUrl: action.headUrl,
+      diamond: action.accountInfo.diamond,
+      gold: action.accountInfo.gold,
+      integral: action.accountInfo.integral,
+      entityID: action.accountInfo.entityID,
+      headUrl: action.accountInfo.headUrl,
+      entityState: action.accountInfo.entityState
     };
   }
 
@@ -105,6 +108,14 @@ function user(state: State = initialState, action: Action): State {
     return {
       ...state,
       items: action.items,
+    };
+  }
+
+  if (action.type === "ROOM_QUEUE_SUCC") {
+    return {
+      ...state,
+      roomID: action.roomID,
+      entityState: action.entityState
     };
   }
 

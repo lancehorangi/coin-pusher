@@ -4,5 +4,8 @@
   },
   "com.happy": {
     "enabled": true
+  },
+  "com.cpg.happycircus": {
+    "enabled": true
   }
 }

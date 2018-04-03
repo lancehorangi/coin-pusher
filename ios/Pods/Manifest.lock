@@ -17,6 +17,10 @@ PODS:
   - FMDB (2.7.2):
     - FMDB/standard (= 2.7.2)
   - FMDB/standard (2.7.2)
+  - JCoreRN (1.2.5):
+    - React
+  - JPushRN (2.1.12):
+    - React
   - KSYMediaPlayer_iOS (3.0.1):
     - KSYMediaPlayer_iOS/KSYMediaPlayer_live (= 3.0.1)
   - KSYMediaPlayer_iOS/KSYMediaPlayer_live (3.0.1)
@@ -77,6 +81,8 @@ DEPENDENCIES:
   - CodePush/Core (from `../node_modules/react-native-code-push`)
   - CodePush/JWT (from `../node_modules/react-native-code-push`)
   - FMDB (~> 2.5)
+  - JCoreRN (from `../node_modules/jcore-react-native`)
+  - JPushRN (from `../node_modules/jpush-react-native`)
   - NIMSDK (= 4.8.0)
   - Reachability (~> 3.1.1)
   - react-native-ksyvideo (from `../node_modules/react-native-ksyvideo`)
@@ -106,6 +112,10 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native-linear-gradient
   CodePush:
     :path: ../node_modules/react-native-code-push
+  JCoreRN:
+    :path: ../node_modules/jcore-react-native
+  JPushRN:
+    :path: ../node_modules/jpush-react-native
   React:
     :path: ../node_modules/react-native
   react-native-ksyvideo:
@@ -129,6 +139,8 @@ SPEC CHECKSUMS:
   CocoaLumberjack: f58d8a19629f4d8379ae14bb3534def24161430e
   CodePush: af67b07310e4037ecd5c38f03c7a51c6350240b5
   FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  JCoreRN: 5dff1e0264ee9fd57a0bc9b8cb2411b3c553e241
+  JPushRN: bdaefc1f0442d90ef4035f47e29e4268ee6a11f2
   KSYMediaPlayer_iOS: 4ab7094dac20de3af5c1768bbc675a1a8bdb37fc
   NIMSDK: 8373ba544b65e3845c40462235f5f4572b627315
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
@@ -142,6 +154,6 @@ SPEC CHECKSUMS:
   SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 6774c2d8bdfd95c52f3625ccbaf87fb9115adf50
+PODFILE CHECKSUM: 08d27ff034e336a90dd85f89eb269e0456459045
 
 COCOAPODS: 1.4.0

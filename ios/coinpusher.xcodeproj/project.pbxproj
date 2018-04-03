@@ -464,6 +464,7 @@
 		DC3BDE9AAA5E44CF8E6808ED /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		E7CBE3D00B6F46929A3FD9C1 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		EF873C86205542A200ECB884 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		EFAFAA462073C09700B69E47 /* coinpusher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = coinpusher.entitlements; path = coinpusher/coinpusher.entitlements; sourceTree = "<group>"; };
 		EFC547B2205574A50051E56B /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		F1908738FF8B48A48E62AB6F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		FE88594E18AA460FB6A8009F /* libRNNeteaseIm.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNNeteaseIm.a; sourceTree = "<group>"; };
@@ -622,6 +623,7 @@
 		13B07FAE1A68108700A75B9A /* coinpusher */ = {
 			isa = PBXGroup;
 			children = (
+				EFAFAA462073C09700B69E47 /* coinpusher.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -962,6 +964,14 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 74AS6K6CC5;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1838,6 +1848,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODEPUSH_KEY = "rPwFPpkVR_SrUzN6eAxA0IjGtxICbf415778-a89a-4469-9d3f-0bb68692a475";
+				CODE_SIGN_ENTITLEMENTS = coinpusher/coinpusher.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 74AS6K6CC5;
@@ -1858,7 +1869,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.happy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cpg.happycircus;
 				PRODUCT_NAME = coinpusher;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1870,6 +1881,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODEPUSH_KEY = "HSAwqzrXyJ1DifUxOao7b5PpjWEBbf415778-a89a-4469-9d3f-0bb68692a475";
+				CODE_SIGN_ENTITLEMENTS = coinpusher/coinpusher.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 74AS6K6CC5;
 				HEADER_SEARCH_PATHS = (
@@ -1889,7 +1901,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.happy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cpg.happycircus;
 				PRODUCT_NAME = coinpusher;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

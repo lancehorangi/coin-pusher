@@ -37,7 +37,7 @@ function mall(state: State = initialState, action: Action): State {
     };
   }
 
-  return initialState;
+  return state;
 }
 
 console.warn("reducer mall call!");

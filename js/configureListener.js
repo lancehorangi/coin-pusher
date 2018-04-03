@@ -2,7 +2,8 @@
 
 import { NativeAppEventEmitter, AppState } from "react-native";
 import {  NIMAVChatDescrib } from "./nativeEventDescribe";
-import { toastShow, codePushSync } from "./util";
+import { toastShow, codePushSync, PlatformAlert, showModal, getMachineName } from "./util";
+import JPush from "jpush-react-native";
 
 let _store = null;
 
@@ -62,6 +63,26 @@ function configureListener(store): void {
     //     passProps: {text:NIMAVChatDescrib[data]}, // simple serializable object that will pass as props to the in-app notification (optional)
     //     autoDismissTimerSec: 1 // auto dismiss notification in seconds
     //   });
+  });
+
+  JPush.addReceiveNotificationListener((event) => {
+    console.log("JPushModule receive notfication:" +  + JSON.stringify(event));
+    PlatformAlert(
+      "提醒",
+      "您在" + getMachineName(event.extras.roomID) + "已经排到是否要上机",
+      "继续",
+      "上机",
+      () => {
+        showModal({
+          screen: "CP.GameScreen",
+          title: "游戏",
+          passProps: {roomID:event.extras.roomID},
+          navigatorStyle: { navBarHidden: true },
+          navigatorButtons: {},
+          animationType: "slide-up"
+        });
+      }
+    );
   });
 }
 

@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import ScreenComponent from "./ScreenComponent";
 import F8Colors from "./F8Colors";
 import ModalYesNo from "./ModalYesNo";
+import { PlatformAlert } from "../util";
 
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
@@ -72,6 +73,8 @@ class MallScreen extends ScreenComponent<Props, States> {
   onPress = async (item: Object): any => {
     await this.setState({item});
     await this.setState({modalVisible: true});
+
+    PlatformAlert("积分购买", this.getItemModalLabel(), "购买", "取消", this.modalPressYes, this.modalPressNo );
   }
 
   renderContent = (): Component => {

@@ -28,8 +28,6 @@ module.exports = {
   //parseAppID: "oss-f8-app-2017",
   serverURL: "http://47.97.189.108:7001/1.0/",
   //serverURL: "http://192.168.2.10:7000/1.0/",
-  //graphqlURL: "http://localhost:4000/graphql",
-  STATUS_OK: "0",
   talkingdataID: "B7E8A44ADCCE4C9ABBC2A9391E05E6A4",
   wxID: "wx064e8b51fe46ccc9",
   compatibleStoreVersion: "0.10",

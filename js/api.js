@@ -8,12 +8,19 @@ const APICode = {
   TokenDisabled: "8",
 };
 
-// const APICodeDescrib = {
-// 	[APICode.TokenDisabled] : "登录失效"
-// };
+export const API_ENUM = {
+  ES_Normal: 0,
+  ES_Game: 1,
+  ES_QueueTimeout: 2,
+  ES_Queue: 3
+};
 
+export const API_RESULT = {
+  STATUS_OK: "0",
+  NOT_ENOUGH_DIAMOND: "10"
+};
 
-const LOG_API = false;
+const LOG_API = true;
 /**
  * Parses the JSON returned by a network request
  *

@@ -1,9 +1,10 @@
 import Toast from "react-native-root-toast";
-import { Dimensions, Platform } from "react-native";
+import { Dimensions, Platform, AlertIOS } from "react-native";
 import codePush from "react-native-code-push";
 import RNBugly from "react-native-bugly";
 import DeviceInfo from "react-native-device-info";
 import { updateToggleAddress } from "./env";
+import JPush from "jpush-react-native";
 
 export function isIphoneX() {
   const dimen = Dimensions.get("window");
@@ -13,6 +14,32 @@ export function isIphoneX() {
       !Platform.isTVOS &&
       (dimen.height === 812 || dimen.width === 812)
   );
+}
+
+export function PlatformAlert(
+  title: string,
+  content: string,
+  yesLabel: string,
+  noLabel: string,
+  yesCallback: () => mixed,
+  noCallback: ?() => mixed) {
+  if (Platform.OS === "ios") {
+    AlertIOS.alert(
+      title,
+      content,
+      [
+        {
+          text: yesLabel,
+          onPress: yesCallback,
+        },
+        {
+          text: noLabel,
+          onPress: noCallback ? noCallback : null,
+          style: "cancel",
+        },
+      ]
+    );
+  }
 }
 
 export function toastShow(label: string, options: ?Object) {
@@ -113,5 +140,12 @@ export function BuglyUpdateVersion() {
     console.warn("BuglyUpdateVersion:" + version);
     RNBugly.updateAppVersion(version);
   });
+}
 
+export async function GetDeviceToken(): Promise<string> {
+  return new Promise((resolve) => {
+    JPush.getRegistrationID(registrationId => {
+      resolve(registrationId);
+    });
+  });
 }
