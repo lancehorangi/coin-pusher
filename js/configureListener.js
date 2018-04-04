@@ -2,8 +2,9 @@
 
 import { NativeAppEventEmitter, AppState } from "react-native";
 import {  NIMAVChatDescrib } from "./nativeEventDescribe";
-import { toastShow, codePushSync, PlatformAlert, showModal, getMachineName } from "./util";
+import { toastShow, codePushSync, PlatformAlert, getMachineName } from "./util";
 import JPush from "jpush-react-native";
+import { showModal } from "./navigator";
 
 let _store = null;
 
@@ -66,23 +67,25 @@ function configureListener(store): void {
   });
 
   JPush.addReceiveNotificationListener((event) => {
-    console.log("JPushModule receive notfication:" +  + JSON.stringify(event));
-    PlatformAlert(
-      "提醒",
-      "您在" + getMachineName(event.extras.roomID) + "已经排到是否要上机",
-      "继续",
-      "上机",
-      () => {
-        showModal({
-          screen: "CP.GameScreen",
-          title: "游戏",
-          passProps: {roomID:event.extras.roomID},
-          navigatorStyle: { navBarHidden: true },
-          navigatorButtons: {},
-          animationType: "slide-up"
-        });
-      }
-    );
+    console.log("JPushModule receive notfication:" + JSON.stringify(event));
+    if (event && event) {
+      PlatformAlert(
+        "提醒",
+        "您在" + getMachineName(parseInt(event.extras_roomID)) + "已经排到是否要上机",
+        "继续",
+        "取消",
+        () => {
+          showModal({
+            screen: "CP.GameScreen",
+            title: "游戏",
+            passProps: {roomID:event.extras_roomID},
+            navigatorStyle: { navBarHidden: true },
+            navigatorButtons: {},
+            animationType: "slide-up"
+          });
+        }
+      );
+    }
   });
 }
 

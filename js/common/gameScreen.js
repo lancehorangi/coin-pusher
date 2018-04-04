@@ -110,27 +110,17 @@ class GameScreen extends ScreenComponent<Props, States> {
       this.props.dispatch(heartRequest());
     }, 1000);
 
+    let result = null;
     try {
-      let result = await this.props.dispatch(roomInfo(roomID));
+      result = await this.props.dispatch(roomInfo(roomID));
       await this.props.dispatch(enterRoom(roomID));
-      // if (result.info.entityID === this.props.entityID) {
-      //   await NimSession.login(account, token);
-      //   await this.props.dispatch(connectMeeting(result.info.nimName));
-      //   await this.setState({bPlaying:true});
-      // }
-      // else {
-      //   Alert.alert("房间已有玩家\n请稍后再试");
-      // }
-
-      await NimSession.login(account, token);
-      await this.props.dispatch(connectMeeting(result.info.nimName));
+      // await NimSession.login(account, token);
+      // await this.props.dispatch(connectMeeting(result.info.nimName));
       await this.setState({bPlaying:true});
-
-      //this.setState({bLoading:false});
     } catch (e) {
       //toastShow("进入房间失败:" + e.message);
       toastShow("房间已有玩家,请排队");
-      let {status} = this.state;
+      let {status} = this.props;
 
       if (API_ENUM.ES_QueueTimeout == status) {
         PlatformAlert(
@@ -141,6 +131,18 @@ class GameScreen extends ScreenComponent<Props, States> {
           (): any => this._queueReq()
         );
       }
+      return;
+
+    } finally {
+      this.setState({bLoading:false});
+    }
+
+    try {
+      await this.setState({bPlaying:true});
+      await NimSession.login(account, token);
+      await this.props.dispatch(connectMeeting(result.info.nimName));
+    } catch (e) {
+      Alert.alert("服务暂时不可用,请退出房间重试");
     } finally {
       this.setState({bLoading:false});
     }
@@ -185,7 +187,7 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   pressQueue = async (): any => {
-    let {status, entityID} = this.state;
+    let {status, entityID} = this.props;
 
     if (API_ENUM.ES_QueueTimeout == status) {
       PlatformAlert(
@@ -329,9 +331,9 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   _currQueueStatus = (): boolean => {
-    let {status, entityID, roomInfo} = this.state;
+    let {status, roomInfo, userRoomID} = this.props;
 
-    if (API_ENUM.ES_Queue == status && entityID == roomInfo.entityID) {
+    if (API_ENUM.ES_Queue == status && userRoomID == roomInfo.roomID) {
       return true;
     }
 
@@ -616,7 +618,8 @@ function select(store: Object): Object {
     roomInfo: store.room.roomInfo,
     integral: store.user.integral,
     gold: store.user.gold,
-    status: store.user.entityState
+    status: store.user.entityState,
+    userRoomID: store.user.roomID
   };
 }
 
