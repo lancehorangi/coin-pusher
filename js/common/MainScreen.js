@@ -200,7 +200,16 @@ export class MainScreen extends React.Component<Props, States> {
       navigatorStyle: { navBarHidden: true },
       //animationType: 'fade',
     });
+  }
 
+  getAvaibleCheckinfoIcon(): boolean {
+    for (let info of this.props.checkinInfo) {
+      if (info && info.days != 0 ) {
+        return require("./img/buttons/sign_r.png");
+      }
+    }
+
+    return require("./img/buttons/sign.png");
   }
 
   _renderHeader = (): Component => { return (
@@ -209,7 +218,7 @@ export class MainScreen extends React.Component<Props, States> {
       <BannerCarousel/>
       <View style={styles.gridContainer}>
         <GridButton
-          icon={require("./img/buttons/sign.png")}
+          icon={this.getAvaibleCheckinfoIcon()}
           caption={"签到"}
           onPress={(): void => this._onPressSign()}/>
         <GridButton
@@ -343,7 +352,8 @@ const styles = StyleSheet.create({
 function select(store: Object): Object {
   return {
     account: store.user.account,
-    token: store.user.token
+    token: store.user.token,
+    checkinInfo: store.user.checkinInfo
   };
 }
 

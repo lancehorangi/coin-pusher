@@ -56,7 +56,7 @@ class MoneyLabel extends Component<Props> {
     renderCount = (): Component => {
       return  (
         <Text style={styles.label}>
-          {getCurrFormat(this.props.count)}
+          {this.props.count}
         </Text>
       );
     }
