@@ -7,8 +7,7 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
-  StyleSheet,
-  Dimensions
+  StyleSheet
 } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import { getRoomHistory } from "../actions";
@@ -132,8 +131,6 @@ class RoomHistory extends React.Component<Props> {
     }
   }
 }
-
-const WIN_HEIGHT = Dimensions.get("window").height;
 
 /* StyleSheet
 ============================================================================= */

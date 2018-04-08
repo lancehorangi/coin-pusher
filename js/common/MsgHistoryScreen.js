@@ -7,6 +7,7 @@ import {
   FlatList,
   StyleSheet,
   Image,
+  Text
 } from "react-native";
 import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
 import { refreshMsgs } from "../actions";
@@ -112,19 +113,6 @@ class MsgHistoryScreen extends ScreenComponent<{}, States> {
 
   renderFooter = (): Component => {
     return;
-    // if (!this.props.bLoading) return null;
-    //
-    // return (
-    //   <View
-    //     style={{
-    //       //paddingVertical: 20,
-    //       borderTopWidth: 1,
-    //       borderColor: "#CED0CE"
-    //     }}
-    //   >
-    //     <ActivityIndicator animating size="large" />
-    //   </View>
-    // );
   };
 
   renderItem = ({item}: Object): Component => {
@@ -155,31 +143,41 @@ class MsgHistoryScreen extends ScreenComponent<{}, States> {
               style={{width:20, height:20, marginRight:5, marginLeft:5}}
               source={item.mark ? require("./img/header/news.png") : require("./img/news_y.png")}/>
           }
-          onPress={() => this.onPress(item.id)}
+          onPress={(): any => this.onPress(item.id)}
         />
       )
     );
   }
 
   render(): Component {
-    return (
-      <List containerStyle={styles.container}>
-        <FlatList
-          data={this.props.msgs}
-          renderItem={this.renderItem}
-          keyExtractor={item => item.id}
-          ItemSeparatorComponent={this.renderSeparator}
-          //ListHeaderComponent={this.renderHeader}
-          //ListFooterComponent={this.renderFooter}
-          refreshControl={{tintColor:"white"}}
-          onRefresh={this.handleRefresh}
-          refreshing={this.state.bLoading}
-          onEndReached={this.handleLoadMore}
-          onEndReachedThreshold={0}
-        />
-      </List>
-    );
-    //}
+    if (this.props.msgs.length == 0) {
+      return (
+        <View style={styles.emptyContainer}>
+          <Text style={{color:"white", fontSize:20}}>
+            {"无"}
+          </Text>
+        </View>
+      );
+    }
+    else {
+      return (
+        <List containerStyle={styles.container}>
+          <FlatList
+            data={this.props.msgs}
+            renderItem={this.renderItem}
+            keyExtractor={(item: Object): number => item.id}
+            ItemSeparatorComponent={this.renderSeparator}
+            //ListHeaderComponent={this.renderHeader}
+            //ListFooterComponent={this.renderFooter}
+            refreshControl={{tintColor:"white"}}
+            onRefresh={this.handleRefresh}
+            refreshing={this.state.bLoading}
+            onEndReached={this.handleLoadMore}
+            onEndReachedThreshold={0}
+          />
+        </List>
+      );
+    }
   }
 }
 
@@ -194,6 +192,13 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderBottomWidth: 0,
     borderBottomColor: "#45474D",
+    backgroundColor: F8Colors.mainBgColor,
+  },
+  emptyContainer: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: F8Colors.mainBgColor,
   }
 });
