@@ -2,7 +2,15 @@
 
 import Sound from "react-native-sound";
 
-let _bgm = new Sound(require("./bgm/bgm.mp3"));
+//let _bgm = new Sound(require("./bgm/bgm.mp3"));
+let _bgm = new Sound("bgm.mp3", Sound.MAIN_BUNDLE, (error) => {
+  if (error) {
+    console.log("PlayBGM failed to load the sound", error);
+    return;
+  }
+  // loaded successfully
+  console.log("PlayBGM duration in seconds: " + _bgm.getDuration() + "number of channels: " + _bgm.getNumberOfChannels());
+});
 _bgm.setNumberOfLoops(-1);
 
 export function PlayBGM() {

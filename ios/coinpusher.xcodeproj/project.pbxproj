@@ -60,6 +60,7 @@
 		E7A7519395434E6D94215956 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC3BDE9AAA5E44CF8E6808ED /* Octicons.ttf */; };
 		EBD7F0D149C94F1F99416715 /* libRNBugly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C5BCC7AE534020B38207AA /* libRNBugly.a */; };
 		EF873C87205542A200ECB884 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EF873C86205542A200ECB884 /* libz.tbd */; };
+		EFC7A5CD207A374C00844762 /* bgm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EFC7A5CC207A374C00844762 /* bgm.mp3 */; };
 		EFDD30552062839100962C22 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFAAAA6920623690008F1A97 /* libRCTWeChat.a */; };
 		F274F68E4A434A26B0E63DA6 /* libRNPayfubao.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B26D5E91BED485BA29514DE /* libRNPayfubao.a */; };
 		F7B1E0B0405F49DB7D6F7148 /* libPods-coinpusher-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A50C7C4F755AFE5BF4807F /* libPods-coinpusher-tvOS.a */; };
@@ -466,6 +467,7 @@
 		EF873C86205542A200ECB884 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		EFAFAA462073C09700B69E47 /* coinpusher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = coinpusher.entitlements; path = coinpusher/coinpusher.entitlements; sourceTree = "<group>"; };
 		EFC547B2205574A50051E56B /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
+		EFC7A5CC207A374C00844762 /* bgm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = bgm.mp3; path = ../bgm.mp3; sourceTree = "<group>"; };
 		F1908738FF8B48A48E62AB6F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		FE88594E18AA460FB6A8009F /* libRNNeteaseIm.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNNeteaseIm.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -623,6 +625,7 @@
 		13B07FAE1A68108700A75B9A /* coinpusher */ = {
 			isa = PBXGroup;
 			children = (
+				EFC7A5CC207A374C00844762 /* bgm.mp3 */,
 				EFAFAA462073C09700B69E47 /* coinpusher.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -1422,6 +1425,7 @@
 				E7A7519395434E6D94215956 /* Octicons.ttf in Resources */,
 				31A76C56291A4D70922080E8 /* SimpleLineIcons.ttf in Resources */,
 				DF79C44CA9A54C86A9E93E14 /* Zocial.ttf in Resources */,
+				EFC7A5CD207A374C00844762 /* bgm.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
