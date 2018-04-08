@@ -8,6 +8,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import React, { Component } from "react";
+import { getCurrFormat } from "../util";
 
 const WIDTH = 80;
 const HEIGHT = 27;
@@ -55,7 +56,7 @@ class MoneyLabel extends Component<Props> {
     renderCount = (): Component => {
       return  (
         <Text style={styles.label}>
-          {this.props.count}
+          {getCurrFormat(this.props.count)}
         </Text>
       );
     }

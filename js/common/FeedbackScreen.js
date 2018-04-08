@@ -13,10 +13,12 @@ import { connect } from "react-redux";
 import ScreenComponent from "./ScreenComponent";
 import F8Colors from "./F8Colors";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { feedback } from "../actions";
 
 type State = {
   text: string,
-  phone: string
+  phone: string,
+  sumbitting: boolean
 };
 
 class FeedbackScreen extends ScreenComponent<Object, State> {
@@ -26,6 +28,7 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
     this.state = {
       text: "",
       phone: "",
+      sumbitting: false
     };
   }
 
@@ -46,12 +49,16 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
     this.setState({phone});
   }
 
-  onSubmit = () => {
-    let {phone} = this.state;
+  onSubmit = async (): any => {
+    await this.setState({sumbitting: true});
+    let {phone, text} = this.state;
 
     let pattern = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
     if (pattern.test(phone)) {
-      //console.log("");
+      await this.props.dispatch(feedback(phone, text));
+      this.setState({text: ""});
+      this.setState({phone: ""});
+      await this.setState({sumbitting: false});
     }
     else {
       Alert.alert("请输入正确的手机号");
@@ -80,7 +87,7 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
           />
           <Button
             title="提交"
-            // loading
+            loading={this.state.sumbitting}
             // loadingProps={{ size: "large", color: "rgba(111, 202, 186, 1)" }}
             //titleStyle={{ fontWeight: "700" }}
             buttonStyle={{

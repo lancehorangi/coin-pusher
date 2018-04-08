@@ -70,14 +70,14 @@ export function getCurrFormat(count: number) {
   const TEN_MILLION = 10000000;
   const TEN_THOUSAND = 10000;
 
-  if (count % TEN_MILLION > 0) {
-    return Math.floor(count / TEN_MILLION) + "百万";
-  }
-  else if (count % TEN_THOUSAND > 0) {
+  if (count % TEN_THOUSAND > 0) {
     return Math.floor(count / TEN_THOUSAND) + "万";
   }
+  else if (count % TEN_MILLION > 0) {
+    return Math.floor(count / TEN_MILLION) + "百万";
+  }
   else {
-    return count + "万";
+    return count;
   }
 }
 

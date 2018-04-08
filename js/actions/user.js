@@ -125,4 +125,32 @@ function freshItems(): ThunkAction {
   };
 }
 
-module.exports = { getAccountHistory, heartRequest, freshMoney, freshItems };
+async function _feedback(phone: string, content: string): Promise<Action> {
+  try {
+    let response = await APIRequest("account/feedback", {phone, content}, true);
+
+    if(response.StatusCode != API_RESULT.STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  }
+}
+
+function feedback(phone: string, content: string): ThunkAction {
+  return (): Object => {
+    let responese = _feedback(phone, content);
+    responese.then(() => {
+      toastShow("发送反馈成功");
+    },
+    (err: Error) => {
+      console.warn("freshItems failed reason=" + err.message);
+    });
+
+    return responese;
+  };
+}
+
+module.exports = { getAccountHistory, heartRequest, freshMoney, freshItems, feedback };
