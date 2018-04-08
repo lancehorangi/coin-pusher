@@ -31,7 +31,7 @@ import MoneyLabel from "./MoneyLabel";
 import { isIphoneX, toastShow, getMachineName, PlatformAlert } from "./../util";
 import { Button } from "react-native-elements";
 import RoomHistory from "./RoomHistory";
-import { dismissModal } from "./../navigator";
+import { dismissModal, showModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
 import { API_ENUM, API_RESULT } from "../api";
@@ -177,7 +177,7 @@ class GameScreen extends ScreenComponent<Props, States> {
 
   onPressIAP = () => {
     this.props.navigator.push({
-      screen: "CP.IAPScreen", // unique ID registered with Navigation.registerScreen
+      screen: "CP.IAPScreen",
       title: "商城",
     });
   }
@@ -187,7 +187,7 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   pressQueue = async (): any => {
-    let {status, entityID} = this.props;
+    let {status, entityID, roomInfo} = this.props;
 
     if (API_ENUM.ES_QueueTimeout == status) {
       PlatformAlert(
@@ -261,45 +261,41 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   renderWaitList = (): Component => {
-    const waitList = [
-      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
-      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
-      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
-      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
-      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
-      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
-      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
-      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png",
-      "https://circus.oss-cn-hangzhou.aliyuncs.com/logo.png"
-    ];
+    let { roomInfo } = this.props;
 
-    let useList = waitList.slice(0, 5);
-    let waitNum = waitList.length;
+    if (roomInfo && roomInfo.queueList && roomInfo.queueList.length > 0) {
+      let useList = roomInfo.queueList.slice(0, 5);
+      let waitNum = roomInfo.queueList.length;
 
-    return (
-      <View style={styles.waitListContainer}>
-        {
-          useList.map((item: Object, index: number): Component => (
-            <Avatar
-              key={index}
-              width={23}
-              height={23}
-              //large
-              rounded
-              source={{uri:item}}
-              //activeOpacity={0.7}
-              //containerStyle={{width:10, height:10}}
-            />
-          ))
-        }
-        <Text style={{
-          color: "white",
-          marginLeft: 3
-        }}>
-          {waitNum + "人排队中"}
-        </Text>
-      </View>
-    );
+      return (
+        <View style={styles.waitListContainer}>
+          {
+            useList.map((item: Object, index: number): Component => (
+              <Avatar
+                key={index}
+                width={23}
+                height={23}
+                //large
+                rounded
+                source={{uri:item.headUrl}}
+                //activeOpacity={0.7}
+                containerStyle={{
+                  marginLeft: -10
+                }}
+              />
+            ))
+          }
+          <Text style={{
+            color: "white",
+            marginLeft: 3
+          }}>
+            {waitNum + "人排队中"}
+          </Text>
+        </View>
+      );
+    }
+
+    return;
   }
 
   renderHeader = (): Component => {
@@ -502,7 +498,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             alignSelf: "center",
             marginLeft: 5
           }}>
-            {this.props.roomInfo.entityID}
+            {this.props.roomInfo.nickName}
           </Text>
         </View>
       );

@@ -66,9 +66,9 @@ class OptionScreen extends ScreenComponent {
           title={"版本"}
           //leftIcon={{name: "music"}}
           hideChevron={true}
-          rightTitle={"有限公司\n版本:" + DeviceInfo.getVersion() + " " + this.state.jsVersion}
+          rightTitle={"版本:" + DeviceInfo.getVersion() + " " + this.state.jsVersion}
           //rightTitle={item.sendTime}
-          rightTitleNumberOfLines={2}
+          //rightTitleNumberOfLines={2}
         />
 
         <ListItem

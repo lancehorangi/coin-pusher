@@ -91,7 +91,11 @@ function enterRoom(roomID: string): ThunkAction {
     response.then((result: Object): any => {
       dispatch({
         type: "ACCOUNT_INFO",
-        accountInfo: result.info
+        accountInfo: result.accountInfo
+      });
+      dispatch({
+        type: "CURR_ROOM_INFO",
+        roomInfo: result.roomInfo
       });
     }, (err: Object) => {
       console.warn("enterRoom failed=" + err.message);
