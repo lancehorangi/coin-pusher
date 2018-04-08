@@ -31,19 +31,19 @@ class LaunchScreen extends ScreenComponent {
   }
 
   _onLoadStart = (event) => {
-    console.warn("_onLoadStart:" + JSON.stringify(event));
+    //console.warn("_onLoadStart:" + JSON.stringify(event));
   }
 
   _onLoad = (event) => {
-    console.warn("_onLoad:" + JSON.stringify(event));
+    //console.warn("_onLoad:" + JSON.stringify(event));
   }
 
   _onError = (event)=>{
-    console.warn("_onError:" + JSON.stringify(event));
+    //console.warn("_onError:" + JSON.stringify(event));
   }
 
   _onReadyForDisplay = (event) => {
-    console.warn("_onReadyForDisplay:" + JSON.stringify(event));
+    //console.warn("_onReadyForDisplay:" + JSON.stringify(event));
   };
 
   render() {

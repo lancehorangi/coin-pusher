@@ -70,6 +70,11 @@ PODS:
     - Bugly
   - RNDeviceInfo (0.21.2)
   - RNPayfubao (1.0.0)
+  - RNSound (0.10.9):
+    - React/Core
+    - RNSound/Core (= 0.10.9)
+  - RNSound/Core (0.10.9):
+    - React/Core
   - RNVectorIcons (4.5.0):
     - React
   - SSZipArchive (1.8.1)
@@ -103,6 +108,7 @@ DEPENDENCIES:
   - RNBugly (from `../node_modules/react-native-bugly`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNPayfubao (from `../node_modules/react-native-payfubao`)
+  - RNSound (from `../node_modules/react-native-sound`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - SSZipArchive (~> 1.2)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -128,6 +134,8 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native-device-info
   RNPayfubao:
     :path: ../node_modules/react-native-payfubao
+  RNSound:
+    :path: ../node_modules/react-native-sound
   RNVectorIcons:
     :path: ../node_modules/react-native-vector-icons
   yoga:
@@ -150,10 +158,11 @@ SPEC CHECKSUMS:
   RNBugly: f5980a181f91674cfce7c073749b3fcc24a47fd4
   RNDeviceInfo: c0c3ef10e6c65609f81a04477c7bab4447751d28
   RNPayfubao: 9d8122552db2bb2b5db5af2e8071d38f266b5954
+  RNSound: b360b3862d3118ed1c74bb9825696b5957686ac4
   RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
   SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 08d27ff034e336a90dd85f89eb269e0456459045
+PODFILE CHECKSUM: aa9a4650e1617ec3c2d8a13837f649a509a4e5af
 
 COCOAPODS: 1.4.0

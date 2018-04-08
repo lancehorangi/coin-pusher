@@ -84,6 +84,10 @@ export type Action =
       roomID: string,
       entityState: number
     }
+  | {
+      type: "TOGGLE_BGM",
+      bgmEnabled: boolean
+    }
 ;
 
 export type Dispatch = (

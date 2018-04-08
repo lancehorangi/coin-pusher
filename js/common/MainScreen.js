@@ -203,9 +203,13 @@ export class MainScreen extends React.Component<Props, States> {
   }
 
   getAvaibleCheckinfoIcon(): boolean {
-    for (let info of this.props.checkinInfo) {
-      if (info && info.days != 0 ) {
-        return require("./img/buttons/sign_r.png");
+    let { checkinInfo } = this.props;
+
+    if (checkinInfo) {
+      for (let info of checkinInfo) {
+        if (info && info.days != 0 ) {
+          return require("./img/buttons/sign_r.png");
+        }
       }
     }
 

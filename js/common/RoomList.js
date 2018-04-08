@@ -1,7 +1,7 @@
 //@flow
 "use strict";
 
-import { View, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Dimensions, ActivityIndicator, Text } from "react-native";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -85,10 +85,46 @@ class RoomList extends Component<Props> {
     return;
   }
 
+  getEmptyRoomNum(): number {
+    let { roomList } = this.props;
+
+    let emptyRoomNum = 0;
+
+    if (roomList && roomList.length != 0) {
+      for (let info of roomList) {
+        if (info.entityID == 0) {
+          emptyRoomNum += 1;
+        }
+      }
+    }
+
+    return emptyRoomNum;
+  }
+
+  getRoomCost(): string {
+    let { baseCost } = this.props;
+
+    if (baseCost) {
+      return baseCost;
+    }
+
+    return "";
+  }
+
   render (): Component {
     return (
       <View style={styles.container}>
-        {this._renderRoomThumbnail()}
+        <View style={styles.describContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>{"房间消耗:" + this.getRoomCost() }</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>{"空闲房间:" + this.getEmptyRoomNum()}</Text>
+          </View>
+        </View>
+        <View style={styles.listContainer}>
+          {this._renderRoomThumbnail()}
+        </View>
       </View>
     );
   }
@@ -96,6 +132,9 @@ class RoomList extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  listContainer: {
     flex: 1,
     justifyContent: "flex-start",
     //alignItems: 'flex-start',
@@ -104,6 +143,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: F8Colors.mainBgColor,
     paddingHorizontal: 10,
+  },
+  describContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignContent: "center",
+    //paddingHorizontal: 40,
+    marginTop: 10
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center"
+  },
+  text: {
+    fontSize: 12,
+    color: "white"
   }
 });
 

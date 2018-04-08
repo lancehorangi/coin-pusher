@@ -153,4 +153,11 @@ function feedback(phone: string, content: string): ThunkAction {
   };
 }
 
-module.exports = { getAccountHistory, heartRequest, freshMoney, freshItems, feedback };
+function toggleBGM(enable: boolean): Action {
+  return {
+    type: "TOGGLE_BGM",
+    bgmEnabled: enable
+  };
+}
+
+module.exports = { getAccountHistory, heartRequest, freshMoney, freshItems, feedback, toggleBGM };

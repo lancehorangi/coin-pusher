@@ -4,7 +4,7 @@ import {
   StyleSheet
 } from "react-native";
 import { List, ListItem } from "react-native-elements";
-import { loggedOut } from "../actions";
+import { loggedOut, toggleBGM } from "../actions";
 import { connect } from "react-redux";
 import ScreenComponent from "./ScreenComponent";
 import F8Colors from "./F8Colors";
@@ -16,7 +16,6 @@ class OptionScreen extends ScreenComponent {
     super(props);
 
     this.state = {
-      soundEnable: true,
       jsVersion: "",
     };
   }
@@ -36,7 +35,7 @@ class OptionScreen extends ScreenComponent {
   }
 
   toggleSound = (soundEnable) => {
-    this.setState({soundEnable});
+    this.props.dispatch(toggleBGM(soundEnable));
   }
 
   pressLogout = () => {
@@ -56,7 +55,7 @@ class OptionScreen extends ScreenComponent {
           switchButton={true}
           onSwitch={this.toggleSound}
           switchDisabled={false}
-          switched={this.state.soundEnable}
+          switched={this.props.bgmEnabled}
         />
 
         <ListItem
@@ -132,5 +131,11 @@ const styles = StyleSheet.create({
   }
 });
 
+function select(store: Object): Object {
+  return {
+    bgmEnabled: store.user.bgmEnabled
+  };
+}
+
 /* exports ================================================================== */
-module.exports = connect()(OptionScreen);
+module.exports = connect(select)(OptionScreen);

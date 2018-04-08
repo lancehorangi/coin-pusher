@@ -35,7 +35,7 @@ import { dismissModal, showModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
 import { API_ENUM, API_RESULT } from "../api";
-
+import { PlayBGM, StopBGM } from "../bgm";
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 
@@ -86,6 +86,7 @@ class GameScreen extends ScreenComponent<Props, States> {
     this.setState({autoPlay:false});
 
     NimUtils.leaveMeeting();
+    StopBGM();
     //this.props.dispatch(leaveRoom());
   }
 
@@ -117,6 +118,11 @@ class GameScreen extends ScreenComponent<Props, States> {
       // await NimSession.login(account, token);
       // await this.props.dispatch(connectMeeting(result.info.nimName));
       await this.setState({bPlaying:true});
+
+      if (this.props.enabledBGM) {
+        PlayBGM();
+      }
+
     } catch (e) {
       //toastShow("进入房间失败:" + e.message);
       toastShow("房间已有玩家,请排队");
@@ -615,7 +621,8 @@ function select(store: Object): Object {
     integral: store.user.integral,
     gold: store.user.gold,
     status: store.user.entityState,
-    userRoomID: store.user.roomID
+    userRoomID: store.user.roomID,
+    enabledBGM: store.user.bgmEnabled
   };
 }
 

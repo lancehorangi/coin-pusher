@@ -20,7 +20,8 @@ export type State = {
   accountGameHistory: ?Array<Object>,
   items: ?Array<Object>,
   id: ?number,
-  status: ?number
+  status: ?number,
+  bgmEnabled: boolean
 };
 
 const initialState = {
@@ -36,7 +37,8 @@ const initialState = {
   accountGameHistory: null,
   items: null,
   id: 0,
-  status: 0
+  status: 0,
+  bgmEnabled: true
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -116,6 +118,13 @@ function user(state: State = initialState, action: Action): State {
       ...state,
       roomID: action.roomID,
       entityState: action.entityState
+    };
+  }
+
+  if (action.type === "TOGGLE_BGM") {
+    return {
+      ...state,
+      bgmEnabled: action.bgmEnabled
     };
   }
 
