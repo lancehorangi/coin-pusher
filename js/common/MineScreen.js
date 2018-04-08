@@ -46,9 +46,6 @@ class MineScreen extends ScreenComponent {
 
     let desc = "无卡";
 
-    // const WEEK_CARD = 2;
-    // const MONTH_CARD = 3;
-
     if (items) {
       let _weekCard = false;
 
@@ -91,14 +88,12 @@ class MineScreen extends ScreenComponent {
           marginLeft: 10,
           marginTop:20,
           alignItems: "flex-start",
-          justifyContent: "flex-start",
+          justifyContent: "space-between",
           alignContent: "flex-start"
         }}>
-          <Text style={{color:"white", marginLeft:10, fontSize:20}}> {"" + this.props.nickName} </Text>
-          <Text style={{color:"white", marginLeft:10, marginTop:5, fontSize:15}}> {"" + this.props.accountID}  </Text>
-          <Text style={{color:"white", marginLeft:10, marginTop:5, fontSize:15}}>
-            {this.getCardDesc()}
-          </Text>
+          <Text style={{color:"white", fontSize:20}}> {this.props.nickName} </Text>
+          <Text style={{color:"white", marginTop:5, fontSize:15}}> {"ID:" + this.props.accountID}  </Text>
+          <Text style={{color:"white", marginTop:5, fontSize:15}}> {this.getCardDesc()} </Text>
         </View>
       </View>
     );
