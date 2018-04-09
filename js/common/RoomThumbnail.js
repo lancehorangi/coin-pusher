@@ -19,7 +19,9 @@ type Props = {
   meetingName: string,
   rmtpUrl: string,
   bgWidth: number,
-  bgHeight: number
+  bgHeight: number,
+  queuing: boolean,
+  unavaible: boolean
 };
 
 class RoomThumbnail extends Component<Props> {
@@ -110,6 +112,26 @@ class RoomThumbnail extends Component<Props> {
       );
     }
 
+    renderUnavaibleStatus = (): Component => {
+      if (this.props.unavaible) {
+        return (
+          <Image style={styles.statusImg} source={require("./img/whz.png")}/>
+        );
+      }
+
+      return null;
+    }
+
+    renderQueueStatus = (): Component => {
+      if (this.props.queuing) {
+        return (
+          <Image style={styles.statusImg} source={require("./img/pdz.png")}/>
+        );
+      }
+
+      return null;
+    }
+
     render (): Component {
       return (
         <TouchableOpacity
@@ -120,17 +142,20 @@ class RoomThumbnail extends Component<Props> {
         >
           <Image style={[styles.bg]} source={{uri:this.props.picUrl}}/>
 
-          <View style={{
-            width:"100%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignContent:"center",
-            backgroundColor: "#00000088",
-          }}>
-            <Text style={ styles.label }> { this.props.roomID }号 </Text>
-            <Text style={ styles.label }> { this.props.bPlaying ? "游戏中" : "空闲"} </Text>
+          <View>
+            <View style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignContent:"center",
+              backgroundColor: "#00000088",
+            }}>
+              <Text style={ styles.label }> { this.props.roomID }号 </Text>
+              <Text style={ styles.label }> { this.props.bPlaying ? "游戏中" : "空闲"} </Text>
+            </View>
+            {this.renderUnavaibleStatus()}
+            {this.renderQueueStatus()}
           </View>
-
           {this.renderInfo()}
         </TouchableOpacity>
       );
@@ -139,10 +164,6 @@ class RoomThumbnail extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 0,
-    //width: THUMB_WIDTH,
-    //height: THUMB_HEIGHT,
-    //backgroundColor: 'transp',
     justifyContent: "space-between",
     marginTop: 10
   },
@@ -159,6 +180,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     //textShadowOffset: {width:1, height:1},
     textShadowColor: "black",
+  },
+  statusImg: {
+    flex: 0,
+    width: 80,
+    height: 15,
+    resizeMode: "stretch"
   }
 });
 

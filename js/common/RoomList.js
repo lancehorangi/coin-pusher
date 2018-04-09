@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { showRoomList } from "./../actions";
 import RoomThumbnail from "./RoomThumbnail";
 import F8Colors from "./F8Colors";
-
+import { API_ENUM } from "../api";
 const WIN_WIDTH = Dimensions.get("window").width;
 const WIN_HEIGHT = Dimensions.get("window").height;
 
@@ -20,7 +20,9 @@ type Props = {
   displayRoomType: number,
   roomType: number,
   roomList: Array<Object>,
-  baseCost: number
+  baseCost: number,
+  entityID: number,
+  status: number
 };
 
 
@@ -77,6 +79,8 @@ class RoomList extends Component<Props> {
             queueList={room.queueList}
             style={{width:THUMB_WIDTH, height:THUMB_HEIGHT, marginLeft:10}}
             picUrl={room.roomSnapshoot}
+            queuing={API_ENUM.ES_Queue == this.props.status && this.props.entityID == room.entityID}
+            unavaible={false}
           />
         );
       });
@@ -169,6 +173,8 @@ function select(store: Object): Object {
     roomType: store.lobby.roomType,
     roomList: store.lobby.list,
     baseCost: store.lobby.baseCost,
+    entityID: store.user.entityID,
+    status: store.user.entityState,
   };
 }
 
