@@ -110,9 +110,9 @@ class IAPScreen extends ScreenComponent {
   componentDidMount() {
   }
 
-  onPress = (id: number) => {
+  onPress = (item: Object) => {
     //Alert.alert('iap buy:' + id);
-    this.props.dispatch(mallBuy(id));
+    this.props.dispatch(mallBuy(item.id, item.appleID, item.cost));
   }
 
   renderContent = (): Component => {
@@ -126,7 +126,7 @@ class IAPScreen extends ScreenComponent {
             price={item.cost + "元"}
             describ={item.desc2}
             unit={"钻石"}
-            onPress={(): void => this.onPress(item.id)}
+            onPress={(): void => this.onPress(item)}
             bgColor={"#ee4943"}
             subBgColor={"#3b94e6"}
             key={item.id}
@@ -165,6 +165,19 @@ class IAPScreen extends ScreenComponent {
         <Text style={{color:"#d3d3e8"}}> {label} </Text>
       </View>
     );
+  }
+
+  renderPaying = (): Component => {
+    if (this.state.paying) {
+      return (
+        <View style={styles.payingCotainer}>
+          <ActivityIndicator animating size="large" color='white'/>
+        </View>
+      );
+    }
+    else {
+      return;
+    }
   }
 
   render(): Component {
@@ -237,6 +250,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: F8Colors.mainBgColor,
+  },
+  payingCotainer: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: "center",
+    backgroundColor: "transparent"
   }
 });
 

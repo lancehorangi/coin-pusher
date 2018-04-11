@@ -1,5 +1,5 @@
 "use strict";
-import { serverURL } from "./env";
+import { serverURL, payServerUrl } from "./env";
 import md5 from "react-native-md5";
 import { getStoreDispatch } from "./configureListener";
 import { loggedOut } from "./actions";
@@ -52,7 +52,7 @@ export function configureAPIToken(token: string)
   _token = token;
 }
 
-export function APIRequest(path, json, bToken = false)
+export function APIRequest(path, json, bToken = false, bPayReq = false)
 {
   return new Promise((resolve, reject) => {
     if(bToken && _token == null){
@@ -77,7 +77,9 @@ export function APIRequest(path, json, bToken = false)
       console.log("Start api req: path=" + path + ", json" + JSON.stringify(json));
     }
 
-    fetch(serverURL + path, {
+    let sUrl = bPayReq ? payServerUrl : serverURL;
+
+    fetch(sUrl + path, {
       body:JSON.stringify(json),
       method: "post",
       headers: {

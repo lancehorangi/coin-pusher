@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "babel-plugin-transform-remove-console": "^6.9.0",
+    "buffer": "^5.1.0",
     "dateformat": "^3.0.3",
     "jcore-react-native": "^1.2.5",
     "jpush-react-native": "^2.1.12",
@@ -51,6 +52,7 @@
     "react-native-swiper": "^1.5.13",
     "react-native-tab-view": "^0.0.74",
     "react-native-talkingdata-game": "git+https://git@github.com/canyara/react-native-talkingdata-game.git",
+    "react-native-uuid": "^1.4.9",
     "react-native-vector-icons": "^4.5.0",
     "react-native-wechat": "^1.9.9",
     "react-redux": "^5.0.6",

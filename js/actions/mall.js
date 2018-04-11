@@ -6,6 +6,9 @@ import { APIRequest, API_RESULT } from "../api";
 import type { Action, ThunkAction, Dispatch } from "./types";
 import { toastShow } from "./../util";
 import { freshMoney, freshItems } from "./user";
+import RNPayfubao from "react-native-payfubao";
+import { PFBparaID, PFBAppID, PFBKey, notifyUrl } from "./../env";
+import uuid from "react-native-uuid";
 
 async function _getChargeList(): Promise<Object> {
   try {
@@ -69,13 +72,21 @@ function getMarketList(): ThunkAction {
   };
 }
 
-async function _mallBuy(id: number): Promise<Action> {
+async function _mallBuy(itemID: number, appleID: number, cost: number): Promise<Action> {
   try {
-    let response = await APIRequest("market/buy", {type:"2", id}, true);
+
+    let orderNo = uuid.v1();
+    //0:支付宝   1:微信   2:银联
+    await RNPayfubao.sendWithRepeatStatus(PFBparaID, PFBAppID, PFBKey,
+      "1", cost.toString(), orderNo, notifyUrl, appleID.toString(), ["1"]);
+
+    let response = await APIRequest("pay/order", {itemID, orderNo}, true, true);
 
     if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
+
+    await RNPayfubao.payWithBody(JSON.parse(response.data));
 
     return response;
   } catch(e) {
@@ -83,14 +94,14 @@ async function _mallBuy(id: number): Promise<Action> {
   }
 }
 
-function mallBuy(id: number): ThunkAction {
+function mallBuy(id: number, appleID: number, cost: number): ThunkAction {
   return (dispatch: Dispatch): Object => {
-    let response = _mallBuy(id);
+    let response = _mallBuy(id, appleID, cost);
 
     response.then((): any => {
       dispatch(freshMoney());
       dispatch(freshItems());
-      toastShow("购买成功!");
+      //toastShow("购买成功!");
     },
     (err: Error) => {
       console.log("mallBuy failed reason=" + err.message);
