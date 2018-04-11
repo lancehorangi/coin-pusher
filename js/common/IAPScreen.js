@@ -112,7 +112,7 @@ class IAPScreen extends ScreenComponent {
 
   onPress = (item: Object) => {
     //Alert.alert('iap buy:' + id);
-    this.props.dispatch(mallBuy(item.id, item.appleID, item.cost));
+    this.props.dispatch(mallBuy(item.id, item.aplid, item.cost));
   }
 
   renderContent = (): Component => {
