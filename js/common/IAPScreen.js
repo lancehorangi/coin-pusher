@@ -94,6 +94,7 @@ class IAPScreen extends ScreenComponent {
     super(props);
 
     this.state = {
+      paying: false
     };
   }
 
@@ -110,10 +111,16 @@ class IAPScreen extends ScreenComponent {
   componentDidMount() {
   }
 
-  onPress = (item: Object) => {
-    //Alert.alert('iap buy:' + id);
-    console.log("iap buy aplid=" + item.aplid);
-    this.props.dispatch(mallBuy(item.id, item.aplid, item.cost));
+  onPress = async (item: Object): any => {
+    try {
+      console.log("iap buy aplid=" + item.aplid);
+      await this.setState({paying: true});
+      await this.props.dispatch(mallBuy(item.id, item.aplid, item.cost));
+    } catch (e) {
+      //
+    } finally {
+      await this.setState({paying: false});
+    }
   }
 
   renderContent = (): Component => {
@@ -172,6 +179,12 @@ class IAPScreen extends ScreenComponent {
     if (this.state.paying) {
       return (
         <View style={styles.payingCotainer}>
+          <Text style={{
+            color:"white",
+            fontSize:13,
+          }}>
+            支付中
+          </Text>
           <ActivityIndicator animating size="large" color='white'/>
         </View>
       );
@@ -185,16 +198,23 @@ class IAPScreen extends ScreenComponent {
     let { items } = this.props;
     if (items && items.length != 0) {
       return (
-        <ScrollView style={styles.container}>
-          {this.renderTitle(require("./img/Recharge1.png"), "超值充值")}
-          <View style={styles.cardContainer}>
-            {this.renderContent()}
-          </View>
-          {this.renderTitle(require("./img/Recharge2.png"), "周卡月卡")}
-          <View style={styles.cardContainer}>
-            {this.renderCard()}
-          </View>
-        </ScrollView>
+        <View style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "transparent"
+        }}>
+          <ScrollView style={styles.container}>
+            {this.renderTitle(require("./img/Recharge1.png"), "超值充值")}
+            <View style={styles.cardContainer}>
+              {this.renderContent()}
+            </View>
+            {this.renderTitle(require("./img/Recharge2.png"), "周卡月卡")}
+            <View style={styles.cardContainer}>
+              {this.renderCard()}
+            </View>
+          </ScrollView>
+          {this.renderPaying()}
+        </View>
       );
     }
     else {
@@ -259,7 +279,9 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     justifyContent: "center",
-    backgroundColor: "transparent"
+    alignItems: "center",
+    alignContent: "center",
+    backgroundColor: "#00000088"
   }
 });
 
