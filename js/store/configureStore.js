@@ -34,7 +34,7 @@ const persistConfig = {
 let middlewares = [thunk, promise, array, analytics];
 
 if ( __DEV__ ) {
-  middlewares.push(logger);
+  //middlewares.push(logger);
 }
 
 const createF8Store = applyMiddleware( ...middlewares )(

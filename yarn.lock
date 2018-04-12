@@ -4329,7 +4329,7 @@ react-native-navigation@^1.1.375:
 
 "react-native-payfubao@git+https://git@github.com/canyara/react-native-payfubao.git":
   version "1.0.0"
-  resolved "git+https://git@github.com/canyara/react-native-payfubao.git#a4a33e2f10ace9cd58eee5eb7adb75a482011a82"
+  resolved "git+https://git@github.com/canyara/react-native-payfubao.git#62c87a45f87f2f6a2e6ed5dcc60f921db39de8f5"
 
 react-native-root-siblings@^3.0.0:
   version "3.0.0"

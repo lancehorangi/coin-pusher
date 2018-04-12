@@ -69,7 +69,8 @@ PODS:
   - RNBugly (1.0.0):
     - Bugly
   - RNDeviceInfo (0.21.2)
-  - RNPayfubao (1.0.0)
+  - RNPayfubao (1.0.0):
+    - SVProgressHUD
   - RNSound (0.10.9):
     - React/Core
     - RNSound/Core (= 0.10.9)
@@ -78,6 +79,7 @@ PODS:
   - RNVectorIcons (4.5.0):
     - React
   - SSZipArchive (1.8.1)
+  - SVProgressHUD (2.2.5)
   - yoga (0.52.0.React)
 
 DEPENDENCIES:
@@ -157,10 +159,11 @@ SPEC CHECKSUMS:
   react-native-spinkit: c9f5826e1a0bf0da889b3795278eb96ae15c1350
   RNBugly: f5980a181f91674cfce7c073749b3fcc24a47fd4
   RNDeviceInfo: c0c3ef10e6c65609f81a04477c7bab4447751d28
-  RNPayfubao: 9d8122552db2bb2b5db5af2e8071d38f266b5954
+  RNPayfubao: bc3b2a590770e425838454a61e62bf8d8429f501
   RNSound: b360b3862d3118ed1c74bb9825696b5957686ac4
   RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
   SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   yoga: 55da126afc384965b96bff46652464373b330add
 
 PODFILE CHECKSUM: aa9a4650e1617ec3c2d8a13837f649a509a4e5af

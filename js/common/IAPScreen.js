@@ -112,6 +112,7 @@ class IAPScreen extends ScreenComponent {
 
   onPress = (item: Object) => {
     //Alert.alert('iap buy:' + id);
+    console.log("iap buy aplid=" + item.aplid);
     this.props.dispatch(mallBuy(item.id, item.aplid, item.cost));
   }
 
@@ -148,7 +149,7 @@ class IAPScreen extends ScreenComponent {
             describ={item.desc2}
             describ2={item.desc3}
             unit={"钻石"}
-            onPress={(): void => this.onPress(item.id)}
+            onPress={(): void => this.onPress(item)}
             bgColor={item.id == WEEK_CARD ? "#00c832" : "#3d38f6"}
             subBgColor={item.id == WEEK_CARD ? "#008321" : "#1f66a7"}
             key={item.id}

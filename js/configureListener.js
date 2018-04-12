@@ -1,6 +1,6 @@
 "use strict";
 
-import { NativeAppEventEmitter, AppState, NativeEventEmitter } from "react-native";
+import { NativeAppEventEmitter, AppState, NativeEventEmitter, Alert } from "react-native";
 import {  NIMAVChatDescrib } from "./nativeEventDescribe";
 import { toastShow, codePushSync, PlatformAlert, getMachineName } from "./util";
 import JPush from "jpush-react-native";
@@ -117,10 +117,10 @@ function configureListener(store): void {
       console.log("payfubao result=" + JSON.stringify(result));
 
       if (result.result.status == 1) {
-        toastShow("支付成功");
+        Alert.alert("支付成功");
       }
       else {
-        toastShow("支付失败");
+        Alert.alert("支付失败");
       }
     }
   );
@@ -145,10 +145,10 @@ function configureListener(store): void {
       console.log("payfubao result=" + JSON.stringify(result));
 
       if (result.result.status == 1000) {
-        toastShow("支付成功");
+        Alert.alert("支付成功");
       }
       else {
-        toastShow("支付失败");
+        Alert.alert("支付失败");
       }
     }
   );

@@ -14,12 +14,14 @@
     "git": "https://github.com/canyara/react-native-payfubao.git",
     "tag": "master"
   },
-  "source_files": [
-    "RNPayfubao/**/*.{h,m}",
-    "Libs/SVProgressHUD/**/*.{h,m}"
-  ],
+  "source_files": "RNPayfubao/**/*.{h,m}",
   "preserve_paths": "**/*.js",
   "ios": {
     "vendored_frameworks": "Libs/JSProSDK.framework"
+  },
+  "dependencies": {
+    "SVProgressHUD": [
+
+    ]
   }
 }

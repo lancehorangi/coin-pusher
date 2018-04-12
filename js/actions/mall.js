@@ -77,18 +77,20 @@ async function _mallBuy(itemID: number, appleID: number, cost: number): Promise<
 
     let orderNo = uuid.v1();
     //0:支付宝   1:微信   2:银联
-    await RNPayfubao.sendWithRepeatStatus(PFBparaID, PFBAppID, PFBKey,
-      "1", cost.toString(), orderNo, notifyUrl, appleID.toString(), ["1"]);
+    let appleCost = cost * 100;
+    let result = await RNPayfubao.sendWithRepeatStatus(PFBparaID, PFBAppID, PFBKey,
+      "1", appleCost.toString(), orderNo, notifyUrl, appleID.toString(), ["1"]);
 
-    let response = await APIRequest("pay/order", {itemID, orderNo}, true, true);
+    console.log("PFB status=" + JSON.stringify(result));
+    if (result.result != 106) {
+      let response = await APIRequest("pay/order", {itemID, orderNo}, true, true);
 
-    if(response.StatusCode != API_RESULT.STATUS_OK){
-      throw Error(response.ReasonPhrase);
+      if(response.StatusCode != API_RESULT.STATUS_OK){
+        throw Error(response.ReasonPhrase);
+      }
+
+      await RNPayfubao.payWithBody(JSON.parse(response.data));
     }
-
-    await RNPayfubao.payWithBody(JSON.parse(response.data));
-
-    return response;
   } catch(e) {
     throw Error(e.message);
   }
