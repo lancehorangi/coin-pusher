@@ -4325,7 +4325,7 @@ react-native-navigation@^1.1.375:
 
 "react-native-netease-im@git+https://git@github.com/canyara/react-native-netease-im.git":
   version "2.0.6"
-  resolved "git+https://git@github.com/canyara/react-native-netease-im.git#030ac88433dcceffb76529a3aed130b7bd96c0f6"
+  resolved "git+https://git@github.com/canyara/react-native-netease-im.git#d75e97ba6c1fac95859b1b92e16b2b0b86c1e470"
 
 "react-native-payfubao@git+https://git@github.com/canyara/react-native-payfubao.git":
   version "1.0.0"

@@ -577,7 +577,13 @@ const styles = StyleSheet.create({
   },
   liveVideo: {
     width: WIN_WIDTH,
-    height: WIN_WIDTH / 3 * 4
+    height: WIN_WIDTH / 3 * 4,
+    resizeMode: "stretch",
+    transform: [
+      { rotateZ: "90deg" },
+      { scaleX: 4 / 3},
+      { scaleY: 3 / 4 }
+    ]
   },
   videoLoading: {
     position: "absolute",
