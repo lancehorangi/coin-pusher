@@ -4401,7 +4401,7 @@ react-native-vector-icons@^4.5.0:
 
 "react-native-wechat@git+https://git@github.com/canyara/react-native-wechat-nopay.git":
   version "1.9.9"
-  resolved "git+https://git@github.com/canyara/react-native-wechat-nopay.git#6a14325fae87073ee9425123fe813464725a2fe7"
+  resolved "git+https://git@github.com/canyara/react-native-wechat-nopay.git#e1e11c8683e4a9a1f8837815d0d79e51683390c6"
   dependencies:
     events "1.0.2"
 
