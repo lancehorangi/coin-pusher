@@ -4399,9 +4399,9 @@ react-native-vector-icons@^4.5.0:
     prop-types "^15.5.10"
     yargs "^8.0.2"
 
-react-native-wechat@^1.9.9:
+"react-native-wechat@git+https://git@github.com/canyara/react-native-wechat-nopay.git":
   version "1.9.9"
-  resolved "https://registry.yarnpkg.com/react-native-wechat/-/react-native-wechat-1.9.9.tgz#acc4f7f22a3aeae13671108bcee39cbcb023c23a"
+  resolved "git+https://git@github.com/canyara/react-native-wechat-nopay.git#6a14325fae87073ee9425123fe813464725a2fe7"
   dependencies:
     events "1.0.2"
 
