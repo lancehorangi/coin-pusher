@@ -1,0 +1,84 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'coinpusher' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for coinpusher
+pod 'NIMSDK', '4.8.0'
+pod 'SSZipArchive', '~> 1.2'
+pod 'Reachability', '~> 3.1.1'
+pod 'CocoaLumberjack', '~> 2.0.0-rc2'
+pod 'FMDB', '~>2.5'
+pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'CodePush', :path => '../node_modules/react-native-code-push', :subspecs => [
+    'Core',
+    'JWT',]
+
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+  'Core',
+  'tvOS',
+  'RCTActionSheet',
+  'RCTAnimation',
+  'RCTGeolocation',
+  'RCTImage',
+  'RCTLinkingIOS',
+  'RCTNetwork',
+  'RCTSettings',
+  'RCTText',
+  'RCTVibration',
+  'RCTWebSocket',
+  'DevSupport'
+  ]
+
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
+  pod 'RNBugly', :path => '../node_modules/react-native-bugly'
+
+  pod 'RNPayfubao', :path => '../node_modules/react-native-payfubao'
+
+  pod 'react-native-spinkit', :path => '../node_modules/react-native-spinkit'
+
+pod 'react-native-ksyvideo', :path => '../node_modules/react-native-ksyvideo'
+
+  pod 'JCoreRN', :path => '../node_modules/jcore-react-native'
+
+  pod 'JPushRN', :path => '../node_modules/jpush-react-native'
+
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
+
+  target 'coinpusherTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'coinpusher-tvOS' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for coinpusher-tvOS
+
+  target 'coinpusher-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        if target.name == 'yoga'
+            target.build_configurations.each do |config|
+                config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'NO'
+                config.build_settings['GCC_WARN_64_TO_32_BIT_CONVERSION'] = 'NO'
+            end
+        end
+    end
+end

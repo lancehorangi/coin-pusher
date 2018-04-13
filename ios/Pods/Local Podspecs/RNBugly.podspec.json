@@ -1,0 +1,34 @@
+{
+  "name": "RNBugly",
+  "version": "1.0.0",
+  "summary": "RNBugly",
+  "homepage": "https://github.com/canyara/react-native-bugly",
+  "license": "MIT",
+  "authors": {
+    "canyara": "canyara@gmail.com"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/canyara/react-native-bugly.git",
+    "tag": "master"
+  },
+  "source_files": "RNBugly/**/*.{h,m}",
+  "preserve_paths": "**/*.js",
+  "ios": {
+    "frameworks": [
+      "SystemConfiguration",
+      "Security"
+    ],
+    "libraries": [
+      "z",
+      "c++"
+    ]
+  },
+  "dependencies": {
+    "Bugly": [
+
+    ]
+  }
+}

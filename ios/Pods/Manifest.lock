@@ -1,0 +1,171 @@
+PODS:
+  - Bugly (2.5.0)
+  - BVLinearGradient (2.4.0):
+    - React
+  - CocoaLumberjack (2.0.3):
+    - CocoaLumberjack/Default (= 2.0.3)
+    - CocoaLumberjack/Extensions (= 2.0.3)
+  - CocoaLumberjack/Core (2.0.3)
+  - CocoaLumberjack/Default (2.0.3):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.0.3):
+    - CocoaLumberjack/Default
+  - CodePush/Core (5.2.1):
+    - React
+  - CodePush/JWT (5.2.1):
+    - React
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
+  - JCoreRN (1.2.5):
+    - React
+  - JPushRN (2.1.12):
+    - React
+  - KSYMediaPlayer_iOS (3.0.1):
+    - KSYMediaPlayer_iOS/KSYMediaPlayer_live (= 3.0.1)
+  - KSYMediaPlayer_iOS/KSYMediaPlayer_live (3.0.1)
+  - NIMSDK (4.8.0)
+  - Reachability (3.1.1)
+  - React (0.52.0):
+    - React/Core (= 0.52.0)
+  - react-native-ksyvideo (1.1.0):
+    - KSYMediaPlayer_iOS
+    - React
+  - react-native-spinkit (1.0.2):
+    - React
+  - React/Core (0.52.0):
+    - yoga (= 0.52.0.React)
+  - React/DevSupport (0.52.0):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.52.0)
+  - React/RCTActionSheet (0.52.0):
+    - React/Core
+  - React/RCTAnimation (0.52.0):
+    - React/Core
+  - React/RCTBlob (0.52.0):
+    - React/Core
+  - React/RCTGeolocation (0.52.0):
+    - React/Core
+  - React/RCTImage (0.52.0):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.52.0):
+    - React/Core
+  - React/RCTNetwork (0.52.0):
+    - React/Core
+  - React/RCTSettings (0.52.0):
+    - React/Core
+  - React/RCTText (0.52.0):
+    - React/Core
+  - React/RCTVibration (0.52.0):
+    - React/Core
+  - React/RCTWebSocket (0.52.0):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - React/tvOS (0.52.0):
+    - React/Core
+  - RNBugly (1.0.0):
+    - Bugly
+  - RNDeviceInfo (0.21.2)
+  - RNPayfubao (1.0.0):
+    - SVProgressHUD
+  - RNSound (0.10.9):
+    - React/Core
+    - RNSound/Core (= 0.10.9)
+  - RNSound/Core (0.10.9):
+    - React/Core
+  - RNVectorIcons (4.5.0):
+    - React
+  - SSZipArchive (1.8.1)
+  - SVProgressHUD (2.2.5)
+  - yoga (0.52.0.React)
+
+DEPENDENCIES:
+  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
+  - CocoaLumberjack (~> 2.0.0-rc2)
+  - CodePush/Core (from `../node_modules/react-native-code-push`)
+  - CodePush/JWT (from `../node_modules/react-native-code-push`)
+  - FMDB (~> 2.5)
+  - JCoreRN (from `../node_modules/jcore-react-native`)
+  - JPushRN (from `../node_modules/jpush-react-native`)
+  - NIMSDK (= 4.8.0)
+  - Reachability (~> 3.1.1)
+  - react-native-ksyvideo (from `../node_modules/react-native-ksyvideo`)
+  - react-native-spinkit (from `../node_modules/react-native-spinkit`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - React/tvOS (from `../node_modules/react-native`)
+  - RNBugly (from `../node_modules/react-native-bugly`)
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNPayfubao (from `../node_modules/react-native-payfubao`)
+  - RNSound (from `../node_modules/react-native-sound`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - SSZipArchive (~> 1.2)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+EXTERNAL SOURCES:
+  BVLinearGradient:
+    :path: ../node_modules/react-native-linear-gradient
+  CodePush:
+    :path: ../node_modules/react-native-code-push
+  JCoreRN:
+    :path: ../node_modules/jcore-react-native
+  JPushRN:
+    :path: ../node_modules/jpush-react-native
+  React:
+    :path: ../node_modules/react-native
+  react-native-ksyvideo:
+    :path: ../node_modules/react-native-ksyvideo
+  react-native-spinkit:
+    :path: ../node_modules/react-native-spinkit
+  RNBugly:
+    :path: ../node_modules/react-native-bugly
+  RNDeviceInfo:
+    :path: ../node_modules/react-native-device-info
+  RNPayfubao:
+    :path: ../node_modules/react-native-payfubao
+  RNSound:
+    :path: ../node_modules/react-native-sound
+  RNVectorIcons:
+    :path: ../node_modules/react-native-vector-icons
+  yoga:
+    :path: ../node_modules/react-native/ReactCommon/yoga
+
+SPEC CHECKSUMS:
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
+  BVLinearGradient: 4b3f3bdf1ac1a52a5ef5e65c9585d793a7c3f825
+  CocoaLumberjack: f58d8a19629f4d8379ae14bb3534def24161430e
+  CodePush: af67b07310e4037ecd5c38f03c7a51c6350240b5
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  JCoreRN: 5dff1e0264ee9fd57a0bc9b8cb2411b3c553e241
+  JPushRN: bdaefc1f0442d90ef4035f47e29e4268ee6a11f2
+  KSYMediaPlayer_iOS: 4ab7094dac20de3af5c1768bbc675a1a8bdb37fc
+  NIMSDK: 8373ba544b65e3845c40462235f5f4572b627315
+  Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
+  React: 43e97926f429d846050880666de1809e22dd5cc5
+  react-native-ksyvideo: 5fd9f37af2fd579d95da3386857751e1795104b8
+  react-native-spinkit: c9f5826e1a0bf0da889b3795278eb96ae15c1350
+  RNBugly: f5980a181f91674cfce7c073749b3fcc24a47fd4
+  RNDeviceInfo: c0c3ef10e6c65609f81a04477c7bab4447751d28
+  RNPayfubao: bc3b2a590770e425838454a61e62bf8d8429f501
+  RNSound: b360b3862d3118ed1c74bb9825696b5957686ac4
+  RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
+  SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  yoga: 55da126afc384965b96bff46652464373b330add
+
+PODFILE CHECKSUM: aa9a4650e1617ec3c2d8a13837f649a509a4e5af
+
+COCOAPODS: 1.4.0

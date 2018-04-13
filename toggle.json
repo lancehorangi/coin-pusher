@@ -1,0 +1,11 @@
+{
+  "com.DigitalForge.Pilgrimage": {
+    "enabled": true
+  },
+  "com.happy": {
+    "enabled": true
+  },
+  "com.cpg.happycircus": {
+    "enabled": true
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "RNPayfubao",
+  "version": "1.0.0",
+  "summary": "RNPayfubao",
+  "homepage": "https://github.com/canyara/react-native-payfubao",
+  "license": "MIT",
+  "authors": {
+    "canyara": "canyara@gmail.com"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/canyara/react-native-payfubao.git",
+    "tag": "master"
+  },
+  "source_files": "RNPayfubao/**/*.{h,m}",
+  "preserve_paths": "**/*.js",
+  "ios": {
+    "vendored_frameworks": "Libs/JSProSDK.framework"
+  },
+  "dependencies": {
+    "SVProgressHUD": [
+
+    ]
+  }
+}
