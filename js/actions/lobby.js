@@ -198,10 +198,14 @@ async function _pushCoin(): Promise<Action> {
 }
 
 function pushCoin(): ThunkAction {
-  return (): Object => {
+  return (dispatch: Dispatch): Object => {
     const response = _pushCoin();
-    response.then((): any => {
-
+    response.then((result: Object): any => {
+      dispatch({
+        type: "TICK_INFO",
+        gold: result.gold,
+        integral: result.integral,
+      });
     }, (err: Error) => {
       toastShow("投币失败:" + err.message);
     });

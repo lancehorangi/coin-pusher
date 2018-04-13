@@ -31,8 +31,8 @@ const NormalItem = ({ text, price, unit, describ, onPress, bgColor, subBgColor }
         {text}
       </Text>
       <View style={{flex: 0, position: "absolute",
-        backgroundColor: "#ffdf00", borderRadius: 13,
-        marginTop:5, right:5, paddingHorizontal:10, height: 18 }}>
+        backgroundColor: "#ffdf00", borderRadius: 8,
+        marginTop:5, right:5, paddingHorizontal:5, height: 18 }}>
         <Text style={{ color: "#ee4943", fontSize:14 }}>
           {price}
         </Text>
@@ -41,9 +41,10 @@ const NormalItem = ({ text, price, unit, describ, onPress, bgColor, subBgColor }
         {unit}
       </Text>
       <View style={{position: "absolute", left:0, right:0, bottom:0, height:25, backgroundColor: subBgColor, borderBottomLeftRadius: 13,
-        borderBottomRightRadius: 13}}>
-        <Text style={{ color: "white", fontSize:12, width:"90%", top:4, left:10 }}
-          numberOfLines={1}>
+        borderBottomRightRadius: 13, justifyContent: "center"}}>
+        <Text style={{ color: "white", fontSize:12, marginLeft: 10, marginRight: 10}}
+          numberOfLines={1}
+          adjustsFontSizeToFit={true}>
           {describ}
         </Text>
       </View>
@@ -155,7 +156,7 @@ class IAPScreen extends ScreenComponent {
             price={item.cost + "元"}
             describ={item.desc2}
             describ2={item.desc3}
-            unit={"钻石"}
+            unit={""}
             onPress={(): void => this.onPress(item)}
             bgColor={item.id == WEEK_CARD ? "#00c832" : "#3d38f6"}
             subBgColor={item.id == WEEK_CARD ? "#008321" : "#1f66a7"}

@@ -109,6 +109,7 @@ export class MainScreen extends React.Component<Props, States> {
       this.props.dispatch(setNavigator(this.props.navigator));
       this.props.dispatch(freshMoney());
       this.props.dispatch(freshItems());
+      this._refreshRoomList(this.state.index);
       break;
     case "willDisappear":
       break;
@@ -134,11 +135,7 @@ export class MainScreen extends React.Component<Props, States> {
     }
   }
 
-  _handleIndexChange = async (index: number): void => {
-    //
-    this._scrollRef.getNode().scrollTo({y: this._offsetY, animated: true});
-
-    await this.setState({ index });
+  _refreshRoomList = (index: number) => {
     let {routes} = this.state;
 
     routes.map((route: Object, refIndex: number) => {
@@ -148,6 +145,14 @@ export class MainScreen extends React.Component<Props, States> {
         return;
       }
     });
+  }
+
+  _handleIndexChange = async (index: number): void => {
+    //
+    this._scrollRef.getNode().scrollTo({y: this._offsetY, animated: true});
+
+    await this.setState({ index });
+    this._refreshRoomList(index);
   }
 
   _renderHeaderTabBar = (props: Object): Component => {
@@ -207,7 +212,7 @@ export class MainScreen extends React.Component<Props, States> {
 
     if (checkinInfo) {
       for (let info of checkinInfo) {
-        if (info && info.days != 0 ) {
+        if (info && info.days != 0 && info.receive === 0 ) {
           return require("./img/buttons/sign_r.png");
         }
       }

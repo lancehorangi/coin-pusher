@@ -25,7 +25,8 @@ type Props = {
   count: number,
   withBgBtn: boolean,
   withBtn: boolean,
-  type: string
+  type: string,
+  containerStyle: ?Object
 };
 
 
@@ -93,7 +94,7 @@ class MoneyLabel extends Component<Props> {
     render (): Component {
       return (
         <TouchableOpacity
-          style={[styles.container]}
+          style={[styles.container, this.props.containerStyle]}
           onPress={ this.props.onPressBg}
         >
           {this.renderIcon()}

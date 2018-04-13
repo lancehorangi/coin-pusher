@@ -82,14 +82,19 @@ async function _mallBuy(itemID: number, appleID: number, cost: number): Promise<
       "1", appleCost.toString(), orderNo, notifyUrl, appleID.toString(), ["1"]);
 
     console.log("PFB status=" + JSON.stringify(result));
+
+    let apple = result.result == 106 ? 1 : 0;
+    let response = await APIRequest("pay/order", {itemID, orderNo, apple}, true, true);
+
+    if(response.StatusCode != API_RESULT.STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
     if (result.result != 106) {
-      let response = await APIRequest("pay/order", {itemID, orderNo}, true, true);
-
-      if(response.StatusCode != API_RESULT.STATUS_OK){
-        throw Error(response.ReasonPhrase);
-      }
-
       await RNPayfubao.payWithBody(JSON.parse(response.data));
+    }
+    else {
+      await RNPayfubao.beginApplePayWithAppleID(appleID.toString(), appleCost.toString(), orderNo, notifyUrl);
     }
   } catch(e) {
     throw Error(e.message);

@@ -260,6 +260,10 @@ class GameScreen extends ScreenComponent<Props, States> {
         style={styles.closeBtn}
       >
         <Image
+          style={{
+            width: "100%",
+            height: "100%"
+          }}
           source={require("../common/img/close.png")}
           resizeMode={"stretch"}/>
       </TouchableOpacity>
@@ -400,8 +404,8 @@ class GameScreen extends ScreenComponent<Props, States> {
       return (
         <Button
           title={"投币"}
-          titleStyle={{color:"white", fontSize:25}}
-          buttonStyle={{backgroundColor:"red", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
+          titleStyle={{color:"white", fontSize:35}}
+          buttonStyle={{backgroundColor:"#ee4943", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
           onPress={this.coinPush}
         />
       );
@@ -412,7 +416,7 @@ class GameScreen extends ScreenComponent<Props, States> {
           loading={this.state.queuing}
           title={this._currQueueStatus() ? "排队中" : "排队"}
           titleStyle={{color:"white", fontSize:25}}
-          buttonStyle={{backgroundColor:"red", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
+          buttonStyle={{backgroundColor:"#ee4943", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
           onPress={this._currQueueStatus() ? null : this.pressQueue}
         />
       );
@@ -434,8 +438,8 @@ class GameScreen extends ScreenComponent<Props, States> {
             <Switch
               value={this.state.autoPlay}
               onValueChange={this.onAutoPlayValue}
-              tintColor={"red"}
-              onTintColor={"red"}
+              tintColor={"#ee4943"}
+              onTintColor={"#ee4943"}
               //thumbTintColor={"red"}
             />
             <Text style={{color:"white", width:"100%", fontSize:15, marginTop:2, textAlign:"center"}}>
@@ -496,7 +500,7 @@ class GameScreen extends ScreenComponent<Props, States> {
           <Avatar
             //large
             rounded
-            //source={{uri:this.props.roomInfo.headUrl}}
+            source={{uri:this.props.roomInfo.headUrl}}
           />
           <Text style={{
             fontSize: 15,
@@ -598,8 +602,8 @@ const styles = StyleSheet.create({
     height:20
   },
   closeBtn: {
-    width:20,
-    height:20,
+    width:40,
+    height:40,
   },
   historyTitle: {
     justifyContent: "center",

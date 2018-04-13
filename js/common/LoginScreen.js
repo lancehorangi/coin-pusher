@@ -27,6 +27,7 @@ import { APIRequest } from "../api";
 import { logIn } from "../actions";
 import Toast from "react-native-root-toast";
 import { isIphoneX, toastShow } from "./../util";
+import ScreenComponent from "./ScreenComponent";
 
 const IPHONE_X_HEAD = 30;
 const WIN_WIDTH = Dimensions.get("window").width,
@@ -38,14 +39,15 @@ type Stats = {
   mobileCodeBtnDesc: string,
   cooldown: number,
   enableMobileCode: boolean,
-  logging: boolean
+  logging: boolean,
+  wxInstalled: boolean
 };
 
 type Props = {
   dispatch: ?() => mixed
 };
 
-class LoginScreen extends React.Component<Props, Stats> {
+class LoginScreen extends ScreenComponent<Props, Stats> {
   state = {
     anim: new Animated.Value(0),
     phone: null,
@@ -53,10 +55,20 @@ class LoginScreen extends React.Component<Props, Stats> {
     cooldown: 60,
     enableMobileCode: true,
     logging:false,
+    wxInstalled: false
   };
 
   componentDidMount() {
     Animated.timing(this.state.anim, { toValue: 3000, duration: 3000 }).start();
+  }
+
+  RNNDidAppear = async (): any => {
+    let wxInstalled = await WeChat.isWXAppInstalled();
+    this.setState({wxInstalled});
+  }
+
+  RNNWillDisappear = () => {
+
   }
 
   renderHeader = (): Component => {
@@ -189,41 +201,47 @@ class LoginScreen extends React.Component<Props, Stats> {
   }
 
   renderWX = (): Component => {
-    return (
-      <View style={{
-        flex:0,
-        justifyContent:"center",
-        alignContent:"center",
-        alignItems:"center",
-        marginTop:30,
-      }}>
-        <Text style={{
-          fontSize:10,
-          color:"white"
-        }}>
-        其他登录方式
-        </Text>
+    let { wxInstalled } = this.state;
+    if (wxInstalled) {
+      return (
         <View style={{
-          height:1,
-          backgroundColor:"#00000088",
-        }}/>
-        <TouchableOpacity
-          onPress={this.onWxLogin}
-          style={{
-            flex:0,
-            marginTop:5,
+          flex:0,
+          justifyContent:"center",
+          alignContent:"center",
+          alignItems:"center",
+          marginTop:30,
+        }}>
+          <Text style={{
+            fontSize:10,
+            color:"white"
           }}>
-          <Image
-            source={require("./img/wxdl.png")}
+          其他登录方式
+          </Text>
+          <View style={{
+            height:1,
+            backgroundColor:"#00000088",
+          }}/>
+          <TouchableOpacity
+            onPress={this.onWxLogin}
             style={{
-              width:42,
-              height:32,
-              resizeMode:"stretch"
-            }}
-          />
-        </TouchableOpacity>
-      </View>
-    );
+              flex:0,
+              marginTop:5,
+            }}>
+            <Image
+              source={require("./img/wxdl.png")}
+              style={{
+                width:42,
+                height:32,
+                resizeMode:"stretch"
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    else {
+      return;
+    }
   }
 
   renderLoading = () => {

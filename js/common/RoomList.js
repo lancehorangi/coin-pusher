@@ -49,8 +49,8 @@ class RoomList extends Component<Props> {
   }
 
   componentDidMount() {
-    console.log("RoomList componentDidMount");
-    this.loadInfo();
+    //console.log("RoomList componentDidMount");
+    //this.loadInfo();
   }
 
   _renderRoomThumbnail(): Component {

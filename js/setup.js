@@ -66,17 +66,17 @@ configureStore(
             navBarHidden: false
           },
         },
-        {
-          label: "积分商城",
-          //screen: 'CP.LaunchScreen',
-          screen: "CP.MallScreen",
-          icon: require("./common/img/buttons/shop.png"),
-          selectedIcon: require("./common/img/buttons/shop_2.png"),
-          title: "积分商城",
-          navigatorStyle: {
-            navBarHidden: false
-          }
-        },
+        // {
+        //   label: "积分商城",
+        //   //screen: 'CP.LaunchScreen',
+        //   screen: "CP.MallScreen",
+        //   icon: require("./common/img/buttons/shop.png"),
+        //   selectedIcon: require("./common/img/buttons/shop_2.png"),
+        //   title: "积分商城",
+        //   navigatorStyle: {
+        //     navBarHidden: false
+        //   }
+        // },
         {
           label: "我的",
           screen: "CP.MineScreen",
