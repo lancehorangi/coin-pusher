@@ -4,7 +4,7 @@
 import { APIRequest, API_ENUM, API_RESULT } from "../api";
 import { NimUtils } from "react-native-netease-im";
 import { toastShow } from "../util";
-import { heartRequest } from "./user";
+import { freshMoney } from "./user";
 import type { Action, ThunkAction, Dispatch } from "./types";
 
 async function _roomList(roomType: number): Promise<Object> {
@@ -128,7 +128,11 @@ function queueRoom(roomID: string): ThunkAction {
     response.then((result: Object): any => {
       dispatch({
         type: "ACCOUNT_INFO",
-        accountInfo: result.info
+        accountInfo: result.accountInfo
+      });
+      dispatch({
+        type: "CURR_ROOM_INFO",
+        roomInfo: result.roomInfo
       });
     }, (err: Object) => {
       console.warn("queueRoom failed=" + err.message);
@@ -175,7 +179,7 @@ function leaveRoom(): ThunkAction {
   return (dispatch: Dispatch): Object => {
     const response = _leaveRoom();
     response.then((): any => {
-      dispatch(heartRequest());
+      dispatch(freshMoney());
     }, (err: Error) => {
       console.warn("离开房间失败:" + err.message);
     });
