@@ -25,7 +25,6 @@
 module.exports = {
   version: 1,
   testMenuEnabled: false,
-  //parseAppID: "oss-f8-app-2017",
   serverURL: "http://47.97.189.108:7001/1.0/",
   //serverURL: "http://192.168.2.10:7000/1.0/",
   payServerUrl: "http://47.97.189.108:7010/1.0/",

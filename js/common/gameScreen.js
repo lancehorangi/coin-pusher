@@ -29,6 +29,7 @@ import {
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
+import ProfitAnimationMgr from "./ProfitAnimationMgr";
 import { isIphoneX, toastShow, getMachineName, PlatformAlert } from "./../util";
 import { Button } from "react-native-elements";
 import RoomHistory from "./RoomHistory";
@@ -73,6 +74,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       queuing: false
     };
     this._isMounted = false;
+    this._profitAnimMgr = null;
   }
 
   RNNDidAppear = () => {
@@ -108,8 +110,15 @@ class GameScreen extends ScreenComponent<Props, States> {
 
     //test
     clearInterval(this.heartLoop);
-    this.heartLoop = setInterval(() => {
-      this.props.dispatch(heartRequest());
+    this.heartLoop = setInterval(async (): void => {
+      try {
+        let result = await this.props.dispatch(heartRequest());
+        if (result.addIntegral > 0) {
+          this._profitAnimMgr.addInfo(result.addIntegral);
+        }
+      } catch (e) {
+        //
+      }
     }, 1000);
 
     let result = null;
@@ -404,6 +413,7 @@ class GameScreen extends ScreenComponent<Props, States> {
           </View>
           <NTESGLView style={styles.video}/>
           {this.renderVideoHeader()}
+          {this.renderVideoBottom()}
         </View>
       );
     }
@@ -436,6 +446,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             //onBuffer={this._onReadyForDisplay}                // Callback when remote video is buffering
           />
           {this.renderVideoHeader()}
+          {this.renderVideoBottom()}
         </View>
       );
     }
@@ -570,6 +581,18 @@ class GameScreen extends ScreenComponent<Props, States> {
     return;
   }
 
+  renderVideoBottom = (): Component => {
+    return (
+      <View style={styles.videoBottomContainer}>
+        <ProfitAnimationMgr
+          ref={(ref: any) => {
+            this._profitAnimMgr = ref;
+          }}
+        />
+      </View>
+    );
+  }
+
   render(): Component {
     return (
       <ScrollView
@@ -617,15 +640,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: F8Colors.mainBgColor2,
   },
-  image: {
-    flex: 1,
-    width: WIN_WIDTH
-  },
   video: {
     width: WIN_WIDTH,
     height: WIN_WIDTH / 3 * 4,
-    // width: WIN_WIDTH / 3 * 4,
-    // height: WIN_WIDTH,
     resizeMode: "stretch",
     transform: [
       { rotateZ: "90deg" },
@@ -651,10 +668,6 @@ const styles = StyleSheet.create({
     width: WIN_WIDTH,
     height: WIN_WIDTH / 3 * 4,
   },
-  btn: {
-    width:20,
-    height:20
-  },
   closeBtn: {
     width:40,
     height:40,
@@ -679,6 +692,16 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center"
+  },
+  videoBottomContainer: {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+    right: 10,
+    flexDirection: "row",
+    justifyContent: "flex-end",
     alignContent: "center",
     alignItems: "center"
   },
