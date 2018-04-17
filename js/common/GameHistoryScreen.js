@@ -139,7 +139,7 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
       return (
         <View style={styles.emptyContainer}>
           <Text style={{color:"white", fontSize:20}}>
-            {"无"}
+            {"您还没有进行过游戏"}
           </Text>
         </View>
       );

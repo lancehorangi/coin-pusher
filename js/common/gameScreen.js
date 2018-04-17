@@ -169,11 +169,24 @@ class GameScreen extends ScreenComponent<Props, States> {
     }
   }
 
-  onPress = async (): void => {
+  onPressClose = async (): void => {
     try {
-      dismissModal();
-      //this.props.navigator.pop();
-      this.props.dispatch(leaveRoom());
+      if (this.state.bPlaying) {
+        PlatformAlert(
+          "提示",
+          "您正在游戏中是否退出?",
+          "退出",
+          "取消",
+          (): any => {
+            dismissModal();
+            this.props.dispatch(leaveRoom());
+          }
+        );
+      }
+      else {
+        dismissModal();
+        this.props.dispatch(leaveRoom());
+      }
     } catch (e) {
       //
     } finally {
@@ -255,7 +268,7 @@ class GameScreen extends ScreenComponent<Props, States> {
     return (
       <TouchableOpacity
         accessibilityTraits="button"
-        onPress={this.onPress}
+        onPress={this.onPressClose}
         activeOpacity={0.5}
         style={styles.closeBtn}
       >

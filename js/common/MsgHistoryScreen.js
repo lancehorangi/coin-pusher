@@ -154,7 +154,7 @@ class MsgHistoryScreen extends ScreenComponent<{}, States> {
       return (
         <View style={styles.emptyContainer}>
           <Text style={{color:"white", fontSize:20}}>
-            {"无"}
+            {"当前无邮件"}
           </Text>
         </View>
       );
