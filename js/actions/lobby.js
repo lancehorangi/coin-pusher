@@ -191,7 +191,10 @@ async function _pushCoin(): Promise<Action> {
   try {
     let response = await APIRequest("room/pushCoin", {}, true);
 
-    if(response.StatusCode != API_RESULT.STATUS_OK){
+    if (response.StatusCode == API_RESULT.NOT_ENOUGH_DIAMOND) {
+      throw Error(API_RESULT.NOT_ENOUGH_DIAMOND);
+    }
+    else if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
     }
 
@@ -211,7 +214,7 @@ function pushCoin(): ThunkAction {
         integral: result.integral,
       });
     }, (err: Error) => {
-      toastShow("投币失败:" + err.message);
+      console.log("投币失败:" + err.message);
     });
     return response;
   };

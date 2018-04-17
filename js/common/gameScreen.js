@@ -213,8 +213,25 @@ class GameScreen extends ScreenComponent<Props, States> {
     });
   }
 
-  coinPush = () => {
-    this.props.dispatch(pushCoin());
+  coinPush = async (): any => {
+    try {
+      await this.props.dispatch(pushCoin());
+    } catch (e) {
+      if (e.message === API_RESULT.NOT_ENOUGH_DIAMOND) {
+        PlatformAlert(
+          "钻石不足",
+          "您的钻石不足是否充值?",
+          "充值",
+          "取消",
+          () => {
+            this.props.navigator.push({
+              screen: "CP.IAPScreen", // unique ID registered with Navigation.registerScreen
+              title: "商城",
+            });
+          }
+        );
+      }
+    }
   }
 
   pressQueue = async (): any => {
