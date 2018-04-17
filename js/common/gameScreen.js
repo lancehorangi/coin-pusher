@@ -37,7 +37,7 @@ import { dismissModal, showModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
 import { API_ENUM, API_RESULT } from "../api";
-import { PlayBGM, StopBGM } from "../bgm";
+import { PlayBGM, StopBGM, PlayCoinSound, PlayGetCoinSound } from "../sound";
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 
@@ -115,6 +115,9 @@ class GameScreen extends ScreenComponent<Props, States> {
         let result = await this.props.dispatch(heartRequest());
         if (result.addIntegral > 0) {
           this._profitAnimMgr.addInfo(result.addIntegral);
+          if (this.props.enabledBGM) {
+            PlayGetCoinSound();
+          }
         }
       } catch (e) {
         //
@@ -225,6 +228,10 @@ class GameScreen extends ScreenComponent<Props, States> {
   coinPush = async (): any => {
     try {
       await this.props.dispatch(pushCoin());
+
+      if (this.props.enabledBGM) {
+        PlayCoinSound();
+      }
     } catch (e) {
       if (e.message === API_RESULT.NOT_ENOUGH_DIAMOND) {
         PlatformAlert(

@@ -30,3 +30,21 @@ export function PlayBGM() {
 export function StopBGM() {
   _bgm.stop();
 }
+
+let _coinSound = new Sound("collectCoin.wav", Sound.MAIN_BUNDLE);
+_coinSound.setNumberOfLoops(1);
+
+export function PlayCoinSound() {
+  if (_coinSound) {
+    _coinSound.play();
+  }
+}
+
+let _getCoinSound = new Sound("insertCoin.wav", Sound.MAIN_BUNDLE);
+_getCoinSound.setNumberOfLoops(1);
+
+export function PlayGetCoinSound() {
+  if (_getCoinSound) {
+    _getCoinSound.play();
+  }
+}

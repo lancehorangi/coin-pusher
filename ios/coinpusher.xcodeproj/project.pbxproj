@@ -71,6 +71,8 @@
 		EF23190C207C838C00A1011C /* 58.png in Resources */ = {isa = PBXBuildFile; fileRef = EF231909207C838B00A1011C /* 58.png */; };
 		EF23190D207C838C00A1011C /* 87.png in Resources */ = {isa = PBXBuildFile; fileRef = EF23190A207C838C00A1011C /* 87.png */; };
 		EF231962207F38A100A1011C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF231961207F38A100A1011C /* StoreKit.framework */; };
+		EF29101F20862A9800EDE484 /* insertCoin.wav in Resources */ = {isa = PBXBuildFile; fileRef = EF29101D20862A9700EDE484 /* insertCoin.wav */; };
+		EF29102020862A9800EDE484 /* collectCoin.wav in Resources */ = {isa = PBXBuildFile; fileRef = EF29101E20862A9700EDE484 /* collectCoin.wav */; };
 		EF873C87205542A200ECB884 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EF873C86205542A200ECB884 /* libz.tbd */; };
 		EFC7A5CD207A374C00844762 /* bgm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EFC7A5CC207A374C00844762 /* bgm.mp3 */; };
 		EFDD30552062839100962C22 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFAAAA6920623690008F1A97 /* libRCTWeChat.a */; };
@@ -488,6 +490,8 @@
 		EF231909207C838B00A1011C /* 58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 58.png; sourceTree = "<group>"; };
 		EF23190A207C838C00A1011C /* 87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 87.png; sourceTree = "<group>"; };
 		EF231961207F38A100A1011C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		EF29101D20862A9700EDE484 /* insertCoin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = insertCoin.wav; path = ../insertCoin.wav; sourceTree = "<group>"; };
+		EF29101E20862A9700EDE484 /* collectCoin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = collectCoin.wav; path = ../collectCoin.wav; sourceTree = "<group>"; };
 		EF873C86205542A200ECB884 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		EFAFAA462073C09700B69E47 /* coinpusher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = coinpusher.entitlements; path = coinpusher/coinpusher.entitlements; sourceTree = "<group>"; };
 		EFC547B2205574A50051E56B /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
@@ -650,6 +654,8 @@
 		13B07FAE1A68108700A75B9A /* coinpusher */ = {
 			isa = PBXGroup;
 			children = (
+				EF29101E20862A9700EDE484 /* collectCoin.wav */,
+				EF29101D20862A9700EDE484 /* insertCoin.wav */,
 				EF2318CA207B593600A1011C /* Icon */,
 				EFC7A5CC207A374C00844762 /* bgm.mp3 */,
 				EFAFAA462073C09700B69E47 /* coinpusher.entitlements */,
@@ -1464,6 +1470,7 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				425821FB017744BCAED842DC /* Entypo.ttf in Resources */,
 				EF231905207B595E00A1011C /* 1024.png in Resources */,
+				EF29102020862A9800EDE484 /* collectCoin.wav in Resources */,
 				C557F235ACCB447D99CB5441 /* EvilIcons.ttf in Resources */,
 				0345D2799A6B47919EB95AB5 /* Feather.ttf in Resources */,
 				EF23190B207C838C00A1011C /* 80.png in Resources */,
@@ -1484,6 +1491,7 @@
 				EFC7A5CD207A374C00844762 /* bgm.mp3 in Resources */,
 				EF231900207B595E00A1011C /* 60.png in Resources */,
 				EF23190C207C838C00A1011C /* 58.png in Resources */,
+				EF29101F20862A9800EDE484 /* insertCoin.wav in Resources */,
 				EF231907207B59F300A1011C /* bt@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
