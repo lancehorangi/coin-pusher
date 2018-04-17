@@ -24,7 +24,8 @@ import {
   connectMeeting,
   heartRequest,
   roomInfo,
-  queueRoom
+  queueRoom,
+  toggleBGM
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
@@ -194,6 +195,17 @@ class GameScreen extends ScreenComponent<Props, States> {
     }
   }
 
+  onPressMute = () => {
+    if (this.props.enabledBGM) {
+      StopBGM();
+    }
+    else {
+      PlayBGM();
+    }
+
+    this.props.dispatch(toggleBGM(!this.props.enabledBGM));
+  }
+
   onPressIAP = () => {
     this.props.navigator.push({
       screen: "CP.IAPScreen",
@@ -277,7 +289,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             width: "100%",
             height: "100%"
           }}
-          source={require("../common/img/close.png")}
+          source={require("./img/close.png")}
           resizeMode={"stretch"}/>
       </TouchableOpacity>
     );
@@ -374,7 +386,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             <ActivityIndicator animating size="large" color='white'/>
           </View>
           <NTESGLView style={styles.video}/>
-          {this.renderPlayerInfo()}
+          {this.renderVideoHeader()}
         </View>
       );
     }
@@ -406,7 +418,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             onError={this._onError}               // Callback when video cannot be loaded
             //onBuffer={this._onReadyForDisplay}                // Callback when remote video is buffering
           />
-          {this.renderPlayerInfo()}
+          {this.renderVideoHeader()}
         </View>
       );
     }
@@ -494,7 +506,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       <View>
         <View style={styles.historyTitle}>
           <Text style={{color:"white", fontSize:20}}>
-            {"开奖记录"}
+            {"机台游戏记录"}
           </Text>
         </View>
         <View style={{width:"80%", height:2, backgroundColor:"#45474d", alignSelf: "center"}}/>
@@ -505,24 +517,36 @@ class GameScreen extends ScreenComponent<Props, States> {
     );
   }
 
-  renderPlayerInfo = (): Component => {
+  renderVideoHeader = (): Component => {
     let {roomInfo} = this.props;
     if (roomInfo && roomInfo.entityID != 0) {
       return (
-        <View style={styles.playerInfoContainer}>
-          <Avatar
-            //large
-            rounded
-            source={{uri:this.props.roomInfo.headUrl}}
-          />
-          <Text style={{
-            fontSize: 15,
-            color: "white",
-            alignSelf: "center",
-            marginLeft: 5
-          }}>
-            {this.props.roomInfo.nickName}
-          </Text>
+        <View style={styles.videoHeaderContainer}>
+          <View style={styles.playerInfoContainer}>
+            <Avatar
+              //large
+              rounded
+              source={{uri:this.props.roomInfo.headUrl}}
+            />
+            <Text style={{
+              fontSize: 15,
+              color: "white",
+              alignSelf: "center",
+              marginLeft: 5
+            }}>
+              {this.props.roomInfo.nickName}
+            </Text>
+          </View>
+          <TouchableOpacity
+            accessibilityTraits="button"
+            onPress={this.onPressMute}
+            activeOpacity={0.5}
+            style={styles.muteBtn}
+          >
+            <Image
+              source={this.props.enabledBGM ? require("./img/soundon.png") : require("./img/soundoff.png")}
+              resizeMode={"stretch"}/>
+          </TouchableOpacity>
         </View>
       );
     }
@@ -618,6 +642,12 @@ const styles = StyleSheet.create({
     width:40,
     height:40,
   },
+  muteBtn: {
+    marginRight: 10,
+    width:40,
+    height:40,
+    justifyContent: "center"
+  },
   historyTitle: {
     justifyContent: "center",
     width: "100%",
@@ -625,14 +655,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
-  playerInfoContainer: {
+  videoHeaderContainer: {
     position: "absolute",
-    top: -10,
-    left: 10,
-    height: 70,
+    width: "100%",
+    marginTop: 10,
+    marginLeft: 10,
     flexDirection: "row",
+    justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center"
+  },
+  playerInfoContainer: {
+    height: 40,
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00000088",
+    paddingHorizontal: 5,
+    minWidth: 50,
+    borderRadius: 30
   },
   waitListContainer: {
     height: 22,
