@@ -50,19 +50,24 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
   }
 
   onSubmit = async (): any => {
-    await this.setState({sumbitting: true});
     let {phone, text} = this.state;
 
     let pattern = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-    if (pattern.test(phone)) {
-      await this.props.dispatch(feedback(phone, text));
-      this.contentInput.clear();
-      this.phoneInput.clear();
-      await this.setState({sumbitting: false});
-    }
-    else {
+    if (!pattern.test(phone)) {
       Alert.alert("请输入正确的手机号");
+      return;
     }
+
+    if (text === "") {
+      Alert.alert("请输入反馈内容");
+      return;
+    }
+
+    await this.setState({sumbitting: true});
+    await this.props.dispatch(feedback(phone, text));
+    this.contentInput.clear();
+    this.phoneInput.clear();
+    await this.setState({sumbitting: false});
   }
 
   render(): Component<{}> {

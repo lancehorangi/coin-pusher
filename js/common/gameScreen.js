@@ -38,6 +38,7 @@ import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
 import { API_ENUM, API_RESULT } from "../api";
 import { PlayBGM, StopBGM, PlayCoinSound, PlayGetCoinSound } from "../sound";
+import Permissions from "react-native-permissions";
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 
@@ -250,7 +251,7 @@ class GameScreen extends ScreenComponent<Props, States> {
     }
   }
 
-  pressQueue = async (): any => {
+  _queueAlertShow = async (): any => {
     let {status, entityID, roomInfo} = this.props;
 
     if (API_ENUM.ES_QueueTimeout == status) {
@@ -280,6 +281,31 @@ class GameScreen extends ScreenComponent<Props, States> {
         (): any => this._queueReq()
       );
     }
+  }
+
+  pressQueue = async (): any => {
+    try {
+      let pushPermission = await Permissions.request("notification");
+
+      console.log("pressQueue pushPermission:" + pushPermission);
+      if (pushPermission !== "authorized") {
+        PlatformAlert(
+          "提示",
+          "您未开启推送这会导致无法接受到排队相关通知，是否要开启推送权限？",
+          "前往设置",
+          "取消",
+          Permissions.openSettings,
+          this._queueAlertShow
+        );
+      }
+      else {
+        this._queueAlertShow();
+      }
+    } catch (e) {
+      console.log("pressQueue e:" + e.message);
+    }
+
+
   }
 
   _queueReq = async (): any => {
