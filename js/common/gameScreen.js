@@ -24,10 +24,12 @@ import {
   connectMeeting,
   heartRequest,
   roomInfo,
-  queueRoom
+  queueRoom,
+  toggleBGM
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
+import ProfitAnimationMgr from "./ProfitAnimationMgr";
 import { isIphoneX, toastShow, getMachineName, PlatformAlert } from "./../util";
 import { Button } from "react-native-elements";
 import RoomHistory from "./RoomHistory";
@@ -35,7 +37,7 @@ import { dismissModal, showModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
 import { API_ENUM, API_RESULT } from "../api";
-import { PlayBGM, StopBGM } from "../bgm";
+import { PlayBGM, StopBGM, PlayCoinSound, PlayGetCoinSound } from "../sound";
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 
@@ -72,6 +74,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       queuing: false
     };
     this._isMounted = false;
+    this._profitAnimMgr = null;
   }
 
   RNNDidAppear = () => {
@@ -107,8 +110,18 @@ class GameScreen extends ScreenComponent<Props, States> {
 
     //test
     clearInterval(this.heartLoop);
-    this.heartLoop = setInterval(() => {
-      this.props.dispatch(heartRequest());
+    this.heartLoop = setInterval(async (): void => {
+      try {
+        let result = await this.props.dispatch(heartRequest());
+        if (result.addIntegral > 0) {
+          this._profitAnimMgr.addInfo(result.addIntegral);
+          if (this.props.enabledBGM) {
+            PlayGetCoinSound();
+          }
+        }
+      } catch (e) {
+        //
+      }
     }, 1000);
 
     let result = null;
@@ -169,16 +182,40 @@ class GameScreen extends ScreenComponent<Props, States> {
     }
   }
 
-  onPress = async (): void => {
+  onPressClose = async (): void => {
     try {
-      dismissModal();
-      //this.props.navigator.pop();
-      this.props.dispatch(leaveRoom());
+      if (this.state.bPlaying) {
+        PlatformAlert(
+          "提示",
+          "您正在游戏中是否退出?",
+          "退出",
+          "取消",
+          (): any => {
+            dismissModal();
+            this.props.dispatch(leaveRoom());
+          }
+        );
+      }
+      else {
+        dismissModal();
+        this.props.dispatch(leaveRoom());
+      }
     } catch (e) {
       //
     } finally {
       //
     }
+  }
+
+  onPressMute = () => {
+    if (this.props.enabledBGM) {
+      StopBGM();
+    }
+    else {
+      PlayBGM();
+    }
+
+    this.props.dispatch(toggleBGM(!this.props.enabledBGM));
   }
 
   onPressIAP = () => {
@@ -188,8 +225,29 @@ class GameScreen extends ScreenComponent<Props, States> {
     });
   }
 
-  coinPush = () => {
-    this.props.dispatch(pushCoin());
+  coinPush = async (): any => {
+    try {
+      await this.props.dispatch(pushCoin());
+
+      if (this.props.enabledBGM) {
+        PlayCoinSound();
+      }
+    } catch (e) {
+      if (e.message === API_RESULT.NOT_ENOUGH_DIAMOND) {
+        PlatformAlert(
+          "钻石不足",
+          "您的钻石不足是否充值?",
+          "充值",
+          "取消",
+          () => {
+            this.props.navigator.push({
+              screen: "CP.IAPScreen", // unique ID registered with Navigation.registerScreen
+              title: "商城",
+            });
+          }
+        );
+      }
+    }
   }
 
   pressQueue = async (): any => {
@@ -255,7 +313,7 @@ class GameScreen extends ScreenComponent<Props, States> {
     return (
       <TouchableOpacity
         accessibilityTraits="button"
-        onPress={this.onPress}
+        onPress={this.onPressClose}
         activeOpacity={0.5}
         style={styles.closeBtn}
       >
@@ -264,7 +322,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             width: "100%",
             height: "100%"
           }}
-          source={require("../common/img/close.png")}
+          source={require("./img/close.png")}
           resizeMode={"stretch"}/>
       </TouchableOpacity>
     );
@@ -361,7 +419,8 @@ class GameScreen extends ScreenComponent<Props, States> {
             <ActivityIndicator animating size="large" color='white'/>
           </View>
           <NTESGLView style={styles.video}/>
-          {this.renderPlayerInfo()}
+          {this.renderVideoHeader()}
+          {this.renderVideoBottom()}
         </View>
       );
     }
@@ -393,7 +452,8 @@ class GameScreen extends ScreenComponent<Props, States> {
             onError={this._onError}               // Callback when video cannot be loaded
             //onBuffer={this._onReadyForDisplay}                // Callback when remote video is buffering
           />
-          {this.renderPlayerInfo()}
+          {this.renderVideoHeader()}
+          {this.renderVideoBottom()}
         </View>
       );
     }
@@ -481,7 +541,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       <View>
         <View style={styles.historyTitle}>
           <Text style={{color:"white", fontSize:20}}>
-            {"开奖记录"}
+            {"机台游戏记录"}
           </Text>
         </View>
         <View style={{width:"80%", height:2, backgroundColor:"#45474d", alignSelf: "center"}}/>
@@ -492,28 +552,52 @@ class GameScreen extends ScreenComponent<Props, States> {
     );
   }
 
-  renderPlayerInfo = (): Component => {
+  renderVideoHeader = (): Component => {
     let {roomInfo} = this.props;
     if (roomInfo && roomInfo.entityID != 0) {
       return (
-        <View style={styles.playerInfoContainer}>
-          <Avatar
-            //large
-            rounded
-            source={{uri:this.props.roomInfo.headUrl}}
-          />
-          <Text style={{
-            fontSize: 15,
-            color: "white",
-            alignSelf: "center",
-            marginLeft: 5
-          }}>
-            {this.props.roomInfo.nickName}
-          </Text>
+        <View style={styles.videoHeaderContainer}>
+          <View style={styles.playerInfoContainer}>
+            <Avatar
+              //large
+              rounded
+              source={{uri:this.props.roomInfo.headUrl}}
+            />
+            <Text style={{
+              fontSize: 15,
+              color: "white",
+              alignSelf: "center",
+              marginLeft: 5
+            }}>
+              {this.props.roomInfo.nickName}
+            </Text>
+          </View>
+          <TouchableOpacity
+            accessibilityTraits="button"
+            onPress={this.onPressMute}
+            activeOpacity={0.5}
+            style={styles.muteBtn}
+          >
+            <Image
+              source={this.props.enabledBGM ? require("./img/soundon.png") : require("./img/soundoff.png")}
+              resizeMode={"stretch"}/>
+          </TouchableOpacity>
         </View>
       );
     }
     return;
+  }
+
+  renderVideoBottom = (): Component => {
+    return (
+      <View style={styles.videoBottomContainer}>
+        <ProfitAnimationMgr
+          ref={(ref: any) => {
+            this._profitAnimMgr = ref;
+          }}
+        />
+      </View>
+    );
   }
 
   render(): Component {
@@ -563,15 +647,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: F8Colors.mainBgColor2,
   },
-  image: {
-    flex: 1,
-    width: WIN_WIDTH
-  },
   video: {
     width: WIN_WIDTH,
     height: WIN_WIDTH / 3 * 4,
-    // width: WIN_WIDTH / 3 * 4,
-    // height: WIN_WIDTH,
     resizeMode: "stretch",
     transform: [
       { rotateZ: "90deg" },
@@ -597,13 +675,15 @@ const styles = StyleSheet.create({
     width: WIN_WIDTH,
     height: WIN_WIDTH / 3 * 4,
   },
-  btn: {
-    width:20,
-    height:20
-  },
   closeBtn: {
     width:40,
     height:40,
+  },
+  muteBtn: {
+    marginRight: 10,
+    width:40,
+    height:40,
+    justifyContent: "center"
   },
   historyTitle: {
     justifyContent: "center",
@@ -612,14 +692,35 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
-  playerInfoContainer: {
+  videoHeaderContainer: {
     position: "absolute",
-    top: -10,
-    left: 10,
-    height: 70,
+    width: "100%",
+    marginTop: 10,
+    marginLeft: 10,
     flexDirection: "row",
+    justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center"
+  },
+  videoBottomContainer: {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+    right: 10,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignContent: "center",
+    alignItems: "center"
+  },
+  playerInfoContainer: {
+    height: 40,
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00000088",
+    paddingHorizontal: 5,
+    minWidth: 50,
+    borderRadius: 30
   },
   waitListContainer: {
     height: 22,

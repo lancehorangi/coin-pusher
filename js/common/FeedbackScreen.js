@@ -56,8 +56,8 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
     let pattern = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
     if (pattern.test(phone)) {
       await this.props.dispatch(feedback(phone, text));
-      this.setState({text: ""});
-      this.setState({phone: ""});
+      this.contentInput.clear();
+      this.phoneInput.clear();
       await this.setState({sumbitting: false});
     }
     else {
@@ -76,6 +76,9 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
             style={[styles.input, {height:200}]}
             multiline={true}
             onChangeText={this.onTextChange}
+            ref={(ref: any) => {
+              this.contentInput = ref;
+            }}
           />
           <Text style={[styles.input,  {borderWidth: 0, marginTop:10}]}>
             请留下你的电话:
@@ -84,6 +87,9 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
             style={[styles.input]}
             onChangeText={this.onPhoneChange}
             keyboardType={"numeric"}
+            ref={(ref: any) => {
+              this.phoneInput = ref;
+            }}
           />
           <Button
             title="提交"

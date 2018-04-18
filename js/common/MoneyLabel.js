@@ -8,7 +8,6 @@ import {
   TouchableOpacity
 } from "react-native";
 import React, { Component } from "react";
-import { getCurrFormat } from "../util";
 
 const WIDTH = 80;
 const HEIGHT = 27;

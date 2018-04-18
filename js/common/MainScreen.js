@@ -141,7 +141,11 @@ export class MainScreen extends React.Component<Props, States> {
     routes.map((route: Object, refIndex: number) => {
       if(refIndex == index){
         let key = route["key"];
-        this._refs[key].loadInfo();
+
+        if (this._refs && this._refs[key]) {
+          this._refs[key].loadInfo();
+        }
+
         return;
       }
     });

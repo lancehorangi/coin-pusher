@@ -40,5 +40,4 @@ function mall(state: State = initialState, action: Action): State {
   return state;
 }
 
-console.warn("reducer mall call!");
 module.exports = mall;

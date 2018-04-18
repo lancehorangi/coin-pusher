@@ -123,7 +123,7 @@ class RoomHistory extends React.Component<Props> {
         return (
           <View style={[styles.emptyContainer, this.props.style, {height:150}]}>
             <Text style={{color:"white", fontSize:20}}>
-              {"无"}
+              {"当前无游戏记录"}
             </Text>
           </View>
         );

@@ -165,7 +165,7 @@ class SignScreen extends ScreenComponent<{}, States> {
     let text = "";
     text += "每日奖励:" + num + "钻石";
 
-    if(leftDays != 0) {
+    if(leftDays != 0 && type != 1) {
       text += "\n 有效期:" + leftDays + "天";
     }
 
