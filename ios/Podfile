@@ -52,6 +52,8 @@ pod 'react-native-ksyvideo', :path => '../node_modules/react-native-ksyvideo'
 
   pod 'RNSound', :path => '../node_modules/react-native-sound'
 
+  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
+
   target 'coinpusherTests' do
     inherit! :search_paths
     # Pods for testing

@@ -123,6 +123,7 @@ function mobileCodeReq(mobilePhone: string): ThunkAction {
 async function _mobileLogin(mobilePhone: string, code: string): Promise<Object> {
   try {
     let jpushDevice = await GetDeviceToken();
+    console.log("jpushDevice:" + jpushDevice);
     let response = await APIRequest("account/phoneLogin", {
       phone:mobilePhone, code:code, jpushDevice
     });

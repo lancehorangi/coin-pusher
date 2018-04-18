@@ -66,6 +66,8 @@ PODS:
     - React/RCTBlob
   - React/tvOS (0.52.0):
     - React/Core
+  - ReactNativePermissions (1.1.1):
+    - React
   - RNBugly (1.0.0):
     - Bugly
   - RNDeviceInfo (0.21.2)
@@ -107,6 +109,7 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - React/tvOS (from `../node_modules/react-native`)
+  - ReactNativePermissions (from `../node_modules/react-native-permissions`)
   - RNBugly (from `../node_modules/react-native-bugly`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNPayfubao (from `../node_modules/react-native-payfubao`)
@@ -130,6 +133,8 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native-ksyvideo
   react-native-spinkit:
     :path: ../node_modules/react-native-spinkit
+  ReactNativePermissions:
+    :path: ../node_modules/react-native-permissions
   RNBugly:
     :path: ../node_modules/react-native-bugly
   RNDeviceInfo:
@@ -157,6 +162,7 @@ SPEC CHECKSUMS:
   React: 43e97926f429d846050880666de1809e22dd5cc5
   react-native-ksyvideo: 5fd9f37af2fd579d95da3386857751e1795104b8
   react-native-spinkit: c9f5826e1a0bf0da889b3795278eb96ae15c1350
+  ReactNativePermissions: 9f2d9c45c98800795e6c2ed330e25d11a66a8169
   RNBugly: f5980a181f91674cfce7c073749b3fcc24a47fd4
   RNDeviceInfo: c0c3ef10e6c65609f81a04477c7bab4447751d28
   RNPayfubao: bc3b2a590770e425838454a61e62bf8d8429f501
@@ -166,6 +172,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: aa9a4650e1617ec3c2d8a13837f649a509a4e5af
+PODFILE CHECKSUM: 3895fa35587a237a5bc54040019484edbbd19589
 
 COCOAPODS: 1.4.0
