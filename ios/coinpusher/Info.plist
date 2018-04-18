@@ -50,7 +50,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>CodePushDeploymentKey</key>
 	<string>$(CODEPUSH_KEY)</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -95,8 +95,12 @@
 	<string>请求使用麦克风</string>
 	<key>NSMotionUsageDescription</key>
 	<string>请求使用体感</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>请求增加照片</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>请求打开照片</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>请求使用语音识别</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
