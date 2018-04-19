@@ -2,11 +2,11 @@
 
 "use strict";
 
-import { Alert } from "react-native";
 import { APIRequest, API_RESULT } from "../api";
 import type { Action, ThunkAction, Dispatch } from "./types";
 import { toastShow } from "./../util";
 import { dismissModal } from "./../navigator";
+import { NimUtils } from "react-native-netease-im";
 
 async function _getAccountHistory(): Promise<Object>{
   try {
@@ -56,6 +56,7 @@ function heartRequest(): ThunkAction {
     let responese = _heartRequest();
     responese.then((result: Object): any => {
       if (result.kickFlag) {
+        NimUtils.leaveMeeting();
         dismissModal("您长时间未操作被提出房间");
       }
 
