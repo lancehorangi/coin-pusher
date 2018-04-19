@@ -201,7 +201,7 @@ async function _getAccountInfo(): Promise<Object> {
   }
 }
 
-function getAccountInfo(): ThunkAction {
+function getAccountInfo(bAlert: boolean = true): ThunkAction {
   return (dispatch: Dispatch): Object => {
     const response = _getAccountInfo();
 
@@ -220,62 +220,64 @@ function getAccountInfo(): ThunkAction {
         accountInfo: result.info
       });
 
-      if (result.info.roomID != 0 && result.info.entityState === API_ENUM.ES_Game) {
-        PlatformAlert(
-          "提醒",
-          "检测到您上次在" + getMachineName(result.info.roomID) + "游戏是否要继续?",
-          "继续",
-          "取消",
-          () => {
-            showModal({
-              screen: "CP.GameScreen",
-              title: "游戏",
-              passProps: {roomID:result.info.roomID},
-              navigatorStyle: { navBarHidden: true },
-              navigatorButtons: {},
-              animationType: "slide-up"
-            });
-          },
-          () => {
-            dispatch(leaveRoom());
-          }
-        );
-      }
-      else if (result.info.roomID != 0 && result.info.entityState === API_ENUM.ES_QueueTimeout) {
-        PlatformAlert(
-          "提醒",
-          "检测到您上次在" + getMachineName(result.info.roomID) + "排队并且已经超时是否要继续?",
-          "继续",
-          "取消",
-          () => {
-            showModal({
-              screen: "CP.GameScreen",
-              title: "游戏",
-              passProps: {roomID:result.info.roomID},
-              navigatorStyle: { navBarHidden: true },
-              navigatorButtons: {},
-              animationType: "slide-up"
-            });
-          }
-        );
-      }
-      else if (result.info.roomID != 0 && result.info.entityState === API_ENUM.ES_Queue) {
-        PlatformAlert(
-          "提醒",
-          "检测到您上次在" + getMachineName(result.info.roomID) + "排队是否要进入该房间?",
-          "进入",
-          "取消",
-          () => {
-            showModal({
-              screen: "CP.GameScreen",
-              title: "游戏",
-              passProps: {roomID:result.info.roomID},
-              navigatorStyle: { navBarHidden: true },
-              navigatorButtons: {},
-              animationType: "slide-up"
-            });
-          }
-        );
+      if (bAlert) {
+        if (result.info.roomID != 0 && result.info.entityState === API_ENUM.ES_Game) {
+          PlatformAlert(
+            "提醒",
+            "检测到您上次在" + getMachineName(result.info.roomID) + "游戏是否要继续?",
+            "继续",
+            "取消",
+            () => {
+              showModal({
+                screen: "CP.GameScreen",
+                title: "游戏",
+                passProps: {roomID:result.info.roomID},
+                navigatorStyle: { navBarHidden: true },
+                navigatorButtons: {},
+                animationType: "slide-up"
+              });
+            },
+            () => {
+              dispatch(leaveRoom());
+            }
+          );
+        }
+        else if (result.info.roomID != 0 && result.info.entityState === API_ENUM.ES_QueueTimeout) {
+          PlatformAlert(
+            "提醒",
+            "检测到您上次在" + getMachineName(result.info.roomID) + "排队并且已经超时是否要继续?",
+            "继续",
+            "取消",
+            () => {
+              showModal({
+                screen: "CP.GameScreen",
+                title: "游戏",
+                passProps: {roomID:result.info.roomID},
+                navigatorStyle: { navBarHidden: true },
+                navigatorButtons: {},
+                animationType: "slide-up"
+              });
+            }
+          );
+        }
+        else if (result.info.roomID != 0 && result.info.entityState === API_ENUM.ES_Queue) {
+          PlatformAlert(
+            "提醒",
+            "检测到您上次在" + getMachineName(result.info.roomID) + "排队是否要进入该房间?",
+            "进入",
+            "取消",
+            () => {
+              showModal({
+                screen: "CP.GameScreen",
+                title: "游戏",
+                passProps: {roomID:result.info.roomID},
+                navigatorStyle: { navBarHidden: true },
+                navigatorButtons: {},
+                animationType: "slide-up"
+              });
+            }
+          );
+        }
       }
     },
     (err: Error) => {
