@@ -618,6 +618,7 @@ class GameScreen extends ScreenComponent<Props, States> {
     return (
       <View style={styles.videoBottomContainer}>
         <ProfitAnimationMgr
+          style={{width: 100}}
           ref={(ref: any) => {
             this._profitAnimMgr = ref;
           }}
