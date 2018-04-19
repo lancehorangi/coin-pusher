@@ -29,34 +29,19 @@ type Props = {
 class RoomList extends Component<Props> {
   constructor(props: Object) {
     super(props);
-    this.state = {
-      bLoading: true,
-    };
   }
 
   onEndReached() {
   }
 
-  loadInfo = async (): void => {
-    await this.setState({bLoading:true});
-    try {
-      await this.props.dispatch(showRoomList(this.props.displayRoomType));
-    } catch (e) {
-      //
-    } finally {
-      this.setState({bLoading:false});
-    }
-  }
-
   componentDidMount() {
-    //console.log("RoomList componentDidMount");
-    //this.loadInfo();
+
   }
 
   _renderRoomThumbnail(): Component {
     let { roomList } = this.props;
 
-    if ( this.state.bLoading ) {
+    if ( !roomList ) {
       return (
         <View style={{width:"100%", height:WIN_HEIGHT / 2, justifyContent:"center", alignContent:"center"}}>
           <ActivityIndicator animating size="large" color='white'/>
