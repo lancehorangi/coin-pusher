@@ -38,7 +38,7 @@ class ProfitAnimation extends Component<Props> {
     componentDidMount() {
       const duration = 2000;
       const toValue = TO_VALUE;
-      Animated.timing(this.state.anim, { toValue, duration }).start();
+      Animated.timing(this.state.anim, { toValue, duration, useNativeDriver: true }).start();
       this.state.anim.addListener(({value}: Object) => {
         if (value === toValue) {
           this.props.onFinish(this.props.id);
@@ -89,6 +89,8 @@ class ProfitAnimation extends Component<Props> {
           style={[styles.container, this.fadeIn(-100)]}>
           {this.renderIcon()}
           {this.renderCount()}
+          <Text>
+          </Text>
         </Animated.View>
       );
     }
@@ -96,6 +98,10 @@ class ProfitAnimation extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
     flex: 0,
     height: HEIGHT,
     minWidth: WIDTH,

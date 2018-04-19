@@ -25,7 +25,8 @@ import {
   heartRequest,
   roomInfo,
   queueRoom,
-  toggleBGM
+  toggleBGM,
+  getAccountInfo
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
@@ -87,6 +88,7 @@ class GameScreen extends ScreenComponent<Props, States> {
     this._isMounted = false;
     clearInterval(this.updateLoop);
     clearInterval(this.heartLoop);
+    clearInterval(this.roomInfoLoop);
     this.setState({autoPlay:false});
 
     NimUtils.leaveMeeting();
@@ -97,6 +99,7 @@ class GameScreen extends ScreenComponent<Props, States> {
   componentWillUnmount() {
     clearInterval(this.updateLoop);
     clearInterval(this.heartLoop);
+    clearInterval(this.roomInfoLoop);
 
     //this.props.dispatch(leaveRoom());
   }
@@ -111,27 +114,30 @@ class GameScreen extends ScreenComponent<Props, States> {
 
     //test
     clearInterval(this.heartLoop);
-    this.heartLoop = setInterval(async (): void => {
-      try {
-        let result = await this.props.dispatch(heartRequest());
-        if (result.addIntegral > 0) {
-          this._profitAnimMgr.addInfo(result.addIntegral);
-          if (this.props.enabledBGM) {
-            PlayGetCoinSound();
-          }
-        }
-      } catch (e) {
-        //
-      }
-    }, 1000);
+    clearInterval(this.roomInfoLoop);
+    this.roomInfoLoop = setInterval(async (): void => {
+      await this.props.dispatch(roomInfo(roomID));
+    }, 5000);
 
     let result = null;
     try {
       result = await this.props.dispatch(roomInfo(roomID));
       await this.props.dispatch(enterRoom(roomID));
-      // await NimSession.login(account, token);
-      // await this.props.dispatch(connectMeeting(result.info.nimName));
       await this.setState({bPlaying:true});
+
+      this.heartLoop = setInterval(async (): void => {
+        try {
+          let result = await this.props.dispatch(heartRequest());
+          if (result.addIntegral > 0) {
+            this._profitAnimMgr.addInfo(result.addIntegral);
+            if (this.props.enabledBGM) {
+              PlayGetCoinSound();
+            }
+          }
+        } catch (e) {
+          //
+        }
+      }, 1000);
 
       if (this.props.enabledBGM) {
         PlayBGM();
@@ -459,15 +465,15 @@ class GameScreen extends ScreenComponent<Props, States> {
           </View>
           <KSYVideo
             style={styles.liveVideo}
-            //source={{uri: this.props.roomInfo.rtmpUrl}}   // Can be a URL or a local file.
-            source={{uri:"rtmp://v02225181.live.126.net/live/073afa1b14d04e2a9ac6106b7bb98326"}}
+            source={{uri: this.props.roomInfo ? this.props.roomInfo.rtmpUrl : ""}}   // Can be a URL or a local file.
+            //source={{uri:"rtmp://v02225181.live.126.net/live/073afa1b14d04e2a9ac6106b7bb98326"}}
             // ref={(ref: any) => {
             //   this.player = ref;
             // }}                                      // Store reference
             volume={1.0}
             muted={true}
             paused={this._isMounted}                          // Pauses playback entirely.
-            resizeMode="stretch"                      // Fill the whole screen at aspect ratio.*
+            //resizeMode="stretch"                      // Fill the whole screen at aspect ratio.*
             repeat={true}                           // Repeat forever.
             playInBackground={false}                // Audio continues to play when app entering background.
             progressUpdateInterval={250.0}          // Interval to fire onProgress (default to ~250ms)
@@ -618,6 +624,7 @@ class GameScreen extends ScreenComponent<Props, States> {
     return (
       <View style={styles.videoBottomContainer}>
         <ProfitAnimationMgr
+          style={{width: 100}}
           ref={(ref: any) => {
             this._profitAnimMgr = ref;
           }}

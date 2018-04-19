@@ -113,29 +113,33 @@ class LoginScreen extends ScreenComponent<Props, Stats> {
     this.setState({code});
   }
 
-  getMobileCode = () => {
+  getMobileCode = async (): any => {
     let pattern = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
     if (!pattern.test(this.state.phone)) {
       Alert.alert("请输入正确的手机号");
       return;
     }
 
-    this.props.dispatch(mobileCodeReq(this.state.phone));
-    this.setState({enableMobileCode:false});
-    this.setState({cooldown:60});
-    this.setState({mobileCodeBtnDesc:"60秒后重试"});
+    try {
+      await this.props.dispatch(mobileCodeReq(this.state.phone));
+      this.setState({enableMobileCode:false});
+      this.setState({cooldown:60});
+      this.setState({mobileCodeBtnDesc:"60秒后重试"});
 
-    clearInterval(this.cdLoop);
-    this.cdLoop = setInterval(() => {
-      this.setState({cooldown:this.state.cooldown - 1});
-      this.setState({mobileCodeBtnDesc:this.state.cooldown + "秒后重试"});
+      clearInterval(this.cdLoop);
+      this.cdLoop = setInterval(() => {
+        this.setState({cooldown:this.state.cooldown - 1});
+        this.setState({mobileCodeBtnDesc:this.state.cooldown + "秒后重试"});
 
-      if (this.state.cooldown == 0) {
-        clearInterval(this.cdLoop);
-        this.setState({mobileCodeBtnDesc:"获取验证码"});
-        this.setState({enableMobileCode:true});
-      }
-    }, 1000);
+        if (this.state.cooldown == 0) {
+          clearInterval(this.cdLoop);
+          this.setState({mobileCodeBtnDesc:"获取验证码"});
+          this.setState({enableMobileCode:true});
+        }
+      }, 1000);
+    } catch (e) {
+      //
+    }
   }
 
   renderMobileLogin = (): Component => {

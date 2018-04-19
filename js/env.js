@@ -30,7 +30,7 @@ module.exports = {
   payServerUrl: "http://47.97.189.108:7010/1.0/",
   notifyUrl: "http://47.97.189.108:7010/1.0/pay/notify",
   talkingdataID: "B7E8A44ADCCE4C9ABBC2A9391E05E6A4",
-  wxID: "wx064e8b51fe46ccc9",
+  wxID: "wx03ea55f8013cb5e1",
   compatibleStoreVersion: "0.10",
   updateToggleAddress: "https://circus.oss-cn-hangzhou.aliyuncs.com/toggle.json",
   PFBparaID: "60100111",

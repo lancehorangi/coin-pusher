@@ -20,7 +20,8 @@ import {
   getAccountInfo,
   getCheckinInfo,
   freshItems,
-  freshMoney
+  freshMoney,
+  showRoomList
 } from "./../actions";
 import BannerCarousel from "./BannerCarousel";
 import RoomList from "./RoomList";
@@ -136,19 +137,7 @@ export class MainScreen extends React.Component<Props, States> {
   }
 
   _refreshRoomList = (index: number) => {
-    let {routes} = this.state;
-
-    routes.map((route: Object, refIndex: number) => {
-      if(refIndex == index){
-        let key = route["key"];
-
-        if (this._refs && this._refs[key]) {
-          this._refs[key].loadInfo();
-        }
-
-        return;
-      }
-    });
+    this.props.dispatch(showRoomList(index));
   }
 
   _handleIndexChange = async (index: number): void => {

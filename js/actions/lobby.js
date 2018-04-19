@@ -71,9 +71,19 @@ function roomInfo(roomID: string): ThunkAction {
   };
 }
 
-async function _enterRoom(roomID: string): Promise<Object> {
+async function _enterRoom(roomID: string, dispatch: Dispatch): Promise<Object> {
   try {
     let response = await APIRequest("room/enter", {roomid: roomID}, true);
+
+    dispatch({
+      type: "ACCOUNT_INFO",
+      accountInfo: response.accountInfo
+    });
+
+    dispatch({
+      type: "CURR_ROOM_INFO",
+      roomInfo: response.roomInfo
+    });
 
     if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
@@ -87,16 +97,9 @@ async function _enterRoom(roomID: string): Promise<Object> {
 
 function enterRoom(roomID: string): ThunkAction {
   return (dispatch: Dispatch): Object => {
-    const response = _enterRoom(roomID);
-    response.then((result: Object): any => {
-      dispatch({
-        type: "ACCOUNT_INFO",
-        accountInfo: result.accountInfo
-      });
-      dispatch({
-        type: "CURR_ROOM_INFO",
-        roomInfo: result.roomInfo
-      });
+    const response = _enterRoom(roomID, dispatch);
+    response.then((): any => {
+
     }, (err: Object) => {
       console.warn("enterRoom failed=" + err.message);
       //toastShow("进入房间失败:" + err.message);
