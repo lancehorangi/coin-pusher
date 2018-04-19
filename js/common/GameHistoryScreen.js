@@ -66,14 +66,6 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
 
   handleLoadMore = () => {
     console.log("handleLoadMore");
-    // this.setState(
-    //   {
-    //     page: this.state.page + 1
-    //   },
-    //   () => {
-    //     this.makeRemoteRequest();
-    //   }
-    // );
   };
 
   renderSeparator = (): Component<View> => {
