@@ -122,7 +122,9 @@ class GameScreen extends ScreenComponent<Props, States> {
     let result = null;
     try {
       result = await this.props.dispatch(roomInfo(roomID));
-      await this.props.dispatch(enterRoom(roomID));
+      if (result.info.entityID !== this.props.entityID) {
+        await this.props.dispatch(enterRoom(roomID));
+      }
       await this.setState({bPlaying:true});
 
       this.heartLoop = setInterval(async (): void => {
