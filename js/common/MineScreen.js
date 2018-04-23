@@ -102,9 +102,12 @@ class MineScreen extends ScreenComponent {
   renderCurr = (): Component => {
     return (
       <View style={styles.currContainer}>
-        <View style={{flexDirection: "row", alignContent:"center"}}>
-          <Text style={{color:"white", fontSize:15, marginLeft: 10}}>
-            {"钻石:" + this.props.diamond}
+        <View style={{flexDirection: "row", alignContent:"center", alignItems: "center"}}>
+          <Image
+            style={{height:25, width: 25, resizeMode: "stretch", marginLeft: 10}}
+            source={require("./img/Diamonds.png")}/>
+          <Text style={{color:"white", fontSize:15 }}>
+            {this.props.diamond}
           </Text>
           <TouchableOpacity
             style={{justifyContent:"center", alignContent:"center", marginLeft:3}}
@@ -116,9 +119,14 @@ class MineScreen extends ScreenComponent {
             />
           </TouchableOpacity>
         </View>
-        <Text style={{color:"white", fontSize:15, marginRight: 10}}>
-          {"积分:" + this.props.integral}
-        </Text>
+        <View style={{flexDirection: "row", alignContent:"center", alignItems: "center"}}>
+          <Image
+            style={{height:25, width: 25, resizeMode: "stretch", marginLeft: 10}}
+            source={require("./img/integral.png")}/>
+          <Text style={{color:"white", fontSize:15, marginRight: 10}}>
+            {this.props.integral}
+          </Text>
+        </View>
       </View>
     );
   }

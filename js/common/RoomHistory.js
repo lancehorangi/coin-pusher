@@ -67,11 +67,11 @@ class RoomHistory extends React.Component<Props> {
   renderGetIntergralComp = (integral: number): Component => {
     return (
       <View style={{flexDirection:"row", marginLeft: 5, alignItems: "center", alignContent: "center"}}>
-        <Text style={{color: "#d1d3e8", fontSize: 13, flex: 0}}> 获得 </Text>
+        <Text style={{color: "#d1d3e8", fontSize: 13}}> 获得 </Text>
         <Image
-          style={{height:15, width: 15, resizeMode: "stretch", flex: 0}}
+          style={{height:15, width: 15, resizeMode: "stretch"}}
           source={require("./img/integral.png")}/>
-        <Text style={{color: "red", fontSize: 13, flex: 0}}> {integral} </Text>
+        <Text style={{color: "red", fontSize: 13}}> {integral} </Text>
       </View>
     );
   }
