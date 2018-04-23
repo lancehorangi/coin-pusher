@@ -12,5 +12,6 @@ module.exports = combineReducers({
   msgs: require("./msgs"),
   appNavigator: require("./appNavigator"),
   mall: require("./mall"),
-  room: require("./room")
+  room: require("./room"),
+  chat: require("./chat")
 });

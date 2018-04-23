@@ -31,6 +31,7 @@ import {
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
 import ProfitAnimationMgr from "./ProfitAnimationMgr";
+import ChatList from "./ChatList";
 import { isIphoneX, toastShow, getMachineName, PlatformAlert } from "./../util";
 import { Button } from "react-native-elements";
 import RoomHistory from "./RoomHistory";
@@ -695,7 +696,7 @@ const styles = StyleSheet.create({
   liveVideo: {
     width: WIN_WIDTH,
     height: WIN_WIDTH / 3 * 4,
-    resizeMode: "stretch",
+    //resizeMode: "stretch",
     transform: [
       { rotateZ: "90deg" },
       { scaleX: 4 / 3},

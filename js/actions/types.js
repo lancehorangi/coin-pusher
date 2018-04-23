@@ -88,6 +88,11 @@ export type Action =
       type: "TOGGLE_BGM",
       bgmEnabled: boolean
     }
+  | {
+      type: "UPDATE_CHAT_MSGS",
+      chatList: Array<Object>,
+      readIdx: number
+    }
 ;
 
 export type Dispatch = (

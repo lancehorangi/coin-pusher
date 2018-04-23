@@ -11,7 +11,7 @@ let _bgm = new Sound("bgm.mp3", Sound.MAIN_BUNDLE, (error) => {
   // loaded successfully
   console.log("PlayBGM duration in seconds: " + _bgm.getDuration() + "number of channels: " + _bgm.getNumberOfChannels());
 });
-_bgm.setNumberOfLoops(-1);
+_bgm.setNumberOfLoops(99999);
 
 export function PlayBGM() {
   if (_bgm) {
