@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 //import type { Element } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, Image } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import { getAccountHistory } from "../actions";
 import { connect } from "react-redux";
@@ -81,6 +81,18 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
     );
   };
 
+  renderGetIntergralComp = (integral: number): Component => {
+    return (
+      <View style={{flexDirection:"row", marginLeft: 5, alignItems: "center", alignContent: "center"}}>
+        <Text style={{color: "#d1d3e8", fontSize: 17}}> 获得 </Text>
+        <Image
+          style={{height:20, width: 20, resizeMode: "stretch"}}
+          source={require("./img/integral.png")}/>
+        <Text style={{color: "red", fontSize: 17}}> {integral} </Text>
+      </View>
+    );
+  }
+
   renderItem = ({item}: Object): Component<ListItem>  => {
     return (
       (
@@ -88,24 +100,13 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
           containerStyle={{borderTopWidth: 0, borderBottomWidth: 0}}
           title={getMachineName(item.machine, true)}
           titleStyle={{color: "#d1d3e8", fontSize: 15}}
-          subtitle={"获得" + item.integral + "积分"}
-          subtitleStyle={{color: "#d1d3e8", fontSize: 17}}
+          subtitle={this.renderGetIntergralComp(item.integral)}
           rightTitle={
             "始:" + dateFormat(new Date(item.enterTime * 1000), "UTC:yyyy/mm/dd HH:MM") + "\n"
             + "终:" + dateFormat(new Date(item.leaveTime * 1000), "UTC:yyyy/mm/dd HH:MM")
           }
           rightTitleNumberOfLines={2}
           hideChevron={true}
-          // avatar={
-          //   <Avatar
-          //     rounded
-          //     containerStyle={{marginRight:5, marginLeft:5}}
-          //     overlayContainerStyle={{backgroundColor: 'transparent'}}
-          //     width={20}
-          //     height={20}
-          //     source={{uri:item.}}
-          //   />
-          // }
         />
       )
     );
