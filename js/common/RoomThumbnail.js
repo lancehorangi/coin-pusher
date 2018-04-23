@@ -92,7 +92,7 @@ class RoomThumbnail extends Component<Props> {
             fontSize:12,
             //alignItems: 'flex-end',
             alignSelf: "flex-end",
-            backgroundColor: "#00000088",
+            backgroundColor: "#000000",
           }}>
             消耗:{this.props.currCost}每次
           </Text>
@@ -102,7 +102,7 @@ class RoomThumbnail extends Component<Props> {
             flexDirection: "row",
             justifyContent: "space-between",
             alignContent:"center",
-            backgroundColor: "#00000088",
+            backgroundColor: "#000000",
             alignSelf: "flex-end",
           }}>
             {this.renderCost()}
@@ -148,7 +148,7 @@ class RoomThumbnail extends Component<Props> {
               flexDirection: "row",
               justifyContent: "space-between",
               alignContent:"center",
-              backgroundColor: "#00000088",
+              backgroundColor: "#000000",
             }}>
               <Text style={ styles.label }> { this.props.roomID }号 </Text>
               <Text style={ styles.label }> { this.props.bPlaying ? "游戏中" : "空闲"} </Text>
