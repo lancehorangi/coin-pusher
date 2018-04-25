@@ -171,7 +171,7 @@ class MineScreen extends ScreenComponent {
   pressMsgHistory = () => {
     this.props.navigator.push({
       screen: "CP.MsgHistoryScreen",
-      title: "邮件",
+      title: "消息中心",
     });
   }
 
