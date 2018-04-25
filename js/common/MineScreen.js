@@ -15,6 +15,7 @@ import ScreenComponent from "./ScreenComponent";
 import F8Colors from "./F8Colors";
 import { isIphoneX } from "./../util";
 import ModalOK from "./ModalOK";
+import ImgButton from "./ImgButton";
 
 const IPHONE_X_HEAD = 30;
 
@@ -90,12 +91,12 @@ class MineScreen extends ScreenComponent {
           marginLeft: 10,
           marginTop:20,
           alignItems: "flex-start",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           alignContent: "flex-start"
         }}>
-          <Text style={{color:"white", fontSize:20}}> {this.props.nickName} </Text>
-          <Text style={{color:"white", marginTop:5, fontSize:15}}> {"ID:" + this.props.accountID}  </Text>
-          <Text style={{color:"white", marginTop:5, fontSize:15}}> {this.getCardDesc()} </Text>
+          <Text style={{color:"white", fontSize:20}}>{this.props.nickName}</Text>
+          <Text style={{color:"white", fontSize:15}}>{"ID:" + this.props.accountID}</Text>
+          <Text style={{color:"white", fontSize:15}}>{this.getCardDesc()}</Text>
         </View>
       </View>
     );
@@ -104,30 +105,41 @@ class MineScreen extends ScreenComponent {
   renderCurr = (): Component => {
     return (
       <View style={styles.currContainer}>
-        <View style={{flexDirection: "row", alignContent:"center", alignItems: "center"}}>
-          <Image
-            style={{height:25, width: 25, resizeMode: "stretch", marginLeft: 10}}
-            source={require("./img/Diamonds.png")}/>
-          <Text style={{color:"white", fontSize:15 }}>
-            {this.props.diamond}
+        <View style={{justifyContent: "center"}}>
+          <Text style={{color:"white", fontSize:12, alignSelf: "center" }}>
+            钻石
           </Text>
-          <TouchableOpacity
-            style={{justifyContent:"center", alignContent:"center", marginLeft:3}}
-            onPress={this.pressBuy}
-          >
+          <View style={{flexDirection: "row", alignContent:"center", alignItems: "center"}}>
             <Image
-              source={require("./img/add.png")}
-              style={{width:20, height:20}}
-            />
-          </TouchableOpacity>
+              style={{height:25, width: 25, resizeMode: "stretch"}}
+              source={require("./img/Diamonds.png")}/>
+            <Text style={{color:"white", fontSize:15, marginLeft: 2 }}>
+              {this.props.diamond}
+            </Text>
+            <ImgButton style={{
+              marginLeft: 2, width: 20, height: 20
+            }}
+            onPress={this.pressBuy}
+            icon={require("./img/add.png")}/>
+          </View>
         </View>
-        <View style={{flexDirection: "row", alignContent:"center", alignItems: "center"}}>
-          <Image
-            style={{height:25, width: 25, resizeMode: "stretch", marginLeft: 10}}
-            source={require("./img/integral.png")}/>
-          <Text style={{color:"white", fontSize:15, marginRight: 10}}>
-            {this.props.integral}
+        <View style={{justifyContent: "center"}}>
+          <Text style={{color:"white", fontSize:12, alignSelf: "center" }}>
+            积分
           </Text>
+          <View style={{flexDirection: "row", alignContent:"center", alignItems: "center"}}>
+            <Image
+              style={{height:25, width: 25, resizeMode: "stretch"}}
+              source={require("./img/integral.png")}/>
+            <Text style={{color:"white", fontSize:15, marginLeft: 2}}>
+              {this.props.integral}
+            </Text>
+            <ImgButton style={{
+              marginLeft: 2, width: 20, height: 20
+            }}
+            onPress={this.pressHelp}
+            icon={require("./img/question.png")}/>
+          </View>
         </View>
       </View>
     );
@@ -185,10 +197,13 @@ class MineScreen extends ScreenComponent {
   }
 
   pressBuy = () => {
-    // this.props.navigator.push({
-    //   screen: "CP.IAPScreen",
-    //   title: "商城",
-    // });
+    this.props.navigator.push({
+      screen: "CP.IAPScreen",
+      title: "商城",
+    });
+  }
+
+  pressHelp = () => {
     this.setState({bShowHint: true});
   }
 
@@ -259,7 +274,7 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
     //alignContent: 'center',
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
   listContainer: {
     flex: 1,

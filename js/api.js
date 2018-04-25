@@ -15,6 +15,11 @@ export const API_ENUM = {
   ES_Queue: 3
 };
 
+export const GAME_STATE = {
+  GS_Normal: 0,
+  GS_Wait: 1
+};
+
 export const API_RESULT = {
   STATUS_OK: "0",
   NOT_ENOUGH_DIAMOND: "10"

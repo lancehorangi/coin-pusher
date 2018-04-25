@@ -44,7 +44,7 @@ import PlayButton from "./PlayButton";
 import { dismissModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
-import { API_ENUM, API_RESULT } from "../api";
+import { API_ENUM, API_RESULT, GAME_STATE } from "../api";
 import { PlayBGM, StopBGM, PlayCoinSound, PlayGetCoinSound } from "../sound";
 import Permissions from "react-native-permissions";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -775,11 +775,22 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   renderCenterInfo = (): Component => {
+    let {roomInfo} = this.props;
+
     if (this.state.countDown <= 60 && this.state.bPlaying) {
       return (
         <View style={styles.centerInfoContainer}>
           <Text style={{color: "white", backgroundColor: "00000088", borderRadius: 12}}>
             {this.state.countDown + "秒不投币被踢出房间"}
+          </Text>
+        </View>
+      );
+    }
+    else if (roomInfo && roomInfo.gameState === GAME_STATE.GS_Wait) {
+      return (
+        <View style={styles.centerInfoContainer}>
+          <Text style={{color: "white", backgroundColor: "00000088", borderRadius: 12}}>
+            {"正在等待其他排到的玩家进入游戏"}
           </Text>
         </View>
       );
