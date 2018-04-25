@@ -16,12 +16,12 @@ import { connect } from "react-redux";
 import dateFormat from "dateformat";
 
 type Props = {
-  id: number
+  id: ?number
 };
 
 class RoomHistory extends React.Component<Props> {
-  props: {
-    id: number
+  static defaultProps = {
+    id: null
   }
 
   constructor(props: Object) {
@@ -122,7 +122,7 @@ class RoomHistory extends React.Component<Props> {
             <FlatList
               data={this.props.items}
               renderItem={this.renderItem}
-              keyExtractor={(item: Object): number => item.id}
+              keyExtractor={(item: Object, index: number): number => index}
               ItemSeparatorComponent={this.renderSeparator}
             />
           </View>

@@ -22,12 +22,20 @@ function chat(state: State = initialState, action: Action): State {
   }
 
   if (action.type === "UPDATE_CHAT_MSGS") {
-    let { chatList, readIdx } = action;
+    let { chatList } = state;
+    let { readIdx } = action;
+    let chatListNew = action.chatList;
+    let mergeChatList = chatList.concat(chatListNew);
+    
     return {
       ...state,
-      chatList,
+      chatList: mergeChatList,
       readIdx
     };
+  }
+
+  if (action.type === "CLEAR_CHAT_MSGS") {
+    return initialState;
   }
 
   return state;

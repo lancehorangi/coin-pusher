@@ -37,7 +37,7 @@ class RoomThumbnail extends Component<Props> {
       passProps: {roomID:this.props.roomID}, // simple serializable object that will pass as props to the modal (optional)
       navigatorStyle: { navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
       navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-      animationType: "slide-up" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+      animationType: "none" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
     });
   }
 

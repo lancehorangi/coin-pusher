@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import ScreenComponent from "./ScreenComponent";
 import F8Colors from "./F8Colors";
 import { isIphoneX } from "./../util";
+import ModalOK from "./ModalOK";
 
 const IPHONE_X_HEAD = 30;
 
@@ -25,6 +26,7 @@ class MineScreen extends ScreenComponent {
     super(props);
 
     this.state = {
+      bShowHint: false
     };
   }
 
@@ -156,37 +158,38 @@ class MineScreen extends ScreenComponent {
 
   pressMsgHistory = () => {
     this.props.navigator.push({
-      screen: "CP.MsgHistoryScreen", // unique ID registered with Navigation.registerScreen
+      screen: "CP.MsgHistoryScreen",
       title: "邮件",
     });
   }
 
   pressFeeback = () => {
     this.props.navigator.push({
-      screen: "CP.FeedbackScreen", // unique ID registered with Navigation.registerScreen
+      screen: "CP.FeedbackScreen",
       title: "意见反馈",
     });
   }
 
   pressGameHistory = () => {
     this.props.navigator.push({
-      screen: "CP.GameHistoryScreen", // unique ID registered with Navigation.registerScreen
+      screen: "CP.GameHistoryScreen",
       title: "游戏历史",
     });
   }
 
   pressOption = () => {
     this.props.navigator.push({
-      screen: "CP.OptionScreen", // unique ID registered with Navigation.registerScreen
+      screen: "CP.OptionScreen",
       title: "设置",
     });
   }
 
   pressBuy = () => {
-    this.props.navigator.push({
-      screen: "CP.IAPScreen", // unique ID registered with Navigation.registerScreen
-      title: "商城",
-    });
+    // this.props.navigator.push({
+    //   screen: "CP.IAPScreen",
+    //   title: "商城",
+    // });
+    this.setState({bShowHint: true});
   }
 
   renderBtn = (): Component => {
@@ -215,6 +218,11 @@ class MineScreen extends ScreenComponent {
   render(): Component {
     return (
       <View style={styles.container}>
+        <ModalOK
+          visible={this.state.bShowHint}
+          label={"游戏中回收的游戏币都将变为您的积分，积分可以在商城中兑换礼品。游戏中当您金币耗尽时，后续投币消耗将从积分余额中扣除。"}
+          onPressClose={(): any => this.setState({bShowHint: false})}
+        />
         <View style={{width:"100%", backgroundColor: F8Colors.mainBgColor2, height: isIphoneX() ? IPHONE_X_HEAD : 10}}>
         </View>
         {this.renderHead()}

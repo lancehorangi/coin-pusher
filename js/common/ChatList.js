@@ -6,20 +6,15 @@ import {
   View,
   Text,
   FlatList,
-  ScrollView,
   StyleSheet
 } from "react-native";
-import { ListItem, Avatar } from "react-native-elements";
-import { getChatHistory } from "../actions";
-import { connect } from "react-redux";
-import dateFormat from "dateformat";
 
 type Props = {
   roomID: number,
   chatList: Array<Object>
 };
 
-class ChatListHistory extends React.Component<Props> {
+class ChatList extends React.Component<Props> {
   static defaultProps = {
     roomID: 0,
     chatList: []
@@ -32,50 +27,31 @@ class ChatListHistory extends React.Component<Props> {
   }
 
   componentDidMount() {
-    this.makeRemoteRequest();
-  }
-
-  async makeRemoteRequest(): void {
-    try {
-      console.log("makeRemoteRequest id=" + this.props.roomID);
-      if (this.props.roomID) {
-        this.props.dispatch(getChatHistory(this.props.roomID));
-      }
-    } catch (e) {
-      //
-    }
   }
 
   onContentSizeChange = () => {
     if (this._scrollViewRef) {
-      this._scrollViewRef.scrollToEnd({animated: true});
+      if (this.props.chatList && this.props.chatList.length > 0) {
+        this._scrollViewRef.scrollToOffset({animated: true, offset:0});
+      }
     }
   }
-
-  renderSeparator = (): Component => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: "100%",
-          backgroundColor: "#45474d",
-          opacity: 0.5,
-        }}
-      />
-    );
-  };
 
   renderItem = ({item}: Object): Component => {
     return (
       <View style={styles.chatContainer}>
-        <Text style={styles.nameLabel}> {item.nickName + ":"} </Text>
-        <Text style={styles.chatLabel}> {item.content} </Text>
+        <Text style={styles.nameLabel}>
+          {item.nickName + ":"}
+          <Text style={styles.chatLabel} numberOfLines={1}> {item.content} </Text>
+        </Text>
       </View>
     );
   }
 
   render(): Component {
     let {chatList} = this.props;
+    let reverseList = chatList.slice();
+    reverseList.reverse();
     return (
       <FlatList
         style={[styles.container, this.props.style]}
@@ -83,10 +59,10 @@ class ChatListHistory extends React.Component<Props> {
           this._scrollViewRef = ref;
         }}
         onContentSizeChange={this.onContentSizeChange}
-        data={chatList}
+        data={reverseList}
         renderItem={this.renderItem}
         keyExtractor={(item: Object, index: number): number => index}
-        //ItemSeparatorComponent={this.renderSeparator}
+        inverted={true}
       />
     );
   }
@@ -97,7 +73,7 @@ class ChatListHistory extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 0,
     width: 200,
     height: 200,
     backgroundColor: "transparent",
@@ -105,24 +81,20 @@ const styles = StyleSheet.create({
   chatContainer: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
+    //alignItems: "center",
+    justifyContent: "flex-start",
+    marginLeft: 5,
+    marginRight: 5
   },
   nameLabel: {
-    fontSize: 15,
-    color: "white"
+    fontSize: 13,
+    color: "yellow"
   },
   chatLabel: {
-    fontSize: 15,
-    color: "red"
+    fontSize: 13,
+    color: "white"
   }
 });
 
-function select(store: Object): Object {
-  return {
-    chatList: store.chat.chatList
-  };
-}
-
 /* exports ================================================================== */
-module.exports = connect(select)(ChatListHistory);
+module.exports = ChatList;

@@ -36,7 +36,7 @@ class ProfitAnimation extends Component<Props> {
     }
 
     componentDidMount() {
-      const duration = 2000;
+      const duration = 4000;
       const toValue = TO_VALUE;
       Animated.timing(this.state.anim, { toValue, duration, useNativeDriver: true }).start();
       this.state.anim.addListener(({value}: Object) => {

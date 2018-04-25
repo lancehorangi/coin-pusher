@@ -64,6 +64,7 @@ function heartRequest(): ThunkAction {
         type: "TICK_INFO",
         gold: result.gold,
         integral: result.integral,
+        countDown: result.countDown
       });
     },
     (err: Error) => {

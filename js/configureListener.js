@@ -47,6 +47,7 @@ function configureListener(store): void {
 
   //NIM AVChat 相关事件
   NativeAppEventEmitter.addListener("observeAVChatStatus",(data)=>{
+    console.log("observeAVChatStatus:" + JSON.stringify(data));
     toastShow("NIM AV STATUS=" + data);
     if (NIMAVChatDescrib[data]) {
       // Navigation.showInAppNotification({
@@ -59,6 +60,7 @@ function configureListener(store): void {
 
   //NIM AVChat 中断出错
   NativeAppEventEmitter.addListener("observeAVChatError",(data)=>{
+    console.log("observeAVChatError:" + JSON.stringify(data));
     toastShow("NIM AV ERROR=" + NIMAVChatDescrib[data]);
     // Navigation.showInAppNotification({
     //     screen: "CP.Notification", // unique ID registered with Navigation.registerScreen

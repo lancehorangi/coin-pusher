@@ -234,7 +234,7 @@ function getAccountInfo(bAlert: boolean = true): ThunkAction {
                 passProps: {roomID:result.info.roomID},
                 navigatorStyle: { navBarHidden: true },
                 navigatorButtons: {},
-                animationType: "slide-up"
+                animationType: "none"
               });
             },
             () => {
@@ -255,7 +255,7 @@ function getAccountInfo(bAlert: boolean = true): ThunkAction {
                 passProps: {roomID:result.info.roomID},
                 navigatorStyle: { navBarHidden: true },
                 navigatorButtons: {},
-                animationType: "slide-up"
+                animationType: "none"
               });
             }
           );
@@ -273,7 +273,7 @@ function getAccountInfo(bAlert: boolean = true): ThunkAction {
                 passProps: {roomID:result.info.roomID},
                 navigatorStyle: { navBarHidden: true },
                 navigatorButtons: {},
-                animationType: "slide-up"
+                animationType: "none"
               });
             }
           );

@@ -27,7 +27,7 @@ function getChatHistory(roomID: number): ThunkAction {
       dispatch({
         type: "UPDATE_CHAT_MSGS",
         chatList: result.chatList,
-        readIdx: result.readIdx
+        readIdx: result.index
       });
     },
     (err: Error) => {
@@ -54,10 +54,10 @@ async function _chatReq(roomID: number, content: string): Promise<Object>{
 }
 
 function chatReq(roomID: number, content: string): ThunkAction {
-  return (): Object => {
+  return (dispatch: Dispatch): Object => {
     let response = _chatReq(roomID, content);
     response.then((): any => {
-      getChatHistory(roomID);
+      dispatch(getChatHistory(roomID));
     },
     (err: Error) => {
       console.log("chatReq failed reason=" + err.message);
@@ -68,5 +68,11 @@ function chatReq(roomID: number, content: string): ThunkAction {
   };
 }
 
+function clearChatMsg(): Action {
+  return {
+    type: "CLEAR_CHAT_MSGS"
+  };
+}
 
-module.exports = { getChatHistory, chatReq };
+
+module.exports = { getChatHistory, chatReq, clearChatMsg };

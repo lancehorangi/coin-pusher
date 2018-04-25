@@ -30,6 +30,7 @@
     "dateformat": "^3.0.3",
     "jcore-react-native": "^1.2.5",
     "jpush-react-native": "^2.1.12",
+    "js-md5": "^0.7.3",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-bugly": "git+https://git@github.com/canyara/react-native-bugly.git",

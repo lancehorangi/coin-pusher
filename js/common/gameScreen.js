@@ -8,13 +8,12 @@ import {
   Dimensions,
   StyleSheet,
   View,
-  Image,
   Alert,
-  TouchableOpacity,
   Text,
   ActivityIndicator,
   ScrollView,
-  Switch
+  Switch,
+  TextInput
 } from "react-native";
 import { NimUtils, NTESGLView, NimSession } from "react-native-netease-im";
 import {
@@ -26,21 +25,29 @@ import {
   roomInfo,
   queueRoom,
   toggleBGM,
-  getAccountInfo
+  getAccountInfo,
+  getChatHistory,
+  chatReq,
+  clearChatMsg,
+  switchWiper
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
 import ProfitAnimationMgr from "./ProfitAnimationMgr";
+import Spinner from "react-native-spinkit";
 import ChatList from "./ChatList";
 import { isIphoneX, toastShow, getMachineName, PlatformAlert } from "./../util";
-import { Button } from "react-native-elements";
+import ModalOK from "./ModalOK";
 import RoomHistory from "./RoomHistory";
-import { dismissModal, showModal } from "./../navigator";
+import ImgButton from "./ImgButton";
+import PlayButton from "./PlayButton";
+import { dismissModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
 import { API_ENUM, API_RESULT } from "../api";
 import { PlayBGM, StopBGM, PlayCoinSound, PlayGetCoinSound } from "../sound";
 import Permissions from "react-native-permissions";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 
@@ -62,7 +69,13 @@ type States = {
   bLoading: boolean,
   autoPlay: boolean,
   bPlaying: boolean,
-  queuing: boolean
+  queuing: boolean,
+  bShowChatTextInput: boolean,
+  chatMsg: string,
+  bShowChatList: boolean,
+  bShowHint: boolean,
+  centerInfo: string,
+  countDown: number
 };
 
 class GameScreen extends ScreenComponent<Props, States> {
@@ -74,7 +87,13 @@ class GameScreen extends ScreenComponent<Props, States> {
       bLoading: true,
       autoPlay: false,
       bPlaying: false,
-      queuing: false
+      queuing: false,
+      bShowChatTextInput: false,
+      chatMsg: "",
+      bShowChatList: true,
+      bShowHint: false,
+      centerInfo: "",
+      countDown: 120
     };
     this._isMounted = false;
     this._profitAnimMgr = null;
@@ -112,12 +131,13 @@ class GameScreen extends ScreenComponent<Props, States> {
   async reqEnterRoom(): void {
     await this.setState({ bLoading: true });
     let { roomID, account, token } = this.props;
+    this.props.dispatch(clearChatMsg());
 
-    //test
     clearInterval(this.heartLoop);
     clearInterval(this.roomInfoLoop);
     this.roomInfoLoop = setInterval(async (): void => {
       await this.props.dispatch(roomInfo(roomID));
+      await this.props.dispatch(getChatHistory(roomID));
     }, 5000);
 
     let result = null;
@@ -131,6 +151,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       this.heartLoop = setInterval(async (): void => {
         try {
           let result = await this.props.dispatch(heartRequest());
+          this.setState({countDown: result.countDown});
           if (result.addIntegral > 0) {
             this._profitAnimMgr.addInfo(result.addIntegral);
             if (this.props.enabledBGM) {
@@ -183,7 +204,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       if (value) {
         clearInterval(this.updateLoop);
         this.updateLoop = setInterval(() => {
-          this.coinPush();
+          this.onPressCoinPush();
         }, 1000);
       }
       else {
@@ -235,7 +256,31 @@ class GameScreen extends ScreenComponent<Props, States> {
     });
   }
 
-  coinPush = async (): any => {
+  onPressChat = () => {
+    this.setState({bShowChatTextInput: true});
+  }
+
+  onPressSwitchWiper = () => {
+    this.props.dispatch(switchWiper());
+  }
+
+  onPressToggleChat = () => {
+    let {bShowChatList} = this.state;
+    bShowChatList = !bShowChatList;
+    this.setState({bShowChatList});
+  }
+
+  onPressShowHint = () => {
+    this.setState({bShowHint: true});
+  }
+
+  onPressShowHistory = () => {
+    if (this._scrollRef) {
+      this._scrollRef.props.scrollToPosition(0, WIN_HEIGHT);
+    }
+  }
+
+  onPressCoinPush = async (): any => {
     try {
       await this.props.dispatch(pushCoin());
 
@@ -244,6 +289,8 @@ class GameScreen extends ScreenComponent<Props, States> {
       }
     } catch (e) {
       if (e.message === API_RESULT.NOT_ENOUGH_DIAMOND) {
+        this.setState({autoPlay:false});
+        this.onAutoPlayValue(false);
         PlatformAlert(
           "钻石不足",
           "您的钻石不足是否充值?",
@@ -346,20 +393,10 @@ class GameScreen extends ScreenComponent<Props, States> {
 
   renderCloseBtn = (): Component => {
     return (
-      <TouchableOpacity
-        accessibilityTraits="button"
-        onPress={this.onPressClose}
-        activeOpacity={0.5}
+      <ImgButton
         style={styles.closeBtn}
-      >
-        <Image
-          style={{
-            width: "100%",
-            height: "100%"
-          }}
-          source={require("./img/close.png")}
-          resizeMode={"stretch"}/>
-      </TouchableOpacity>
+        icon={require("./img/Back.png")}
+        onPress={this.onPressClose}/>
     );
   }
 
@@ -401,25 +438,25 @@ class GameScreen extends ScreenComponent<Props, States> {
     return;
   }
 
+  renderSoundBtn = (): Component => {
+    return (
+      <ImgButton
+        style={styles.muteBtn}
+        icon={this.props.enabledBGM ? require("./img/soundon.png") : require("./img/soundoff.png")}
+        onPress={this.onPressMute}/>
+    );
+  }
+
   renderHeader = (): Component => {
     if (this.state.bLoading) {
       return;
     }
 
-    let { roomInfo } = this.props;
-
     return (
       <View style={styles.headerContainer}>
         { this.renderCloseBtn() }
         { this.renderWaitList() }
-        <Text
-          numberOfLines={2}
-          style={{
-            marginRight: 20,
-            color: "white",
-          }}>
-          { roomInfo ? getMachineName(roomInfo.roomID) + "\n消耗:" + roomInfo.coins + "/次" : ""}
-        </Text>
+        { this.renderSoundBtn() }
       </View>
     );
   }
@@ -439,11 +476,11 @@ class GameScreen extends ScreenComponent<Props, States> {
     return false;
   }
 
-  renderContent = (): Component => {
+  renderVideo = (): Component => {
     if (this.state.bLoading) {
       return (
         <View style={styles.loadingCotainer}>
-          <ActivityIndicator animating size="large" color='white'/>
+          <Spinner isVisible={true} size={50} type={"9CubeGrid"} color="white"/>
         </View>
       );
     }
@@ -451,11 +488,9 @@ class GameScreen extends ScreenComponent<Props, States> {
       return (
         <View style={styles.container}>
           <View style={styles.videoLoading}>
-            <ActivityIndicator animating size="large" color='white'/>
+            <Spinner isVisible={true} size={50} type={"9CubeGrid"} color="white"/>
           </View>
           <NTESGLView style={styles.video}/>
-          {this.renderVideoHeader()}
-          {this.renderVideoBottom()}
         </View>
       );
     }
@@ -468,11 +503,7 @@ class GameScreen extends ScreenComponent<Props, States> {
           </View>
           <KSYVideo
             style={styles.liveVideo}
-            source={{uri: this.props.roomInfo ? this.props.roomInfo.rtmpUrl : ""}}   // Can be a URL or a local file.
-            //source={{uri:"rtmp://v02225181.live.126.net/live/073afa1b14d04e2a9ac6106b7bb98326"}}
-            // ref={(ref: any) => {
-            //   this.player = ref;
-            // }}                                      // Store reference
+            source={{uri: this.props.roomInfo ? this.props.roomInfo.rtmpUrl : ""}}   // Can be a URL or a local file.                                 // Store reference
             volume={1.0}
             muted={true}
             paused={this._isMounted}                          // Pauses playback entirely.
@@ -487,62 +518,69 @@ class GameScreen extends ScreenComponent<Props, States> {
             onError={this._onError}               // Callback when video cannot be loaded
             //onBuffer={this._onReadyForDisplay}                // Callback when remote video is buffering
           />
-          {this.renderVideoHeader()}
-          {this.renderVideoBottom()}
         </View>
       );
     }
   }
 
-  renderCenterBtn = (): Component => {
+  renderCenterBottom = (): Component => {
+    let { roomInfo } = this.props;
+    let centerBtn;
+
     if (this.state.bPlaying) {
-      return (
-        <Button
-          title={"投币"}
-          titleStyle={{color:"white", fontSize:35}}
-          buttonStyle={{backgroundColor:"#ee4943", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
-          onPress={this.coinPush}
-        />
+      centerBtn = (
+        <PlayButton value={roomInfo ? roomInfo.coins : 0} type={"play"} onPress={this.onPressCoinPush}/>
+      );
+    }
+    else if (this._currQueueStatus()) {
+      centerBtn = (
+        <PlayButton type={"queuing"}/>
       );
     }
     else {
-      return (
-        <Button
-          loading={this.state.queuing}
-          title={this._currQueueStatus() ? "排队中" : "排队"}
-          titleStyle={{color:"white", fontSize:25}}
-          buttonStyle={{backgroundColor:"#ee4943", borderRadius:20, paddingVertical:20, paddingHorizontal:20}}
-          onPress={this._currQueueStatus() ? null : this.pressQueue}
-        />
+      centerBtn = (
+        <PlayButton loading={this.state.queuing} value={800} type={"queue"} onPress={this.pressQueue}/>
       );
     }
+
+    return (
+      <View style={{
+        justifyContent: "center",
+        alignContent: "center",
+        alignItems: "center"
+      }}>
+        {centerBtn}
+        <ImgButton style={{marginTop: 5, width: 24, height: 24}} onPress={this.onPressShowHistory} icon={require("./img/arrow.png")}/>
+      </View>
+    );
   }
 
   renderBottom = (): Component => {
     if (!this.state.bLoading) {
-      return (
-        <View style={styles.bottomContainer}>
+      let autoComp;
+      if (this.state.bPlaying) {
+        autoComp = (
           <View style={{
             position: "absolute",
             left: 20,
-            flex: 1,
-            justifyContent:"center",
-            alignItems:"center",
-            alignContent:"center",
           }}>
             <Switch
               value={this.state.autoPlay}
               onValueChange={this.onAutoPlayValue}
               tintColor={"#ee4943"}
               onTintColor={"#ee4943"}
-              //thumbTintColor={"red"}
             />
             <Text style={{color:"white", width:"100%", fontSize:15, marginTop:2, textAlign:"center"}}>
               {"自动"}
             </Text>
           </View>
+        );
+      }
 
-          {this.renderCenterBtn()}
+      return (
+        <View style={styles.bottomContainer}>
+          {autoComp}
+          {this.renderCenterBottom()}
 
           <View style={{
             position: "absolute",
@@ -553,17 +591,18 @@ class GameScreen extends ScreenComponent<Props, States> {
           }}>
 
             <MoneyLabel
-              containerStyle={{width:100}}
-              type={"gold"}
-              count={this.props.gold}
-              withBtn={true}
-              onPressBuy={this.onPressIAP}/>
+              containerStyle={{width: 100}}
+              type={this.state.bPlaying ? "gold" : "diamond"}
+              count={this.state.bPlaying ? this.props.gold : this.props.diamond}
+              btnType={"add"}
+              onPress={this.onPressIAP}/>
 
             <MoneyLabel
-              containerStyle={{marginTop:5, width:100}}
+              containerStyle={{marginTop:5, width: 100}}
               type={"integral"}
               count={this.props.integral}
-              withBtn={false}/>
+              btnType={"help"}
+              onPress={this.onPressShowHint}/>
 
           </View>
         </View>
@@ -594,36 +633,112 @@ class GameScreen extends ScreenComponent<Props, States> {
         <View style={styles.videoHeaderContainer}>
           <View style={styles.playerInfoContainer}>
             <Avatar
-              //large
               rounded
               source={{uri:this.props.roomInfo.headUrl}}
             />
-            <Text style={{
-              fontSize: 15,
-              color: "white",
-              alignSelf: "center",
-              marginLeft: 5
-            }}>
-              {this.props.roomInfo.nickName}
-            </Text>
+            <View>
+              <Text style={{
+                fontSize: 14,
+                color: "white",
+                marginLeft: 5,
+                marginRight: 5
+              }}>
+                {this.props.roomInfo.nickName }
+              </Text>
+              <Text style={{
+                fontSize: 10,
+                color: "white",
+                marginLeft: 5,
+                marginRight: 5
+              }}>
+                { getMachineName(roomInfo.roomID) + "游戏中"}
+              </Text>
+            </View>
           </View>
-          <TouchableOpacity
-            accessibilityTraits="button"
-            onPress={this.onPressMute}
-            activeOpacity={0.5}
-            style={styles.muteBtn}
-          >
-            <Image
-              source={this.props.enabledBGM ? require("./img/soundon.png") : require("./img/soundoff.png")}
-              resizeMode={"stretch"}/>
-          </TouchableOpacity>
         </View>
       );
     }
     return;
   }
 
-  renderVideoBottom = (): Component => {
+  renderChatList = (): Component => {
+    if (this.state.bShowChatList) {
+      return (
+        <ChatList style={styles.chatListContainer}
+          roomID={this.props.roomID}
+          chatList={this.props.chatList}
+        />
+      );
+    }
+
+    return;
+  }
+
+  renderChatListToggleBtn = (): Component => {
+    return (
+      <ImgButton
+        style={styles.toggleChatListBtn}
+        icon={require("./img/arrow02.png")}
+        onPress={this.onPressToggleChat}
+        inverted={!this.state.bShowChatList}/>
+    );
+  }
+
+  renderChatFrame = (): Component => {
+    return (
+      <View>
+        {this.renderChatList()}
+        {this.renderChatListToggleBtn()}
+      </View>
+    );
+  }
+
+  renderChatTextInput = (): Component => {
+    if (this.state.bShowChatTextInput) {
+      return (
+        <TextInput
+          style={styles.chatInputText}
+          autoFocus={true}
+          returnKeyLabel={"发送"}
+          maxLength={30}
+          onSubmitEditing={ async (): any => {
+            await this.setState({bShowChatTextInput: false});
+            await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
+          }}
+          onChangeText={async (text: string): any => {
+            this.setState({chatMsg: text});
+          }}
+          onEndEditing={async (): any => {
+            await this.setState({bShowChatTextInput: false});
+            this.setState({chatMsg: ""});
+          }}>
+
+        </TextInput>
+      );
+    }
+    else {
+      return;
+    }
+  }
+
+  renderChat = (): Component => {
+    return (
+      <View style={{
+        flex: 0,
+        marginLeft: 10,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}>
+        <View>
+          {this.renderChatFrame()}
+          {this.renderChatTextInput()}
+        </View>
+      </View>
+    );
+  }
+
+  renderGainEffect = (): Component => {
     return (
       <View style={styles.videoBottomContainer}>
         <ProfitAnimationMgr
@@ -636,19 +751,77 @@ class GameScreen extends ScreenComponent<Props, States> {
     );
   }
 
+  renderBottomSideBtns = (): Component => {
+    let brushContent;
+
+    if (this.state.bPlaying) {
+      brushContent = (
+        <ImgButton
+          style={{width: 40, height: 40}}
+          icon={require("./img/burshon.png")}
+          onPress={this.onPressSwitchWiper}/>
+      );
+    }
+
+    return (
+      <View style={styles.bottomSideContainer}>
+        <ImgButton
+          style={{width: 40, height: 40}}
+          icon={require("./img/talk.png")}
+          onPress={this.onPressChat}/>
+        {brushContent}
+      </View>
+    );
+  }
+
+  renderCenterInfo = (): Component => {
+    if (this.state.countDown <= 60 && this.state.bPlaying) {
+      return (
+        <View style={styles.centerInfoContainer}>
+          <Text style={{color: "white", backgroundColor: "00000088", borderRadius: 12}}>
+            {this.state.countDown + "秒不投币被踢出房间"}
+          </Text>
+        </View>
+      );
+    }
+
+    return;
+  }
+
   render(): Component {
     return (
-      <ScrollView
+      <KeyboardAwareScrollView
+        innerRef={(ref: any) => {
+          this._scrollRef = ref;
+        }}
         style={[styles.container]}
-        //bounces={false}
+        bounces={false}
       >
-        <View style={{width:"100%", backgroundColor: F8Colors.mainBgColor2,
-          height: isIphoneX() ? IPHONE_X_HEAD + 15 : 15}}/>
-        {this.renderHeader()}
-        {this.renderContent()}
-        {this.renderBottom()}
+        <ModalOK
+          visible={this.state.bShowHint}
+          label={"游戏中回收的游戏币都将变为您的积分，积分可以在商城中兑换礼品。游戏中当您金币耗尽时，后续投币消耗将从积分余额中扣除。"}
+          onPressClose={(): any => this.setState({bShowHint: false})}
+        />
+
+        {this.renderVideo()}
+        {this.renderCenterInfo()}
+
+        <View style={styles.videoFrame}>
+          <View>
+            <View style={{width:"100%", backgroundColor: "transparent",
+              height: isIphoneX() ? IPHONE_X_HEAD + 10 : 10}}/>
+            {this.renderHeader()}
+            {this.renderVideoHeader()}
+          </View>
+          <View>
+            {this.renderGainEffect()}
+            {this.renderChat()}
+            {this.renderBottomSideBtns()}
+            {this.renderBottom()}
+          </View>
+        </View>
         {this.renderHistory()}
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -663,44 +836,66 @@ const styles = StyleSheet.create({
   headerContainer: {
     justifyContent: "space-between",
     height: 50,
-    marginLeft: 20,
+    marginLeft: 10,
+    marginTop: 10,
     alignItems: "center",
     flexDirection: "row",
   },
   bottomContainer: {
     justifyContent: "center",
     width: "100%",
-    height: 100,
+    //height: 100,
     marginLeft: 0,
     alignItems: "center",
     flexDirection: "row",
     paddingHorizontal: 10,
-    marginTop:10,
+    marginTop: 10,
+    marginBottom: 5
     //backgroundColor: 'black',
   },
   loadingCotainer: {
     height: WIN_HEIGHT,
     justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
     backgroundColor: F8Colors.mainBgColor2,
   },
-  video: {
+  bottomSideContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 10,
+    marginTop: 10
+  },
+  videoFrame: {
+    justifyContent: "space-between",
     width: WIN_WIDTH,
-    height: WIN_WIDTH / 3 * 4,
-    resizeMode: "stretch",
+    height: WIN_HEIGHT
+  },
+  video: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: WIN_WIDTH,
+    height: WIN_HEIGHT,
+    resizeMode: "contain",
     transform: [
       { rotateZ: "90deg" },
-      { scaleX: 4 / 3},
-      { scaleY: 3 / 4 }
+      { scaleX: WIN_HEIGHT / WIN_WIDTH },
+      { scaleY: WIN_WIDTH / WIN_HEIGHT }
     ]
   },
   liveVideo: {
+    position: "absolute",
+    left: 0,
+    top: 0,
     width: WIN_WIDTH,
-    height: WIN_WIDTH / 3 * 4,
-    //resizeMode: "stretch",
+    height: WIN_HEIGHT,
+    resizeMode: "stretch",
     transform: [
       { rotateZ: "90deg" },
-      { scaleX: 4 / 3},
-      { scaleY: 3 / 4 }
+      { scaleX: WIN_HEIGHT / WIN_WIDTH },
+      { scaleY: WIN_WIDTH / WIN_HEIGHT }
     ]
   },
   videoLoading: {
@@ -708,12 +903,29 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
     width: WIN_WIDTH,
-    height: WIN_WIDTH / 3 * 4,
+    height: WIN_HEIGHT,
+  },
+  centerInfoContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    width: WIN_WIDTH,
+    height: WIN_HEIGHT,
   },
   closeBtn: {
     width:40,
     height:40,
+  },
+  toggleChatListBtn: {
+    marginLeft: 7,
+    width: 24,
+    height: 24
   },
   muteBtn: {
     marginRight: 10,
@@ -729,8 +941,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   videoHeaderContainer: {
-    position: "absolute",
-    width: "100%",
     marginTop: 10,
     marginLeft: 10,
     flexDirection: "row",
@@ -739,10 +949,6 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   videoBottomContainer: {
-    position: "absolute",
-    bottom: 10,
-    left: 10,
-    right: 10,
     flexDirection: "row",
     justifyContent: "flex-end",
     alignContent: "center",
@@ -763,6 +969,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "center",
     alignItems: "center"
+  },
+  chatListContainer: {
+    height: 100,
+    backgroundColor: "#00000044",
+    borderRadius: 10
+  },
+  chatInputText: {
+    width: 200,
+    color: "white",
+    backgroundColor: "#00000088",
+    borderRadius: 20,
+    paddingHorizontal: 10
   }
 });
 
@@ -774,9 +992,11 @@ function select(store: Object): Object {
     roomInfo: store.room.roomInfo,
     integral: store.user.integral,
     gold: store.user.gold,
+    diamond: store.user.diamond,
     status: store.user.entityState,
     userRoomID: store.user.roomID,
-    enabledBGM: store.user.bgmEnabled
+    enabledBGM: store.user.bgmEnabled,
+    chatList: store.chat.chatList
   };
 }
 

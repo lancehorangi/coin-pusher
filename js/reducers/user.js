@@ -21,7 +21,8 @@ export type State = {
   items: ?Array<Object>,
   id: ?number,
   status: ?number,
-  bgmEnabled: boolean
+  bgmEnabled: boolean,
+  countDown: number
 };
 
 const initialState = {
@@ -38,7 +39,8 @@ const initialState = {
   items: null,
   id: 0,
   status: 0,
-  bgmEnabled: true
+  bgmEnabled: true,
+  countDown: 120
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -90,10 +92,15 @@ function user(state: State = initialState, action: Action): State {
   }
 
   if (action.type === "TICK_INFO") {
+    let {countDown} = state;
+    if (action.countDown) {
+      countDown = action.countDown;
+    }
     return {
       ...state,
       gold: action.gold,
       integral: action.integral,
+      countDown
     };
   }
 
