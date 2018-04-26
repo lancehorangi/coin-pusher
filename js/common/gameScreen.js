@@ -41,6 +41,7 @@ import ModalOK from "./ModalOK";
 import RoomHistory from "./RoomHistory";
 import ImgButton from "./ImgButton";
 import PlayButton from "./PlayButton";
+import ModalRoomNotify from "./ModalRoomNotify";
 import { dismissModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
@@ -74,6 +75,7 @@ type States = {
   chatMsg: string,
   bShowChatList: boolean,
   bShowHint: boolean,
+  bShowRoomNotify: boolean,
   centerInfo: string,
   countDown: number
 };
@@ -89,6 +91,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       bPlaying: false,
       queuing: false,
       bShowChatTextInput: false,
+      bShowRoomNotify: false,
       chatMsg: "",
       bShowChatList: true,
       bShowHint: false,
@@ -271,6 +274,7 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   onPressShowHint = () => {
+    //this.setState({bShowRoomNotify: true});
     this.setState({bShowHint: true});
   }
 
@@ -818,6 +822,17 @@ class GameScreen extends ScreenComponent<Props, States> {
           title={"积分说明"}
           label={"游戏中回收的游戏币都将变为您的积分，积分可以在商城中兑换礼品。游戏中当您金币耗尽时，后续投币消耗将从积分余额中扣除。"}
           onPressClose={(): any => this.setState({bShowHint: false})}
+        />
+
+        <ModalRoomNotify
+          visible={this.state.bShowRoomNotify}
+          onPressClose={(): any => {
+            this.setState({bShowRoomNotify: false});
+            this.props.navigator.push({
+              screen: "CP.MsgHistoryScreen",
+              title: "消息中心",
+            });
+          }}
         />
 
         {this.renderVideo()}
