@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 13,
     textShadowColor: "black",
+    fontWeight: "bold"
   },
   actContainer: {
     flexDirection: "row",
