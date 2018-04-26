@@ -63,7 +63,7 @@ class RoomThumbnail extends Component<Props> {
             fontSize:12,
             textAlign: "center"
           }}>
-          优惠:{ Math.floor((this.props.baseCost - this.props.currCost) / this.props.baseCost * 100) }%
+          投币折扣{ Math.floor((this.props.baseCost - this.props.currCost) / this.props.baseCost * 100) }%
           </Text>
         </View>
       );
@@ -84,7 +84,7 @@ class RoomThumbnail extends Component<Props> {
             fontSize:12,
             textAlign: "center"
           }}>
-            积分赠送{this.props.integralRate}%
+            额外产出{this.props.integralRate}%
           </Text>
         </View>
       );
