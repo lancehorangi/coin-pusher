@@ -147,7 +147,7 @@ class MineScreen extends ScreenComponent {
 
   BTN_LIST = [
     {
-      title: "消息记录",
+      title: "消息中心",
       icon: require("./img/message.png"),
       onPress: () => {this.pressMsgHistory();}
     },

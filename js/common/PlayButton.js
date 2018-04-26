@@ -23,13 +23,15 @@ class PlayButton extends React.Component {
   render(): Component {
     const { type, value } = this.props;
 
-    let content, backgroundColor;
+    let content, backgroundColor, borderRadius;
+    borderRadius = styles.container.borderRadius;
     if (type === "play") {
       backgroundColor = "#ff6b00";
+      borderRadius = 50;
       content = (
         <View style={styles.playContainer}>
           <Image source={require("./img/Playbutton.png")}/>
-          <Text style={styles.text}>{value}<Image style={{width: 15, height: 15}} source={require("./img/Diamonds.png")}/>每次</Text>
+          <Text style={styles.text}>{value}<Image style={{width: 13, height: 13}} source={require("./img/Diamonds.png")}/>每次</Text>
         </View>
       );
     }
@@ -38,7 +40,7 @@ class PlayButton extends React.Component {
       content = (
         <View style={styles.playContainer}>
           <Image source={require("./img/Lineup.png")}/>
-          <Text style={styles.text}>{value}<Image style={{width: 15, height: 15}} source={require("./img/Diamonds.png")}/></Text>
+          <Text style={styles.text}>{value}<Image style={{width: 13, height: 13}} source={require("./img/Diamonds.png")}/></Text>
         </View>
       );
     }
@@ -56,7 +58,7 @@ class PlayButton extends React.Component {
         accessibilityTraits="button"
         onPress={this.props.loading ? null : this.props.onPress}
         activeOpacity={0.5}
-        style={[styles.container, this.props.style, {backgroundColor}]}
+        style={[styles.container, this.props.style, {backgroundColor, borderRadius}]}
       >
         {content}
       </TouchableOpacity>
@@ -81,8 +83,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    paddingHorizontal: 20,
-    borderRadius: 20
+    paddingHorizontal: 20
+    //borderRadius: 20
   },
   text: {
     color: "white",
