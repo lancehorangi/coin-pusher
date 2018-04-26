@@ -989,7 +989,7 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   chatInputText: {
-    width: 200,
+    width: WIN_WIDTH / 4 * 3,
     color: "white",
     backgroundColor: "#00000088",
     borderRadius: 20,

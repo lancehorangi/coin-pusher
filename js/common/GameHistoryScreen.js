@@ -102,9 +102,10 @@ class GameHistoryScreen extends ScreenComponent<Props, State> {
           titleStyle={{color: "#d1d3e8", fontSize: 15}}
           subtitle={this.renderGetIntergralComp(item.integral)}
           rightTitle={
-            "始:" + dateFormat(new Date(item.enterTime * 1000), "UTC:yyyy/mm/dd HH:MM") + "\n"
-            + "终:" + dateFormat(new Date(item.leaveTime * 1000), "UTC:yyyy/mm/dd HH:MM")
+            dateFormat(new Date(item.enterTime * 1000), "UTC:yyyy/mm/dd HH:MM")+"\n"
+            + dateFormat(new Date(item.leaveTime * 1000), "UTC:yyyy/mm/dd HH:MM")
           }
+          rightTitleStyle={{textAlign: "justify"}}
           rightTitleNumberOfLines={2}
           hideChevron={true}
         />

@@ -6,13 +6,16 @@ import {
   View,
   Text,
   FlatList,
-  StyleSheet
+  StyleSheet,
+  Dimensions
 } from "react-native";
 
 type Props = {
   roomID: number,
   chatList: Array<Object>
 };
+
+const WIN_WIDTH = Dimensions.get("window").width;
 
 class ChatList extends React.Component<Props> {
   static defaultProps = {
@@ -73,15 +76,13 @@ class ChatList extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 0,
-    width: 200,
+    width: WIN_WIDTH / 4 * 3,
     height: 200,
     backgroundColor: "transparent",
   },
   chatContainer: {
     flex: 1,
     flexDirection: "row",
-    //alignItems: "center",
     justifyContent: "flex-start",
     marginLeft: 5,
     marginRight: 5

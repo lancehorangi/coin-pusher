@@ -88,7 +88,7 @@ class RoomHistory extends React.Component<Props> {
             dateFormat(new Date(item.enterTime * 1000), "UTC:yyyy/mm/dd HH:MM") + "\n"
              + dateFormat(new Date(item.leaveTime * 1000), "UTC:yyyy/mm/dd HH:MM")
           }
-          rightTitleStyle={{fontSize:13}}
+          rightTitleStyle={{fontSize:13, textAlign: "justify"}}
           rightTitleNumberOfLines={2}
           hideChevron={true}
           key={index}
