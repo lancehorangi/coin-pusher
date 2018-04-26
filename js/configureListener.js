@@ -71,7 +71,7 @@ function configureListener(store): void {
 
   JPush.addReceiveNotificationListener((event) => {
     console.log("JPushModule receive notfication:" + JSON.stringify(event));
-    if (event && event) {
+    if (event && event.extras_roomID && event.extras_roomID !== 0) {
       PlatformAlert(
         "提醒",
         "您在" + getMachineName(parseInt(event.extras_roomID)) + "已经排到是否要上机",
