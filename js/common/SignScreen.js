@@ -26,8 +26,7 @@ let renderUnavaibleMark = (bAvaiable: boolean): Component => {
   return (
     <Image source={require("./img/wlq.png")}
       style={{
-        position: "absolute",
-        left: 20,
+        marginLeft: -20,
         height: 50,
         width: 50,
         resizeMode: "stretch"
@@ -47,12 +46,13 @@ const NormalItem = ({ text, bAvaiable, onPress, icon, btnText, bReceive }: Objec
     style={styles.card}
     activeOpacity={1}
   >
-    <Image source={icon} style={{width:40, resizeMode: "stretch"}} />
-    {renderUnavaibleMark(bAvaiable)}
+    <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+      <Image source={icon} style={{width:40, marginLeft: 15, resizeMode: "stretch"}} />
+      {renderUnavaibleMark(bAvaiable)}
+    </View>
     <Text style={{
-      color:"#d3d3e8",
-      marginLeft: 50}}
-    numberOfLines={2}> {text} </Text>
+      color:"#d3d3e8"}}
+    numberOfLines={2} textAlign={"left"}>{text}</Text>
     <TouchableOpacity
       style={[styles.cardBtn, bReceive ? {backgroundColor: "grey"} : {} ]}
       onPress={(): void => onPress()}
@@ -162,14 +162,18 @@ class SignScreen extends ScreenComponent<{}, States> {
   }
 
   getItemText(num: number, leftDays: number, type: number, desc: string): string {
+    const PAID_CHECKIN_TYPE = 1;
     let text = "";
     text += "每日奖励:" + num + "钻石";
 
-    if(leftDays != 0 && type != 1) {
-      text += "\n 有效期:" + leftDays + "天";
+    if(leftDays != 0 && type != PAID_CHECKIN_TYPE) {
+      text += "\n有效期:" + leftDays + "天";
+    }
+    else if (leftDays != 0 && type == PAID_CHECKIN_TYPE) {
+      text += "\n有效期:永久";
     }
     else {
-      text += "\n " + desc;
+      text += "\n" + desc;
     }
 
     return text;
@@ -226,22 +230,16 @@ const styles = StyleSheet.create({
   card: {
     width: "100%",
     height: 60,
-    borderRadius: 13,
-    marginTop: 15,
-    marginLeft: 30,
-    backgroundColor: "transparent",
     flexDirection: "row",
+    justifyContent: "space-between",
     alignContent: "center",
+    alignItems: "center"
   },
   cardBtn: {
-    position: "absolute",
-    flex: 0,
+    marginRight: 10,
     paddingHorizontal: 10,
     paddingVertical: 8,
-    right: 40,
-    marginTop: 5,
     borderRadius: 13,
-    //height: 23,
     backgroundColor: "#ee4943",
     flexDirection: "row",
     justifyContent: "center",

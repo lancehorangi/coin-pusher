@@ -27,7 +27,7 @@ class PlayButton extends React.Component {
     borderRadius = styles.container.borderRadius;
     if (type === "play") {
       backgroundColor = "#ff6b00";
-      borderRadius = 50;
+      borderRadius = 20;
       content = (
         <View style={styles.playContainer}>
           <Image source={require("./img/Playbutton.png")}/>
@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    paddingHorizontal: 20
-    //borderRadius: 20
+    paddingHorizontal: 20,
+    borderRadius: 20
   },
   text: {
     color: "white",
