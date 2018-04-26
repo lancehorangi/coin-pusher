@@ -109,7 +109,7 @@ class MsgDetailScreen extends ScreenComponent<Props> {
     if(mail.items && mail.items.length > 0) {
       return (
         <TouchableOpacity
-          style={{flex: 0, backgroundColor: "#ee4943", borderRadius: 13,
+          style={{flex: 0, backgroundColor: mail.mark ? "gray" : "#ee4943", borderRadius: 13,
             marginTop:15, paddingHorizontal:10, paddingVertical:10,
             alignSelf:"center"}}
           onPress={mail.mark ? () => {} : (): void => this.onPress()}>
