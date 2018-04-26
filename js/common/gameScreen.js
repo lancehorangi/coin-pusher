@@ -781,18 +781,22 @@ class GameScreen extends ScreenComponent<Props, States> {
     if (this.state.countDown <= 60 && this.state.bPlaying) {
       return (
         <View style={styles.centerInfoContainer}>
-          <Text style={{color: "white", backgroundColor: "00000088", borderRadius: 12}}>
-            {this.state.countDown + "秒不投币被踢出房间"}
-          </Text>
+          <View style={styles.centerInfoTextContainer}>
+            <Text style={{color: "white", fontWeight: "bold", fontSize: 20}}>
+              <Text style={{color: "red"}}>{this.state.countDown}</Text>秒不投币被踢出房间
+            </Text>
+          </View>
         </View>
       );
     }
     else if (roomInfo && roomInfo.gameState === GAME_STATE.GS_Wait) {
       return (
         <View style={styles.centerInfoContainer}>
-          <Text style={{color: "white", backgroundColor: "00000088", borderRadius: 12}}>
-            {"正在等待其他排到的玩家进入游戏"}
-          </Text>
+          <View style={styles.centerInfoTextContainer}>
+            <Text style={{color: "white", fontWeight: "bold", fontSize: 20}}>
+              {"正在等待其他排到的玩家进入游戏"}
+            </Text>
+          </View>
         </View>
       );
     }
@@ -929,6 +933,11 @@ const styles = StyleSheet.create({
     alignContent: "center",
     width: WIN_WIDTH,
     height: WIN_HEIGHT,
+  },
+  centerInfoTextContainer: {
+    backgroundColor: "#00000088",
+    borderRadius: 14,
+    padding: 10
   },
   closeBtn: {
     width:40,
