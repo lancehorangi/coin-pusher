@@ -15,6 +15,7 @@ import F8Colors from "./F8Colors";
 type Props = {
   visible: boolean,
   label: string,
+  title: string,
   onPressClose: ?() => mixed
 };
 
@@ -30,9 +31,16 @@ class ModalOK extends Component<Props, States> {
     _renderModalContent = (): Component => {
       return (
         <View style={styles.modalContainer}>
-          <View style={{flexDirection: "row", justifyContent: "flex-end"}}>
+          <View style={styles.contentContainer}>
+            <Text style={{color: "white", fontSize: 20, fontWeight: "bold"}}>
+              {this.props.title}
+            </Text>
+            <Text style={{color: "white", marginTop: 10}}>
+              {this.props.label}
+            </Text>
+          </View>
+          <View style={styles.closeBtnContainer}>
             <TouchableOpacity
-              style={{justifyContent:"center", alignContent:"center"}}
               onPress={this.props.onPressClose}
             >
               <Image
@@ -40,11 +48,6 @@ class ModalOK extends Component<Props, States> {
                 style={{width:30, height:30}}
               />
             </TouchableOpacity>
-          </View>
-          <View>
-            <Text style={{color: "white", marginTop: 10}}>
-              {this.props.label}
-            </Text>
           </View>
         </View>
       );
@@ -67,8 +70,17 @@ const styles = StyleSheet.create({
     minHeight: 200,
     padding: 12,
     borderRadius: 14,
+    borderWidth: 1,
     borderColor: "rgba(0, 0, 0, 0.1)",
     backgroundColor: F8Colors.mainBgColor
+  },
+  closeBtnContainer: {
+    position: "absolute",
+    right: 5,
+    top: 5
+  },
+  contentContainer: {
+    justifyContent: "center"
   }
 });
 

@@ -815,6 +815,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       >
         <ModalOK
           visible={this.state.bShowHint}
+          title={"积分说明"}
           label={"游戏中回收的游戏币都将变为您的积分，积分可以在商城中兑换礼品。游戏中当您金币耗尽时，后续投币消耗将从积分余额中扣除。"}
           onPressClose={(): any => this.setState({bShowHint: false})}
         />

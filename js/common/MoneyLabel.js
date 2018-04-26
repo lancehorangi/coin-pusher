@@ -105,6 +105,7 @@ class MoneyLabel extends Component<Props> {
         <TouchableOpacity
           style={[styles.container, this.props.containerStyle]}
           onPress={ this.props.onPressBg}
+          activeOpacity={this.props.onPressBg ? 0.5 : 1}
         >
           {this.renderIcon()}
           {this.renderBtn()}
