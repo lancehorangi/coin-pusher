@@ -31,25 +31,37 @@ class RoomThumbnail extends Component<Props> {
 
   onPress = () => {
     showModal({
-    //this.props.navigator.push({
-      screen: "CP.GameScreen", // unique ID registered with Navigation.registerScreen
-      title: "游戏", // title of the screen as appears in the nav bar (optional)
-      passProps: {roomID:this.props.roomID}, // simple serializable object that will pass as props to the modal (optional)
-      navigatorStyle: { navBarHidden: true }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-      navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-      animationType: "none" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+      screen: "CP.GameScreen",
+      title: "游戏",
+      passProps: {roomID:this.props.roomID},
+      navigatorStyle: { navBarHidden: true },
+      navigatorButtons: {},
+      animationType: "none"
     });
   }
 
-  //优惠:{ Math.floor((this.props.baseCost - this.props.currCost) / this.props.baseCost * 100) }%
+  _hasActivity = (): boolean => {
+    return this.props.baseCost != this.props.currCost || this.props.integralRate !== 0;
+  }
+
+  _hasCostActivity = (): boolean => {
+    return this.props.baseCost != this.props.currCost;
+  }
+
+  _hasIntegralActivity = (): boolean => {
+    return this.props.integralRate !== 0;
+  }
 
   renderCost = () => {
     if (this.props.baseCost != this.props.currCost) {
       return (
-        <View style={{flex:1, backgroundColor:"#ee4943"}}>
+        <View style={[{
+          flex:1, backgroundColor:"#ee4943"
+        }, this._hasIntegralActivity() ? styles.bottomLeftBorderStyle  : styles.bottomBorderStyle]}>
           <Text style={{
             color:"white",
-            fontSize:12
+            fontSize:12,
+            textAlign: "center"
           }}>
           优惠:{ Math.floor((this.props.baseCost - this.props.currCost) / this.props.baseCost * 100) }%
           </Text>
@@ -61,111 +73,92 @@ class RoomThumbnail extends Component<Props> {
     }
   }
 
-    //this.props.integralRate
-    renderIntegralRate = () => {
-      if (this.props.integralRate !== 0) {
-        return (
-          <View style={{flex:1, backgroundColor:"#3b94e6"}}>
-            <Text style={{
-              color:"white",
-              fontSize:12
-            }}>
-              积分赠送{Math.floor(this.props.integralRate * 100)}%
-            </Text>
-          </View>
-        );
-      }
-      else {
-        return;
-      }
-    }
-
-    renderInfo = (): Component => {
+  //this.props.integralRate
+  renderIntegralRate = () => {
+    if (this.props.integralRate !== 0) {
       return (
-        <View style={{
-          //width:'100%',
-          //height: '100%',
-          //justifyContent: 'flex-end',
-        }}>
+        <View style={[{flex:1, backgroundColor:"#3b94e6"},
+          this._hasCostActivity() ? styles.bottomRightBorderStyle : styles.bottomBorderStyle]}>
           <Text style={{
             color:"white",
             fontSize:12,
-            //alignItems: 'flex-end',
-            alignSelf: "flex-end",
-            backgroundColor: "#000000",
+            textAlign: "center"
           }}>
-            消耗:{this.props.currCost}每次
+            积分赠送{this.props.integralRate}%
           </Text>
-          <View style={{
-            //flex: 0,
-            //width:'100%',
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignContent:"center",
-            backgroundColor: "#000000",
-            alignSelf: "flex-end",
-          }}>
-            {this.renderCost()}
-            {this.renderIntegralRate()}
-          </View>
         </View>
       );
     }
-
-    renderUnavaibleStatus = (): Component => {
-      if (this.props.unavaible) {
-        return (
-          <Image style={styles.statusImg} source={require("./img/whz.png")}/>
-        );
-      }
-
-      return null;
+    else {
+      return;
     }
+  }
 
-    renderQueueStatus = (): Component => {
-      if (this.props.queuing) {
-        return (
-          <Image style={styles.statusImg} source={require("./img/pdz.png")}/>
-        );
-      }
+  renderInfo = (): Component => {
+    return (
+      <View>
+        <View style={[styles.consumeContainer, this._hasActivity() ? {} : styles.bottomBorderStyle]}>
+          <Text style={styles.consumeLabel}>
+            {this.props.currCost}<Image style={{width: 15, height: 15}} source={require("./img/Diamonds.png")}/>每次
+          </Text>
+        </View>
+        <View style={[styles.actContainer, styles.bottomBorderStyle]}>
+          {this.renderCost()}
+          {this.renderIntegralRate()}
+        </View>
+      </View>
+    );
+  }
 
-      return null;
-    }
-
-    render (): Component {
+  renderUnavaibleStatus = (): Component => {
+    if (this.props.unavaible) {
       return (
-        <TouchableOpacity
-          accessibilityTraits="button"
-          onPress={this.onPress}
-          //activeOpacity={0.5}
-          style={[styles.container, this.props.style]}
-        >
-          <Image style={[styles.bg]} source={{uri:this.props.picUrl}}/>
-
-          <View>
-            <View style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignContent:"center",
-              backgroundColor: "#000000",
-            }}>
-              <Text style={ styles.label }> { this.props.roomID }号 </Text>
-              <Text style={ styles.label }> { this.props.bPlaying ? "游戏中" : "空闲"} </Text>
-            </View>
-            {this.renderUnavaibleStatus()}
-            {this.renderQueueStatus()}
-          </View>
-          {this.renderInfo()}
-        </TouchableOpacity>
+        <Image style={styles.statusImg} source={require("./img/whz.png")}/>
       );
     }
+
+    return null;
+  }
+
+  renderQueueStatus = (): Component => {
+    if (this.props.queuing) {
+      return (
+        <Image style={styles.statusImg} source={require("./img/pdz.png")}/>
+      );
+    }
+
+    return null;
+  }
+
+  render (): Component {
+    return (
+      <TouchableOpacity
+        accessibilityTraits="button"
+        onPress={this.onPress}
+        style={[styles.container, this.props.style]}
+      >
+        <Image style={[styles.bg]} source={{uri:this.props.picUrl}}/>
+        <View style={styles.statusContainer}>
+          {this.renderUnavaibleStatus()}
+          {this.renderQueueStatus()}
+        </View>
+        <View>
+          <View style={[styles.topInfoContainer, styles.topBorderStyle]}>
+            <Text style={[styles.label]}> { this.props.roomID }号 </Text>
+            <Text style={[styles.label, {color: this.props.bPlaying ? "red" : "green" }]}> { this.props.bPlaying ? "游戏中" : "空闲"} </Text>
+          </View>
+        </View>
+        {this.renderInfo()}
+      </TouchableOpacity>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     justifyContent: "space-between",
-    marginTop: 10
+    marginTop: 10,
+    borderRadius: 13
   },
   bg: {
     position: "absolute",
@@ -173,19 +166,64 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    resizeMode: "stretch"
+    resizeMode: "stretch",
+    borderRadius: 10
+  },
+  statusContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center"
   },
   label: {
     color: "white",
     fontSize: 13,
-    //textShadowOffset: {width:1, height:1},
     textShadowColor: "black",
+  },
+  actContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent:"center",
+    backgroundColor: "#000000",
+    alignSelf: "flex-end",
+  },
+  consumeContainer: {
+    backgroundColor: "#000000"
+  },
+  consumeLabel: {
+    color: "white",
+    fontSize: 12,
+    alignSelf: "flex-end"
+  },
+  topInfoContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    //alignContent:"center",
+    backgroundColor: "#000000"
   },
   statusImg: {
     flex: 0,
     width: 80,
     height: 15,
     resizeMode: "stretch"
+  },
+  topBorderStyle: {
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10
+  },
+  bottomBorderStyle: {
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10
+  },
+  bottomLeftBorderStyle: {
+    borderBottomLeftRadius: 10
+  },
+  bottomRightBorderStyle: {
+    borderBottomRightRadius: 10
   }
 });
 

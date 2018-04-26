@@ -562,7 +562,7 @@ class GameScreen extends ScreenComponent<Props, States> {
         autoComp = (
           <View style={{
             position: "absolute",
-            left: 20,
+            left: 10,
           }}>
             <Switch
               value={this.state.autoPlay}
