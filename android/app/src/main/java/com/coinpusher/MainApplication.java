@@ -3,6 +3,7 @@ package com.coinpusher;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnprogresshud.RNProgressHUDPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import com.ksyun.media.reactnative.ReactKSYVideoPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNProgressHUDPackage(),
             new RNSoundPackage(),
             new ReactKSYVideoPackage(),
             new RNSpinkitPackage(),

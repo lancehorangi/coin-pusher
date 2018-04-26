@@ -700,6 +700,7 @@ class GameScreen extends ScreenComponent<Props, States> {
           style={styles.chatInputText}
           autoFocus={true}
           returnKeyLabel={"发送"}
+          returnKeyType={"send"}
           maxLength={30}
           onSubmitEditing={ async (): any => {
             await this.setState({bShowChatTextInput: false});
@@ -950,6 +951,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     flexDirection: "row",
+    marginTop: 10
   },
   videoHeaderContainer: {
     marginTop: 10,

@@ -63,8 +63,7 @@ function heartRequest(): ThunkAction {
       dispatch({
         type: "TICK_INFO",
         gold: result.gold,
-        integral: result.integral,
-        countDown: result.countDown
+        integral: result.integral
       });
     },
     (err: Error) => {

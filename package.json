@@ -47,6 +47,7 @@
     "react-native-netease-im": "git+https://git@github.com/canyara/react-native-netease-im.git",
     "react-native-payfubao": "git+https://git@github.com/canyara/react-native-payfubao.git",
     "react-native-permissions": "^1.1.1",
+    "react-native-progress-display": "^1.0.1",
     "react-native-root-toast": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-snap-carousel": "^3.6.0",

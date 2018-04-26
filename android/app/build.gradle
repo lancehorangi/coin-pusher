@@ -142,6 +142,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-progress-display')
     compile project(':react-native-sound')
     compile project(':jcore-react-native')
     compile project(':jpush-react-native')
