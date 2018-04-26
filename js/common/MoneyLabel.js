@@ -23,6 +23,7 @@ type Props = {
   onPress: () => mixed,
   count: number,
   withBgBtn: boolean,
+  adjustsFontSizeToFit: boolean,
   btnType: | "none" | "add" | "help",
   type: string,
   containerStyle: ?Object
@@ -34,6 +35,7 @@ class MoneyLabel extends Component<Props> {
       withBgBtn: false,
       btnType: "none",
       type: "diamond",
+      adjustsFontSizeToFit: true
     };
 
     constructor(props: Object) {
@@ -55,7 +57,7 @@ class MoneyLabel extends Component<Props> {
 
     renderCount = (): Component => {
       return  (
-        <Text style={styles.label} numberOfLines={1} adjustsFontSizeToFit={false}>
+        <Text style={styles.label} numberOfLines={1} adjustsFontSizeToFit={this.props.adjustsFontSizeToFit}>
           {this.props.count}
         </Text>
       );

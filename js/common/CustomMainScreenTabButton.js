@@ -63,6 +63,7 @@ class CustomMainScreenTabButton extends Component<Props, State> {
 
     return (
       <MoneyLabel
+        adjustsFontSizeToFit={false}
         type={"diamond"}
         count={diamond}
         btnType={"add"}
