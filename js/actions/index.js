@@ -11,6 +11,8 @@ import * as naviActions from "./appNavigator";
 import * as checkinActions from "./checkin";
 import * as mallActions from "./mall";
 import * as usersActions from "./user";
+import * as chatActions from "./chat";
+import * as gameActions from "./game";
 
 module.exports = {
   ...loginActions,
@@ -20,4 +22,6 @@ module.exports = {
   ...checkinActions,
   ...mallActions,
   ...usersActions,
+  ...chatActions,
+  ...gameActions
 };

@@ -3046,6 +3046,10 @@ jpush-react-native@^2.1.12:
     inquirer "*"
     mpatch "^0.1.0"
 
+js-md5@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/js-md5/-/js-md5-0.7.3.tgz#b4f2fbb0b327455f598d6727e38ec272cd09c3f2"
+
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "http://registry.npm.taobao.org/js-tokens/download/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
@@ -4338,6 +4342,10 @@ react-native-navigation@^1.1.375:
 react-native-permissions@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.1.1.tgz#4876004681ff8556454613d85249b01baff9b35b"
+
+react-native-progress-display@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-progress-display/-/react-native-progress-display-1.0.1.tgz#4657fdef7b5ddc5e90218ca666e64e3d30c8046d"
 
 react-native-root-siblings@^3.0.0:
   version "3.0.0"

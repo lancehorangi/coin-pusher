@@ -28,7 +28,7 @@ function refreshMsgs(): ThunkAction {
     },
     (err: Error) => {
       console.log("mailList failed reason=" + err.message);
-      toastShow("邮件刷新失败:" + err.message);
+      toastShow("消息刷新失败:" + err.message);
     });
 
     return response;
@@ -58,7 +58,7 @@ function openMsg(mailID: number): ThunkAction {
     }),
     (err: Error) => {
       console.log("openMsg failed reason=" + err.message);
-      toastShow("打开邮件失败:" + err.message);
+      toastShow("打开消息失败:" + err.message);
     });
 
     return response;

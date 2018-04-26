@@ -20,10 +20,10 @@ const ICON_RES = {
 
 type Props = {
   onPressBg: ?() => mixed,
-  onPressBuy: () => mixed,
+  onPress: () => mixed,
   count: number,
   withBgBtn: boolean,
-  withBtn: boolean,
+  btnType: | "none" | "add" | "help",
   type: string,
   containerStyle: ?Object
 };
@@ -32,7 +32,7 @@ type Props = {
 class MoneyLabel extends Component<Props> {
     static defaultProps = {
       withBgBtn: false,
-      withBtn: false,
+      btnType: "none",
       type: "diamond",
     };
 
@@ -44,7 +44,7 @@ class MoneyLabel extends Component<Props> {
       if (ICON_RES[this.props.type]) {
         return (
           <Image
-            style={{height:HEIGHT, marginLeft:5}}
+            style={styles.moneyIcon}
             source={ICON_RES[this.props.type]}/>
         );
       }
@@ -55,21 +55,29 @@ class MoneyLabel extends Component<Props> {
 
     renderCount = (): Component => {
       return  (
-        <Text style={styles.label}>
+        <Text style={styles.label} numberOfLines={1} adjustsFontSizeToFit={false}>
           {this.props.count}
         </Text>
       );
     }
 
     renderBtn = (): Component => {
-      if (this.props.withBtn) {
+      if (this.props.btnType !== "none") {
+        let icon;
+        if (this.props.btnType === "add") {
+          icon = require("./img/add.png");
+        }
+        else if (this.props.btnType === "help") {
+          icon = require("./img/question.png");
+        }
+
         return (
           <TouchableOpacity
             style={[styles.button]}
-            onPress={this.props.onPressBuy}
+            onPress={this.props.onPress}
           >
             <Image
-              source={require("./img/add.png")}
+              source={icon}
               style={styles.img}
             />
           </TouchableOpacity>
@@ -79,7 +87,7 @@ class MoneyLabel extends Component<Props> {
         return (
           <TouchableOpacity
             style={[styles.button]}
-            onPress={this.props.onPressBuy}
+            onPress={this.props.onPress}
           >
             <Image
               source={require("./img/add.png")}
@@ -97,8 +105,8 @@ class MoneyLabel extends Component<Props> {
           onPress={ this.props.onPressBg}
         >
           {this.renderIcon()}
-          {this.renderCount()}
           {this.renderBtn()}
+          {this.renderCount()}
         </TouchableOpacity>
       );
     }
@@ -110,7 +118,7 @@ const styles = StyleSheet.create({
     height: HEIGHT,
     minWidth: WIDTH,
     borderRadius: 30,
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
     backgroundColor: "#ee4943",
@@ -118,23 +126,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    //overflow: 'hidden',
-    //width: 80,
-    height: "100%",
-    //borderRadius: 34 / 2,
+    position: "absolute",
+    right: 3,
+    width: HEIGHT,
+    height: HEIGHT,
     backgroundColor: "transparent",
     justifyContent: "center",
     alignItems: "center",
   },
   img: {
-    height:HEIGHT,
+    width: "100%",
+    height: "100%",
     resizeMode: "stretch"
   },
   label: {
     color: "white",
     fontSize: 12,
-    marginLeft: 3,
-    marginRight: 3,
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  moneyIcon: {
+    position: "absolute",
+    left: 5,
+    height:HEIGHT
   }
 });
 

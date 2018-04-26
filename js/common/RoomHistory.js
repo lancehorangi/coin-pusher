@@ -7,7 +7,8 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
-  StyleSheet
+  StyleSheet,
+  Image
 } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import { getRoomHistory } from "../actions";
@@ -15,12 +16,12 @@ import { connect } from "react-redux";
 import dateFormat from "dateformat";
 
 type Props = {
-  id: number
+  id: ?number
 };
 
 class RoomHistory extends React.Component<Props> {
-  props: {
-    id: number
+  static defaultProps = {
+    id: null
   }
 
   constructor(props: Object) {
@@ -63,6 +64,18 @@ class RoomHistory extends React.Component<Props> {
     );
   };
 
+  renderGetIntergralComp = (integral: number): Component => {
+    return (
+      <View style={{flexDirection:"row", marginLeft: 5, alignItems: "center", alignContent: "center"}}>
+        <Text style={{color: "#d1d3e8", fontSize: 13}}> 获得 </Text>
+        <Image
+          style={{height:15, width: 15, resizeMode: "stretch"}}
+          source={require("./img/integral.png")}/>
+        <Text style={{color: "red", fontSize: 13}}> {integral} </Text>
+      </View>
+    );
+  }
+
   renderItem = ({item, index}: Object): Component => {
     return (
       (
@@ -70,8 +83,7 @@ class RoomHistory extends React.Component<Props> {
           containerStyle={{borderTopWidth: 0, borderBottomWidth: 0}}
           title={item.account}
           titleStyle={{color: "#d1d3e8", fontSize: 13}}
-          subtitle={"获得" + item.integral + "积分"}
-          subtitleStyle={{color: "#d1d3e8", fontSize: 13}}
+          subtitle={this.renderGetIntergralComp(item.integral)}
           rightTitle={
             dateFormat(new Date(item.enterTime * 1000), "UTC:yyyy/mm/dd HH:MM") + "\n"
              + dateFormat(new Date(item.leaveTime * 1000), "UTC:yyyy/mm/dd HH:MM")
@@ -110,11 +122,8 @@ class RoomHistory extends React.Component<Props> {
             <FlatList
               data={this.props.items}
               renderItem={this.renderItem}
-              keyExtractor={(item: Object): number => item.id}
+              keyExtractor={(item: Object, index: number): number => index}
               ItemSeparatorComponent={this.renderSeparator}
-              //refreshControl={{tintColor:'white'}}
-              //onRefresh={this.handleRefresh}
-              //refreshing={this.state.bLoading}
             />
           </View>
         );

@@ -65,8 +65,8 @@ class CustomMainScreenTabButton extends Component<Props, State> {
       <MoneyLabel
         type={"diamond"}
         count={diamond}
-        withBtn={true}
-        onPressBuy={this.onPress}/>
+        btnType={"add"}
+        onPress={this.onPress}/>
     );
   }
 }

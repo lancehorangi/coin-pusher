@@ -84,12 +84,14 @@ class FeedbackScreen extends ScreenComponent<Object, State> {
             ref={(ref: any) => {
               this.contentInput = ref;
             }}
+            placeholder={"请将您遇到的问题/产品建议反馈给我们，建议您描述清楚时间、哪个房间等相关细节，便于运营人员帮您解决问题。"}
+            placeholderTextColor="gray"
           />
           <Text style={[styles.input,  {borderWidth: 0, marginTop:10}]}>
             请留下你的电话:
           </Text>
           <TextInput
-            style={[styles.input]}
+            style={[styles.input, {fontSize: 20}]}
             onChangeText={this.onPhoneChange}
             keyboardType={"numeric"}
             ref={(ref: any) => {

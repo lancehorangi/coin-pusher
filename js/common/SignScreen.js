@@ -18,8 +18,6 @@ import { checkin, getCheckinInfo } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import F8Colors from "./F8Colors";
 
-const WIN_WIDTH = Dimensions.get("window").width;
-
 let renderUnavaibleMark = (bAvaiable: boolean): Component => {
   if (bAvaiable) {
     return null;
@@ -44,7 +42,7 @@ const TYPE_IMG = {
   3: require("./img/month.png"),
 };
 
-const NormalItem = ({ text, bAvaiable, onPress, icon, btnText }: Object): Component =>
+const NormalItem = ({ text, bAvaiable, onPress, icon, btnText, bReceive }: Object): Component =>
   <TouchableOpacity
     style={styles.card}
     activeOpacity={1}
@@ -56,7 +54,7 @@ const NormalItem = ({ text, bAvaiable, onPress, icon, btnText }: Object): Compon
       marginLeft: 50}}
     numberOfLines={2}> {text} </Text>
     <TouchableOpacity
-      style={styles.cardBtn}
+      style={[styles.cardBtn, bReceive ? {backgroundColor: "grey"} : {} ]}
       onPress={(): void => onPress()}
     >
       <Text style={{
@@ -130,16 +128,18 @@ class SignScreen extends ScreenComponent<{}, States> {
 
   renderContent = (): Component => {
     if (this.props.checkinInfo) {
-      return this.props.checkinInfo.map((data: Object) => {
+      return this.props.checkinInfo.map((data: Object, index: number) => {
         if(data.type != 0 || data.days != 0 && TYPE_IMG[data.type.toString()]) {
           return (
             <View>
               <NormalItem
-                text={this.getItemText(data.integral, data.days, data.type)}
+                key={index}
+                text={this.getItemText(data.value, data.days, data.type, data.desc)}
                 bAvaiable={data.days != 0}
                 icon={TYPE_IMG[data.type.toString()]}
                 btnText={this.getBtnText(data.type, data.receive, data.days != 0)}
                 onPress={() => { this.onPress(data.type, data.days != 0, data.receive); }}
+                bReceive={data.receive == 1}
               />
               <View
                 style={{
@@ -161,12 +161,15 @@ class SignScreen extends ScreenComponent<{}, States> {
     }
   }
 
-  getItemText(num: number, leftDays: number, type: number): string {
+  getItemText(num: number, leftDays: number, type: number, desc: string): string {
     let text = "";
     text += "每日奖励:" + num + "钻石";
 
     if(leftDays != 0 && type != 1) {
       text += "\n 有效期:" + leftDays + "天";
+    }
+    else {
+      text += "\n " + desc;
     }
 
     return text;

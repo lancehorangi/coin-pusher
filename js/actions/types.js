@@ -77,7 +77,8 @@ export type Action =
   | {
       type: "TICK_INFO",
       gold: number,
-      integral: number
+      integral: number,
+      countDown: ?number
     }
   | {
       type: "ROOM_QUEUE_SUCC",
@@ -87,6 +88,14 @@ export type Action =
   | {
       type: "TOGGLE_BGM",
       bgmEnabled: boolean
+    }
+  | {
+      type: "UPDATE_CHAT_MSGS",
+      chatList: Array<Object>,
+      readIdx: number
+    }
+  | {
+      type: "CLEAR_CHAT_MSGS"
     }
 ;
 

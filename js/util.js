@@ -5,6 +5,7 @@ import RNBugly from "react-native-bugly";
 import DeviceInfo from "react-native-device-info";
 import { updateToggleAddress } from "./env";
 import JPush from "jpush-react-native";
+import RNProgressHud from "react-native-progress-display";
 
 export function isIphoneX() {
   const dimen = Dimensions.get("window");
@@ -97,33 +98,44 @@ export async function codePushSync() {
     console.log("codePushSync bundleId:" + name);
     console.log("codePushSync toggleData:" + JSON.stringify(toggleData));
 
-    if (toggleData[name] && toggleData[name]["enabled"]) {
+    if ((toggleData[name] && toggleData[name]["enabled"]) || __DEV__) {
       console.log("codePushSync enabled");
       await codePush.sync({
-        // updateDialog: {
-        //   descriptionPrefix: '描述:',
-        //   mandatoryContinueButtonLabel:'继续',
-        //   mandatoryUpdateMessage:'这是一个必须要安装的更新',
-        //   optionalIgnoreButtonLabel: '忽略',
-        //   optionalInstallButtonLabel: '安装',
-        //   optionalUpdateMessage: '发现一个更新,是否要安装?',
-        //   title: '更新',
-        // },
+        updateDialog: {
+          appendReleaseDescription: true,
+          descriptionPrefix: "更新内容:",
+          mandatoryContinueButtonLabel: "更新",
+          mandatoryUpdateMessage:"发现一个必须要安装的更新",
+          optionalIgnoreButtonLabel: "忽略",
+          optionalInstallButtonLabel: "安装",
+          optionalUpdateMessage: "发现一个更新,是否要安装?",
+          title: "发现可用更新",
+        },
         checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-        //installMode: codePush.InstallMode.IMMEDIATE
-        installMode: codePush.InstallMode.ON_NEXT_RESUME,
+        installMode: codePush.InstallMode.IMMEDIATE
+        //installMode: codePush.InstallMode.ON_NEXT_RESUME,
       },
       (syncStatus) => { // status callback
-        // do smthing with the sync status
+        switch (syncStatus) {
+        case codePush.SyncStatus.DOWNLOADING_PACKAGE:
+          // Show "downloading" modal
+          break;
+        case codePush.SyncStatus.INSTALLING_UPDATE:
+          // Hide "downloading" modal
+          RNProgressHud.showWithStatus("正在安装更新...");
+          break;
+        }
       },
       (progress) => {
         console.log("codePushSync:" + progress.receivedBytes + " of " + progress.totalBytes + " received.");
+        RNProgressHud.showProgressWithStatus(progress.receivedBytes / progress.totalBytes, "正在下载更新...");
       });
     }
   } catch (e) {
     //
   } finally {
     BuglyUpdateVersion();
+    RNProgressHud.dismiss();
   }
 
   return;

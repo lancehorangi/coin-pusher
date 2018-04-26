@@ -130,7 +130,7 @@ export class MainScreen extends React.Component<Props, States> {
       if (event.id == "message") {
         this.props.navigator.push({
           screen: "CP.MsgHistoryScreen", // unique ID registered with Navigation.registerScreen
-          title: "邮件",
+          title: "消息中心",
         });
       }
     }

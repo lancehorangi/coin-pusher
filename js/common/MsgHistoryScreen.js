@@ -87,7 +87,7 @@ class MsgHistoryScreen extends ScreenComponent<{}, States> {
   onPress = (mailID: number) => {
     this.props.navigator.push({
       screen: "CP.MsgDetailScreen", // unique ID registered with Navigation.registerScreen
-      title: "邮件详情",
+      title: "消息详情",
       passProps: {
         mailID
       },
@@ -154,7 +154,7 @@ class MsgHistoryScreen extends ScreenComponent<{}, States> {
       return (
         <View style={styles.emptyContainer}>
           <Text style={{color:"white", fontSize:20}}>
-            {"当前无邮件"}
+            {"当前无消息"}
           </Text>
         </View>
       );

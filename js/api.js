@@ -1,6 +1,6 @@
 "use strict";
 import { serverURL, payServerUrl } from "./env";
-import md5 from "react-native-md5";
+import md5 from "js-md5";
 import { getStoreDispatch } from "./configureListener";
 import { loggedOut } from "./actions";
 
@@ -13,6 +13,11 @@ export const API_ENUM = {
   ES_Game: 1,
   ES_QueueTimeout: 2,
   ES_Queue: 3
+};
+
+export const GAME_STATE = {
+  GS_Normal: 0,
+  GS_Wait: 1
 };
 
 export const API_RESULT = {
@@ -70,11 +75,11 @@ export function APIRequest(path, json, bToken = false, bPayReq = false)
       checkStr += json[keyVal];
     }
     checkStr += "shuzhu1305";
-    let authStr = md5.hex_md5(checkStr).toUpperCase();
+    let authStr = md5(checkStr).toUpperCase();
     json["auth"] = authStr;
 
     if (LOG_API) {
-      console.log("Start api req: path=" + path + ", json" + JSON.stringify(json));
+      console.log("Start api req: path=" + path + ", json" + JSON.stringify(json) + ", checkStr=" + checkStr);
     }
 
     let sUrl = bPayReq ? payServerUrl : serverURL;

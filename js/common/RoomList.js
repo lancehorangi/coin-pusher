@@ -22,7 +22,8 @@ type Props = {
   roomList: Array<Object>,
   baseCost: number,
   entityID: number,
-  status: number
+  status: number,
+  roomID: number
 };
 
 
@@ -64,8 +65,8 @@ class RoomList extends Component<Props> {
             queueList={room.queueList}
             style={{width:THUMB_WIDTH, height:THUMB_HEIGHT, marginLeft:10}}
             picUrl={room.roomSnapshoot}
-            queuing={API_ENUM.ES_Queue == this.props.status && this.props.entityID == room.entityID}
-            unavaible={false}
+            queuing={API_ENUM.ES_Queue == this.props.status && this.props.roomID == room.roomID}
+            unavaible={room.state != 0}
           />
         );
       });
@@ -160,6 +161,7 @@ function select(store: Object): Object {
     baseCost: store.lobby.baseCost,
     entityID: store.user.entityID,
     status: store.user.entityState,
+    roomID: store.user.roomID
   };
 }
 

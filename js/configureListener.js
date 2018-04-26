@@ -47,6 +47,7 @@ function configureListener(store): void {
 
   //NIM AVChat 相关事件
   NativeAppEventEmitter.addListener("observeAVChatStatus",(data)=>{
+    console.log("observeAVChatStatus:" + JSON.stringify(data));
     toastShow("NIM AV STATUS=" + data);
     if (NIMAVChatDescrib[data]) {
       // Navigation.showInAppNotification({
@@ -59,6 +60,7 @@ function configureListener(store): void {
 
   //NIM AVChat 中断出错
   NativeAppEventEmitter.addListener("observeAVChatError",(data)=>{
+    console.log("observeAVChatError:" + JSON.stringify(data));
     toastShow("NIM AV ERROR=" + NIMAVChatDescrib[data]);
     // Navigation.showInAppNotification({
     //     screen: "CP.Notification", // unique ID registered with Navigation.registerScreen
@@ -69,7 +71,7 @@ function configureListener(store): void {
 
   JPush.addReceiveNotificationListener((event) => {
     console.log("JPushModule receive notfication:" + JSON.stringify(event));
-    if (event && event) {
+    if (event && event.extras_roomID && event.extras_roomID !== 0) {
       PlatformAlert(
         "提醒",
         "您在" + getMachineName(parseInt(event.extras_roomID)) + "已经排到是否要上机",
