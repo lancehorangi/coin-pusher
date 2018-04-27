@@ -13,7 +13,8 @@ import {
   ActivityIndicator,
   ScrollView,
   Switch,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 import { NimUtils, NTESGLView, NimSession } from "react-native-netease-im";
 import {
@@ -143,7 +144,6 @@ class GameScreen extends ScreenComponent<Props, States> {
       await this.props.dispatch(roomInfo(roomID));
       await this.props.dispatch(getChatHistory(roomID));
       let roomNotifyResult = await this.props.dispatch(roomNotify());
-      console.warn("room/notify roomNotifyResult:" + JSON.stringify(roomNotifyResult));
       if (roomNotifyResult.specialReward) {
         this.setState({bShowRoomNotify: true});
       }
@@ -705,25 +705,45 @@ class GameScreen extends ScreenComponent<Props, States> {
   renderChatTextInput = (): Component => {
     if (this.state.bShowChatTextInput) {
       return (
-        <TextInput
-          style={styles.chatInputText}
-          autoFocus={true}
-          returnKeyLabel={"发送"}
-          returnKeyType={"send"}
-          maxLength={30}
-          onSubmitEditing={ async (): any => {
-            await this.setState({bShowChatTextInput: false});
-            await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
-          }}
-          onChangeText={async (text: string): any => {
-            this.setState({chatMsg: text});
-          }}
-          onEndEditing={async (): any => {
-            await this.setState({bShowChatTextInput: false});
-            this.setState({chatMsg: ""});
-          }}>
-
-        </TextInput>
+        <View style={styles.chatInputTextContainer}>
+          <TouchableOpacity
+            accessibilityTraits="button"
+            onPress={async (): any => {
+              await this.setState({bShowChatTextInput: false});
+              this.setState({chatMsg: ""});
+            }}
+            activeOpacity={0.5}
+            style={styles.toggleChatInputBtn}
+          >
+            <Text style={{textAlign: "center", color: "white"}}>收起</Text>
+          </TouchableOpacity>
+          <TextInput
+            style={styles.chatInputText}
+            autoFocus={true}
+            returnKeyLabel={"发送"}
+            returnKeyType={"send"}
+            maxLength={50}
+            onSubmitEditing={ async (): any => {
+              await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
+              await this.setState({bShowChatTextInput: false});
+            }}
+            onChangeText={async (text: string): any => {
+              this.setState({chatMsg: text});
+            }}>
+          </TextInput>
+          <TouchableOpacity
+            accessibilityTraits="button"
+            onPress={async (): any => {
+              console.log("room/chat.action chat:" + this.state.chatMsg);
+              await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
+              await this.setState({bShowChatTextInput: false});
+            }}
+            activeOpacity={0.5}
+            style={styles.sendChatBtn}
+          >
+            <Text style={{textAlign: "center", color: "white"}}>发送</Text>
+          </TouchableOpacity>
+        </View>
       );
     }
     else {
@@ -1018,12 +1038,35 @@ const styles = StyleSheet.create({
     backgroundColor: "#00000044",
     borderRadius: 10
   },
-  chatInputText: {
-    width: WIN_WIDTH / 4 * 3,
+  chatInputTextContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: WIN_WIDTH - 25,
     color: "white",
     backgroundColor: "#00000088",
-    borderRadius: 20,
-    paddingHorizontal: 10
+    borderRadius: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 5
+  },
+  chatInputText: {
+    width: WIN_WIDTH - 25 - 60 - 52,
+    color: "white",
+  },
+  sendChatBtn: {
+    backgroundColor: "blue",
+    borderRadius: 10,
+    padding: 5,
+    width: 50,
+    marginRight: 10
+  },
+  toggleChatInputBtn: {
+    marginLeft: 2,
+    marginRight: 5,
+    width: 40,
+    borderRadius: 10,
+    backgroundColor: "#000000EE",
+    padding: 5
   }
 });
 

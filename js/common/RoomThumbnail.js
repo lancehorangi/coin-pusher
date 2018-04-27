@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
   consumeLabel: {
     color: "white",
     fontSize: 12,
+    marginRight: 10,
     alignSelf: "flex-end"
   },
   topInfoContainer: {
