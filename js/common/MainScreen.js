@@ -113,6 +113,7 @@ export class MainScreen extends React.Component<Props, States> {
       this.props.dispatch(setNavigator(this.props.navigator));
       this.props.dispatch(freshMoney());
       this.props.dispatch(freshItems());
+      this.props.dispatch(refreshMsgs());
       this._refreshRoomList(this.state.index);
       break;
     case "willDisappear":
