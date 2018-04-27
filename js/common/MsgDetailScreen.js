@@ -77,7 +77,7 @@ class MsgDetailScreen extends ScreenComponent<Props> {
               <View style={styles.itemContainer}
                 key={i}>
                 <Image
-                  source={{uri:item.url}}
+                  source={{uri:item.url ? item.url : ""}}
                   style={{
                     width: 60,
                     height: 60,

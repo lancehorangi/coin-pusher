@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderColor: "rgba(255, 255, 255, 0.5)",
     backgroundColor: F8Colors.mainBgColor
   },
   closeBtnContainer: {

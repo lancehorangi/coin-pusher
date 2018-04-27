@@ -37,6 +37,7 @@ class PlayButton extends React.Component {
     }
     else if (type === "queue") {
       backgroundColor = "#ee4943";
+      borderRadius = 20;
       content = (
         <View style={styles.playContainer}>
           <Image source={require("./img/Lineup.png")}/>
@@ -46,6 +47,7 @@ class PlayButton extends React.Component {
     }
     else if (type === "queuing") {
       backgroundColor = "#9b00d1";
+      borderRadius = 20;
       content = (
         <View style={styles.playContainer}>
           <Image source={require("./img/Waiting.png")}/>

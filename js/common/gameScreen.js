@@ -29,7 +29,8 @@ import {
   getChatHistory,
   chatReq,
   clearChatMsg,
-  switchWiper
+  switchWiper,
+  roomNotify
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
@@ -141,6 +142,11 @@ class GameScreen extends ScreenComponent<Props, States> {
     this.roomInfoLoop = setInterval(async (): void => {
       await this.props.dispatch(roomInfo(roomID));
       await this.props.dispatch(getChatHistory(roomID));
+      let roomNotifyResult = await this.props.dispatch(roomNotify());
+      console.warn("room/notify roomNotifyResult:" + JSON.stringify(roomNotifyResult));
+      if (roomNotifyResult.specialReward) {
+        this.setState({bShowRoomNotify: true});
+      }
     }, 5000);
 
     let result = null;
@@ -274,7 +280,6 @@ class GameScreen extends ScreenComponent<Props, States> {
   }
 
   onPressShowHint = () => {
-    //this.setState({bShowRoomNotify: true});
     this.setState({bShowHint: true});
   }
 

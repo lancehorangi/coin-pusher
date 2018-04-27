@@ -29,12 +29,12 @@ class ModalRoomNotify extends Component<Props, States> {
     _renderModalContent = (): Component => {
       return (
         <View style={styles.modalContainer}>
-          <Image style={styles.titleImg} source={require("./img/background.png")}/>
+          <Image style={styles.titleImg} source={require("./img/Lucky.png")}/>
           <Text style={styles.text}>{"金主爸爸挥金如土的持续游戏感动了\"好运之神\"特别赠与您1880钻石"}</Text>
           <Button
             title={"打开消息中心领取"}
             titleStyle={{color:"white", fontSize:10}}
-            buttonStyle={{backgroundColor:"red", borderRadius:15, marginTop: 50, padding: 10}}
+            buttonStyle={{backgroundColor:"red", borderRadius:15, marginTop: 10, padding: 10}}
             onPress={this.props.onPressClose}
           />
         </View>
@@ -57,15 +57,15 @@ const styles = StyleSheet.create({
     minHeight: 200,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderColor: "rgba(255, 255, 255, 0.5)",
     backgroundColor: F8Colors.mainBgColor,
     justifyContent: "center",
     alignItems: "center"
   },
   titleImg: {
     marginTop: -50,
-    width: 50,
-    height: 50
+    // width: 50,
+    // height: 50
   },
   text: {
     marginLeft: 30,
