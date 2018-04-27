@@ -35,4 +35,33 @@ function switchWiper(): ThunkAction {
   };
 }
 
-module.exports = { switchWiper };
+async function _roomNotify(): Promise<Object> {
+  try {
+    let response = await APIRequest("room/notify.action", {}, true);
+
+    if(response.StatusCode != API_RESULT.STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  }
+}
+
+function roomNotify(): ThunkAction {
+  return (): Object => {
+    const response = _roomNotify();
+    response.then((): any => {
+
+    },
+    (err: Error) => {
+      console.log("roomNotify failed reason=" + err.message);
+      //toastShow("切换雨刷失败:" + err.message);
+    });
+
+    return response;
+  };
+}
+
+module.exports = { switchWiper, roomNotify };

@@ -13,7 +13,8 @@ import {
   ActivityIndicator,
   ScrollView,
   Switch,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 import { NimUtils, NTESGLView, NimSession } from "react-native-netease-im";
 import {
@@ -29,7 +30,8 @@ import {
   getChatHistory,
   chatReq,
   clearChatMsg,
-  switchWiper
+  switchWiper,
+  roomNotify
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
@@ -41,6 +43,7 @@ import ModalOK from "./ModalOK";
 import RoomHistory from "./RoomHistory";
 import ImgButton from "./ImgButton";
 import PlayButton from "./PlayButton";
+import ModalRoomNotify from "./ModalRoomNotify";
 import { dismissModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
@@ -74,6 +77,7 @@ type States = {
   chatMsg: string,
   bShowChatList: boolean,
   bShowHint: boolean,
+  bShowRoomNotify: boolean,
   centerInfo: string,
   countDown: number
 };
@@ -89,6 +93,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       bPlaying: false,
       queuing: false,
       bShowChatTextInput: false,
+      bShowRoomNotify: false,
       chatMsg: "",
       bShowChatList: true,
       bShowHint: false,
@@ -138,6 +143,10 @@ class GameScreen extends ScreenComponent<Props, States> {
     this.roomInfoLoop = setInterval(async (): void => {
       await this.props.dispatch(roomInfo(roomID));
       await this.props.dispatch(getChatHistory(roomID));
+      let roomNotifyResult = await this.props.dispatch(roomNotify());
+      if (roomNotifyResult.specialReward) {
+        this.setState({bShowRoomNotify: true});
+      }
     }, 5000);
 
     let result = null;
@@ -562,7 +571,7 @@ class GameScreen extends ScreenComponent<Props, States> {
         autoComp = (
           <View style={{
             position: "absolute",
-            left: 20,
+            left: 10,
           }}>
             <Switch
               value={this.state.autoPlay}
@@ -696,25 +705,45 @@ class GameScreen extends ScreenComponent<Props, States> {
   renderChatTextInput = (): Component => {
     if (this.state.bShowChatTextInput) {
       return (
-        <TextInput
-          style={styles.chatInputText}
-          autoFocus={true}
-          returnKeyLabel={"发送"}
-          returnKeyType={"send"}
-          maxLength={30}
-          onSubmitEditing={ async (): any => {
-            await this.setState({bShowChatTextInput: false});
-            await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
-          }}
-          onChangeText={async (text: string): any => {
-            this.setState({chatMsg: text});
-          }}
-          onEndEditing={async (): any => {
-            await this.setState({bShowChatTextInput: false});
-            this.setState({chatMsg: ""});
-          }}>
-
-        </TextInput>
+        <View style={styles.chatInputTextContainer}>
+          <TouchableOpacity
+            accessibilityTraits="button"
+            onPress={async (): any => {
+              await this.setState({bShowChatTextInput: false});
+              this.setState({chatMsg: ""});
+            }}
+            activeOpacity={0.5}
+            style={styles.toggleChatInputBtn}
+          >
+            <Text style={{textAlign: "center", color: "white"}}>收起</Text>
+          </TouchableOpacity>
+          <TextInput
+            style={styles.chatInputText}
+            autoFocus={true}
+            returnKeyLabel={"发送"}
+            returnKeyType={"send"}
+            maxLength={50}
+            onSubmitEditing={ async (): any => {
+              await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
+              await this.setState({bShowChatTextInput: false});
+            }}
+            onChangeText={async (text: string): any => {
+              this.setState({chatMsg: text});
+            }}>
+          </TextInput>
+          <TouchableOpacity
+            accessibilityTraits="button"
+            onPress={async (): any => {
+              console.log("room/chat.action chat:" + this.state.chatMsg);
+              await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
+              await this.setState({bShowChatTextInput: false});
+            }}
+            activeOpacity={0.5}
+            style={styles.sendChatBtn}
+          >
+            <Text style={{textAlign: "center", color: "white"}}>发送</Text>
+          </TouchableOpacity>
+        </View>
       );
     }
     else {
@@ -781,18 +810,22 @@ class GameScreen extends ScreenComponent<Props, States> {
     if (this.state.countDown <= 60 && this.state.bPlaying) {
       return (
         <View style={styles.centerInfoContainer}>
-          <Text style={{color: "white", backgroundColor: "00000088", borderRadius: 12}}>
-            {this.state.countDown + "秒不投币被踢出房间"}
-          </Text>
+          <View style={styles.centerInfoTextContainer}>
+            <Text style={{color: "white", fontWeight: "bold", fontSize: 20}}>
+              <Text style={{color: "red"}}>{this.state.countDown}</Text>秒不投币被踢出房间
+            </Text>
+          </View>
         </View>
       );
     }
     else if (roomInfo && roomInfo.gameState === GAME_STATE.GS_Wait) {
       return (
         <View style={styles.centerInfoContainer}>
-          <Text style={{color: "white", backgroundColor: "00000088", borderRadius: 12}}>
-            {"正在等待其他排到的玩家进入游戏"}
-          </Text>
+          <View style={styles.centerInfoTextContainer}>
+            <Text style={{color: "white", fontWeight: "bold", fontSize: 20}}>
+              {"正在等待其他排到的玩家进入游戏"}
+            </Text>
+          </View>
         </View>
       );
     }
@@ -811,8 +844,20 @@ class GameScreen extends ScreenComponent<Props, States> {
       >
         <ModalOK
           visible={this.state.bShowHint}
+          title={"积分说明"}
           label={"游戏中回收的游戏币都将变为您的积分，积分可以在商城中兑换礼品。游戏中当您金币耗尽时，后续投币消耗将从积分余额中扣除。"}
           onPressClose={(): any => this.setState({bShowHint: false})}
+        />
+
+        <ModalRoomNotify
+          visible={this.state.bShowRoomNotify}
+          onPressClose={(): any => {
+            this.setState({bShowRoomNotify: false});
+            this.props.navigator.push({
+              screen: "CP.MsgHistoryScreen",
+              title: "消息中心",
+            });
+          }}
         />
 
         {this.renderVideo()}
@@ -930,6 +975,11 @@ const styles = StyleSheet.create({
     width: WIN_WIDTH,
     height: WIN_HEIGHT,
   },
+  centerInfoTextContainer: {
+    backgroundColor: "#00000088",
+    borderRadius: 14,
+    padding: 10
+  },
   closeBtn: {
     width:40,
     height:40,
@@ -988,12 +1038,35 @@ const styles = StyleSheet.create({
     backgroundColor: "#00000044",
     borderRadius: 10
   },
-  chatInputText: {
-    width: 200,
+  chatInputTextContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: WIN_WIDTH - 25,
     color: "white",
     backgroundColor: "#00000088",
-    borderRadius: 20,
-    paddingHorizontal: 10
+    borderRadius: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 5
+  },
+  chatInputText: {
+    width: WIN_WIDTH - 25 - 60 - 52,
+    color: "white",
+  },
+  sendChatBtn: {
+    backgroundColor: "blue",
+    borderRadius: 10,
+    padding: 5,
+    width: 50,
+    marginRight: 10
+  },
+  toggleChatInputBtn: {
+    marginLeft: 2,
+    marginRight: 5,
+    width: 40,
+    borderRadius: 10,
+    backgroundColor: "#000000EE",
+    padding: 5
   }
 });
 

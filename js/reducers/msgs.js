@@ -8,7 +8,7 @@ import type { Action } from "../actions/types";
 
 export type State = {
   msgs: null | Object,
-  unreadNum: ?number,
+  unreadNum: number,
   openMail: ?Object
 };
 

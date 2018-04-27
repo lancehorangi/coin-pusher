@@ -27,6 +27,7 @@ import BannerCarousel from "./BannerCarousel";
 import RoomList from "./RoomList";
 import GridButton from "./GridButton";
 import CustomMainScreenTabButton from "./CustomMainScreenTabButton";
+import CustomMainScreenTabMsgButton from "./CustomMainScreenTabMsgButton";
 import { showModal } from "./../navigator";
 import F8Colors from "./F8Colors";
 
@@ -40,6 +41,7 @@ const ROOM_TYPE_GOLD = 0;
 const ROOM_TYPE_GOLD10 = 1;
 
 Navigation.registerComponent("CP.CustomMainScreenTabButton", (): Object => CustomMainScreenTabButton);
+Navigation.registerComponent("CP.CustomMainScreenTabMsgButton", (): Object => CustomMainScreenTabMsgButton);
 
 type Props = {
   dispatch: ?() => mixed,
@@ -72,8 +74,8 @@ export class MainScreen extends React.Component<Props, States> {
   static navigatorButtons = {
     rightButtons: [
       {
-        id: "add", // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
-        buttonColor: "#ffffff", // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
+        id: "add",
+        buttonColor: "#ffffff",
         //icon: require('./img/header/add.png'),
         component: "CP.CustomMainScreenTabButton",
         disableIconTint: true,
@@ -82,9 +84,10 @@ export class MainScreen extends React.Component<Props, States> {
     ],
     leftButtons: [
       {
-        id: "message", // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
-        buttonColor: "#ffffff", // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
-        icon: require("./img/header/news.png"),
+        id: "message",
+        buttonColor: "#ffffff",
+        //icon: require("./img/header/news.png"),
+        component: "CP.CustomMainScreenTabMsgButton",
         disableIconTint: true,
       }
     ]
@@ -110,6 +113,7 @@ export class MainScreen extends React.Component<Props, States> {
       this.props.dispatch(setNavigator(this.props.navigator));
       this.props.dispatch(freshMoney());
       this.props.dispatch(freshItems());
+      this.props.dispatch(refreshMsgs());
       this._refreshRoomList(this.state.index);
       break;
     case "willDisappear":
