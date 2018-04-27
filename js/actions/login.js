@@ -79,7 +79,7 @@ function loggedIn(
 }
 
 function loggedOut(): Action {
-  configureAPIToken(null);
+  configureAPIToken(null, null);
   NimSession.logout();
 
   showLoginModal();

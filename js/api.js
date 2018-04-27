@@ -51,17 +51,20 @@ function parseJSON(response): Promise<any> {
 }
 
 let _token = null;
+let _id = null;
 
-export function configureAPIToken(token: string)
+export function configureAPIToken(token: string, id: string)
 {
   _token = token;
+  _id = id;
 }
 
-export function APIRequest(path, json, bToken = false, bPayReq = false)
+export function APIRequest(path, json, bToken = false, bPayReq = false, bRelogin = false)
 {
   return new Promise((resolve, reject) => {
     if(bToken && _token == null){
-      return reject(Error("Already logged out."));
+      getStoreDispatch()(loggedOut());
+      return reject(Error("请重新登录"));
     }
 
     if (bToken) {
@@ -98,9 +101,32 @@ export function APIRequest(path, json, bToken = false, bPayReq = false)
 
         if (response.ok) {
           if (response.json.StatusCode === APICode.TokenDisabled) {
-            console.warn("Account Token check failed, loggout");
-            getStoreDispatch()(loggedOut());
-            return resolve(response.json);
+            if (bRelogin) {
+              console.warn("Account Token check failed, loggout");
+              getStoreDispatch()(loggedOut());
+              return resolve(response.json);
+            }
+
+            //尝试重新登录
+            APIRequest("account/relogin.action", {id: _id}, true, false, true)
+              .then((response) => {
+                //
+                if (response.StatusCode == API_RESULT.STATUS_OK) {
+                  APIRequest(path, json, bToken, bPayReq)
+                    .then((response) => {
+                      return resolve(response);
+                    }, (e) => {
+                      return reject(e);
+                    });
+                }
+                else {
+                  getStoreDispatch()(loggedOut());
+                  return reject(Error("请重新登录"));
+                }
+              }, (e) => {
+                //
+                return reject(e);
+              });
           }
           else {
             return resolve(response.json);

@@ -150,7 +150,7 @@ class MsgHistoryScreen extends ScreenComponent<{}, States> {
   }
 
   render(): Component {
-    if (this.props.msgs.length == 0) {
+    if (!this.props.msgs || this.props.msgs.length == 0) {
       return (
         <View style={styles.emptyContainer}>
           <Text style={{color:"white", fontSize:20}}>

@@ -47,7 +47,7 @@ function user(state: State = initialState, action: Action): State {
   if (action.type === "LOGGED_IN") {
     let { token, account, id } = action;
 
-    configureAPIToken(token);
+    configureAPIToken(token, id);
 
     return {
       ...initialState,

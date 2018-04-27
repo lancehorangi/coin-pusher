@@ -43,7 +43,7 @@ configureStore(
 
     //init native event listener
     configureListener(store);
-    configureAPIToken(store.getState().user.token);
+    configureAPIToken(store.getState().user.token, store.getState().user.id);
 
     let { token, account } = store.getState().user;
     let bLogin = token && token.length != 0;
