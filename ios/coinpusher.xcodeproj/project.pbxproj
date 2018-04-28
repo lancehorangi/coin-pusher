@@ -60,6 +60,9 @@
 		E4D6EB9CBB24C0884FAF672F /* libPods-coinpusher-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA54F6937526770FF1BCD73 /* libPods-coinpusher-tvOSTests.a */; };
 		E7A7519395434E6D94215956 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC3BDE9AAA5E44CF8E6808ED /* Octicons.ttf */; };
 		EBD7F0D149C94F1F99416715 /* libRNBugly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C5BCC7AE534020B38207AA /* libRNBugly.a */; };
+		EF12E2372094451E00656C43 /* Center.png in Resources */ = {isa = PBXBuildFile; fileRef = EF12E2342094451D00656C43 /* Center.png */; };
+		EF12E2382094451E00656C43 /* Center@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EF12E2352094451D00656C43 /* Center@2x.png */; };
+		EF12E2392094451E00656C43 /* Center@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = EF12E2362094451D00656C43 /* Center@3x.png */; };
 		EF2318FF207B595E00A1011C /* 40.png in Resources */ = {isa = PBXBuildFile; fileRef = EF2318F8207B595D00A1011C /* 40.png */; };
 		EF231900207B595E00A1011C /* 60.png in Resources */ = {isa = PBXBuildFile; fileRef = EF2318F9207B595D00A1011C /* 60.png */; };
 		EF231901207B595E00A1011C /* 120.png in Resources */ = {isa = PBXBuildFile; fileRef = EF2318FA207B595D00A1011C /* 120.png */; };
@@ -487,6 +490,9 @@
 		D13671BE013840A2B2AAE32D /* libdouble-conversion.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libdouble-conversion.a"; sourceTree = "<group>"; };
 		DC3BDE9AAA5E44CF8E6808ED /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		E7CBE3D00B6F46929A3FD9C1 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		EF12E2342094451D00656C43 /* Center.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Center.png; sourceTree = "<group>"; };
+		EF12E2352094451D00656C43 /* Center@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Center@2x.png"; sourceTree = "<group>"; };
+		EF12E2362094451D00656C43 /* Center@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Center@3x.png"; sourceTree = "<group>"; };
 		EF2318F8207B595D00A1011C /* 40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 40.png; sourceTree = "<group>"; };
 		EF2318F9207B595D00A1011C /* 60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 60.png; sourceTree = "<group>"; };
 		EF2318FA207B595D00A1011C /* 120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 120.png; sourceTree = "<group>"; };
@@ -879,6 +885,9 @@
 		EF2318CA207B593600A1011C /* Icon */ = {
 			isa = PBXGroup;
 			children = (
+				EF12E2342094451D00656C43 /* Center.png */,
+				EF12E2352094451D00656C43 /* Center@2x.png */,
+				EF12E2362094451D00656C43 /* Center@3x.png */,
 				EF231909207C838B00A1011C /* 58.png */,
 				EF231908207C838B00A1011C /* 80.png */,
 				EF23190A207C838C00A1011C /* 87.png */,
@@ -1500,7 +1509,9 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				EF12E2372094451E00656C43 /* Center.png in Resources */,
 				425821FB017744BCAED842DC /* Entypo.ttf in Resources */,
+				EF12E2392094451E00656C43 /* Center@3x.png in Resources */,
 				EF231905207B595E00A1011C /* 1024.png in Resources */,
 				EF29102020862A9800EDE484 /* collectCoin.wav in Resources */,
 				C557F235ACCB447D99CB5441 /* EvilIcons.ttf in Resources */,
@@ -1525,6 +1536,7 @@
 				EF23190C207C838C00A1011C /* 58.png in Resources */,
 				EF29101F20862A9800EDE484 /* insertCoin.wav in Resources */,
 				EF231907207B59F300A1011C /* bt@3x.png in Resources */,
+				EF12E2382094451E00656C43 /* Center@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
