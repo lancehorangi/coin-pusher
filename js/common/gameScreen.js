@@ -141,7 +141,12 @@ class GameScreen extends ScreenComponent<Props, States> {
     clearInterval(this.heartLoop);
     clearInterval(this.roomInfoLoop);
     this.roomInfoLoop = setInterval(async (): void => {
-      await this.props.dispatch(roomInfo(roomID));
+      let resultRoomInfo = await this.props.dispatch(roomInfo(roomID));
+
+      if (this.state.bPlaying && resultRoomInfo.info.entityID !== this.props.entityID) {
+        dismissModal("您已自动退出房间");
+      }
+
       await this.props.dispatch(getChatHistory(roomID));
       let roomNotifyResult = await this.props.dispatch(roomNotify());
       if (roomNotifyResult.specialReward) {
@@ -152,6 +157,13 @@ class GameScreen extends ScreenComponent<Props, States> {
     let result = null;
     try {
       result = await this.props.dispatch(roomInfo(roomID));
+
+      //机台处在非正常状态
+      if (result.info.state !== 0) {
+        dismissModal("此房间暂不可用");
+        return;
+      }
+
       if (result.info.entityID !== this.props.entityID) {
         await this.props.dispatch(enterRoom(roomID));
       }
