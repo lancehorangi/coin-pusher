@@ -812,7 +812,7 @@ class GameScreen extends ScreenComponent<Props, States> {
         <View style={styles.centerInfoContainer}>
           <View style={styles.centerInfoTextContainer}>
             <Text style={{color: "white", fontWeight: "bold", fontSize: 20}}>
-              <Text style={{color: "red"}}>{this.state.countDown}</Text>秒不投币被踢出房间
+              <Text style={{color: "red"}}>{this.state.countDown}</Text>秒不投币将自动退出
             </Text>
           </View>
         </View>

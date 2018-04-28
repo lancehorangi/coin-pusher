@@ -57,7 +57,7 @@ function heartRequest(): ThunkAction {
     responese.then((result: Object): any => {
       if (result.kickFlag) {
         NimUtils.leaveMeeting();
-        dismissModal("您长时间未操作被提出房间");
+        dismissModal("长时间未操作自动退出房间");
       }
 
       dispatch({
