@@ -73,8 +73,9 @@ const THEME_COLORS = {
   inactiveText: "#9B9B9B",
 
   //
-  mainBgColor: "#24272e",
+  mainBgColor: "#292d36",
   mainBgColor2: "#373a41",
+  mainTextColor: "#d1d3e8"
 };
 
 const LOCATION_COLORS = {

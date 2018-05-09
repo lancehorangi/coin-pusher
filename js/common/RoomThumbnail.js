@@ -1,9 +1,8 @@
 //@flow
 "use strict";
 
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
 import React, { Component } from "react";
-import { Text } from "./F8Text";
 import { showModal } from "./../navigator";
 import { connect } from "react-redux";
 

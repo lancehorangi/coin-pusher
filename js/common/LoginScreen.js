@@ -5,8 +5,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { mobileCodeReq, mobileLogin, wxLogin } from "../actions";
 import F8Colors from "../common/F8Colors";
-import F8Button from "./F8Button";
-//import { Text } from "../common/F8Text";
 import {
   Animated,
   Image,
@@ -185,7 +183,7 @@ class LoginScreen extends ScreenComponent<Props, Stats> {
               justifyContent:"center",
               borderWidth: 8,
               borderRadius: 5,
-              borderColor: "#373a41",
+              borderColor: F8Colors.mainBgColor2,
             }}>
             <Text style={
               [styles.input, {borderWidth: 0, borderRadius: 0, fontSize:12}]
@@ -361,33 +359,6 @@ class LoginScreen extends ScreenComponent<Props, Stats> {
       Alert.alert(e.message);
     }
   }
-
-  renderInternalLogin = (): Component => {
-    return (
-      <View style={styles.content}>
-        <TextInput
-          style={styles.account}
-          onChangeText={(account: string): any => this.setState({account})}
-        />
-        <TextInput
-          style={styles.account}
-          onChangeText={(pwd: string): any => this.setState({pwd})}
-        />
-        <F8Button
-          theme="bordered"
-          type="default"
-          caption="注册"
-          onPress={(): void => this.reg()}
-        />
-        <F8Button
-          theme="bordered"
-          type="default"
-          caption="登录"
-          onPress={(): void => this.login()}
-        />
-      </View>
-    );
-  }
 }
 
 /* StyleSheet
@@ -408,19 +379,10 @@ const styles = StyleSheet.create({
 
   input: {
     color: "white",
-    backgroundColor: "#373a41",
+    backgroundColor: F8Colors.mainBgColor2,
     borderColor: "transparent",
     borderWidth: 10,
     borderRadius: 5
-  },
-
-  content: {
-    flex: 1,
-  },
-
-  account: {
-    height: 48,
-    borderWidth: 1
   }
 });
 
