@@ -31,14 +31,15 @@ import {
   chatReq,
   clearChatMsg,
   switchWiper,
-  roomNotify
+  roomNotify,
+  feedback
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
 import ProfitAnimationMgr from "./ProfitAnimationMgr";
 import Spinner from "react-native-spinkit";
 import ChatList from "./ChatList";
-import { isIphoneX, toastShow, getMachineName, PlatformAlert } from "./../util";
+import { isIphoneX, toastShow, getMachineName, PlatformAlert, AlertPrompt } from "./../util";
 import ModalOK from "./ModalOK";
 import RoomHistory from "./RoomHistory";
 import ImgButton from "./ImgButton";
@@ -651,6 +652,35 @@ class GameScreen extends ScreenComponent<Props, States> {
 
   renderVideoHeader = (): Component => {
     let {roomInfo} = this.props;
+    let feedbackBtn;
+
+    if (this.state.bPlaying) {
+      feedbackBtn = (
+        <TouchableOpacity style={styles.feedbackBtn}
+          onPress={async (): any => {
+            let content = getMachineName(roomInfo.roomID) + "出现问题, 官方将及时修复";
+            AlertPrompt(
+              "报修",
+              content,
+              "发送",
+              "取消",
+              (text: string) => {
+                let pattern = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+                if (!pattern.test(text)) {
+                  Alert.alert("请输入正确的手机号");
+                  return;
+                }
+
+                this.props.dispatch(feedback(text, content));
+              }
+            );
+          }}>
+          <Text style={{color: "white"}}>报修</Text>
+        </TouchableOpacity>
+      );
+    }
+
+
     if (roomInfo && roomInfo.entityID != 0) {
       return (
         <View style={styles.videoHeaderContainer}>
@@ -678,6 +708,7 @@ class GameScreen extends ScreenComponent<Props, States> {
               </Text>
             </View>
           </View>
+          {feedbackBtn}
         </View>
       );
     }
@@ -1031,6 +1062,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
     flexDirection: "row",
+    width: "100%",
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center"
@@ -1044,6 +1076,18 @@ const styles = StyleSheet.create({
   playerInfoContainer: {
     height: 40,
     flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00000088",
+    paddingHorizontal: 5,
+    minWidth: 50,
+    borderRadius: 30
+  },
+  feedbackBtn: {
+    //height: 40,
+    marginRight: 15,
+    padding: 5,
+    justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
     backgroundColor: "#00000088",

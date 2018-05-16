@@ -43,6 +43,33 @@ export function PlatformAlert(
   }
 }
 
+export function AlertPrompt(
+  title: string,
+  content: string,
+  yesLabel: string,
+  noLabel: string,
+  yesCallback: () => mixed,
+  noCallback: ?() => mixed
+) {
+  if (Platform.OS === "ios") {
+    AlertIOS.prompt(
+      title,
+      content,
+      [
+        {
+          text: noLabel,
+          onPress: noCallback ? noCallback : null,
+          style: "cancel",
+        },
+        {
+          text: yesLabel,
+          onPress: yesCallback,
+        },
+      ]
+    );
+  }
+}
+
 export function toastShow(label: string, options: ?Object) {
   Toast.show(label, {...options, position: -70});
 }
