@@ -72,6 +72,7 @@ type States = {
   bLoading: boolean,
   autoPlay: boolean,
   bPlaying: boolean,
+  bSending: boolean,
   queuing: boolean,
   bShowChatTextInput: boolean,
   chatMsg: string,
@@ -92,6 +93,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       autoPlay: false,
       bPlaying: false,
       queuing: false,
+      bSending: false,
       bShowChatTextInput: false,
       bShowRoomNotify: false,
       chatMsg: "",
@@ -736,8 +738,13 @@ class GameScreen extends ScreenComponent<Props, States> {
             returnKeyType={"send"}
             maxLength={50}
             onSubmitEditing={ async (): any => {
+              if (this.state.bSending) {
+                return;
+              }
+
+              await this.setState({bSending: true});
               await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
-              await this.setState({bShowChatTextInput: false});
+              await this.setState({bShowChatTextInput: false, bSending: false});
             }}
             onChangeText={async (text: string): any => {
               this.setState({chatMsg: text});
@@ -747,8 +754,13 @@ class GameScreen extends ScreenComponent<Props, States> {
             accessibilityTraits="button"
             onPress={async (): any => {
               console.log("room/chat.action chat:" + this.state.chatMsg);
+              if (this.state.bSending) {
+                return;
+              }
+
+              await this.setState({bSending: true});
               await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
-              await this.setState({bShowChatTextInput: false});
+              await this.setState({bShowChatTextInput: false, bSending: false});
             }}
             activeOpacity={0.5}
             style={styles.sendChatBtn}
