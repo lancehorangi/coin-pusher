@@ -13,7 +13,7 @@ import { List, ListItem, Avatar } from "react-native-elements";
 import { connect } from "react-redux";
 import ScreenComponent from "./ScreenComponent";
 import F8Colors from "./F8Colors";
-import { isIphoneX } from "./../util";
+import { isIphoneX, AlertPrompt } from "./../util";
 import ModalOK from "./ModalOK";
 import ImgButton from "./ImgButton";
 
@@ -94,7 +94,17 @@ class MineScreen extends ScreenComponent {
           justifyContent: "space-around",
           alignContent: "flex-start"
         }}>
-          <Text style={{color:"white", fontSize:20}}>{this.props.nickName}</Text>
+          <View style={{
+            flexDirection: "row",
+            alignItems: "center"
+          }}>
+            <Text style={{color:"white", fontSize:20}}>{this.props.nickName}</Text>
+            <ImgButton style={{
+              marginLeft: 2, width: 20, height: 20
+            }}
+            onPress={this.pressChangeName}
+            icon={require("./img/change.png")}/>
+          </View>
           <Text style={{color:"white", fontSize:15}}>{"ID:" + this.props.accountID}</Text>
           <Text style={{color:"white", fontSize:15}}>{this.getCardDesc()}</Text>
         </View>
@@ -205,6 +215,18 @@ class MineScreen extends ScreenComponent {
 
   pressHelp = () => {
     this.setState({bShowHint: true});
+  }
+
+  pressChangeName = () => {
+    AlertPrompt(
+      "请输入想要修改的昵称",
+      null,
+      "修改",
+      "取消",
+      (text: string) => {
+
+      }
+    );
   }
 
   renderBtn = (): Component => {
