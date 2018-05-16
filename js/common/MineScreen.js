@@ -7,7 +7,7 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import { List, ListItem, Avatar } from "react-native-elements";
 import { connect } from "react-redux";
