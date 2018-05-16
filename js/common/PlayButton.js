@@ -31,7 +31,7 @@ class PlayButton extends React.Component {
       content = (
         <View style={styles.playContainer}>
           <Image source={require("./img/Playbutton.png")}/>
-          <Text style={styles.text}>{value}<Image style={{width: 13, height: 13}} source={require("./img/Diamonds.png")}/>每次</Text>
+          <Text style={styles.text}>{value}<Image style={{width: 13, height: 13}} source={require("./img/gold.png")}/>每次</Text>
         </View>
       );
     }

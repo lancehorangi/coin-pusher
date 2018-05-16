@@ -98,7 +98,7 @@ class RoomThumbnail extends Component<Props> {
       <View>
         <View style={[styles.consumeContainer, this._hasActivity() ? {} : styles.bottomBorderStyle]}>
           <Text style={styles.consumeLabel}>
-            {this.props.currCost}<Image style={{width: 15, height: 15}} source={require("./img/Diamonds.png")}/>每次
+            {this.props.currCost}<Image style={{width: 15, height: 15}} source={require("./img/gold.png")}/>每次
           </Text>
         </View>
         <View style={[styles.actContainer, styles.bottomBorderStyle]}>
