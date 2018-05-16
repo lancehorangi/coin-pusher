@@ -19,7 +19,7 @@ import * as WeChat from "react-native-wechat";
 import { NimUtils } from "react-native-netease-im";
 
 // Config
-import { talkingdataID, wxID } from "./env";
+import { talkingdataID, wxID, appTitle } from "./env";
 
 //console.disableYellowBox = true;
 Text.defaultProps.allowFontScaling = false;
@@ -61,7 +61,7 @@ configureStore(
           screen: "CP.MainScreen",
           icon: require("./common/img/buttons/hall.png"),
           selectedIcon: require("./common/img/buttons/hall_2.png"),
-          title: "欢乐马戏团",
+          title: appTitle,
           navigatorStyle: {
             navBarHidden: false
           },

@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  appTitle: "富豪马戏团",
   version: 1,
   testMenuEnabled: false,
   serverURL: "http://47.97.189.108:7001/1.0/",
@@ -12,6 +13,6 @@ module.exports = {
   compatibleStoreVersion: "0.10",
   updateToggleAddress: "https://circus.oss-cn-hangzhou.aliyuncs.com/toggle.json",
   PFBparaID: "60100111",
-  PFBAppID: "12141",
+  PFBAppID: "12367",
   PFBKey: "10cf545073595d3e50d46eaa52b37bec"
 };
