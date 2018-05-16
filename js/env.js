@@ -12,6 +12,6 @@ module.exports = {
   compatibleStoreVersion: "0.10",
   updateToggleAddress: "https://circus.oss-cn-hangzhou.aliyuncs.com/toggle.json",
   PFBparaID: "60100111",
-  PFBAppID: "12141",
+  PFBAppID: "12368",
   PFBKey: "10cf545073595d3e50d46eaa52b37bec"
 };

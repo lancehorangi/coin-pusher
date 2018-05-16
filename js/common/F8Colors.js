@@ -73,8 +73,8 @@ const THEME_COLORS = {
   inactiveText: "#9B9B9B",
 
   //
-  mainBgColor: "#292d36",
-  mainBgColor2: "#373a41",
+  mainBgColor: "#657fac",
+  mainBgColor2: "#8da4cd",
   mainTextColor: "#d1d3e8"
 };
 

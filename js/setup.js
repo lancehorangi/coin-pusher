@@ -61,7 +61,7 @@ configureStore(
           screen: "CP.MainScreen",
           icon: require("./common/img/buttons/hall.png"),
           selectedIcon: require("./common/img/buttons/hall_2.png"),
-          title: "欢乐马戏团",
+          title: "马戏推推乐",
           navigatorStyle: {
             navBarHidden: false
           },
