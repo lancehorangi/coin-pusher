@@ -43,23 +43,23 @@ class BannerCarousel extends Component<Props, state> {
       activeSlide: 0,
       entries: [
         {
-          image: require("./img/banner1.png"),
-          press: () => {
-            this.props.navigator.push({
-              screen: "CP.IAPScreen",
-              title: "商城",
-            });
-          }
+          image: require("./img/banner01.png"),
+          // press: () => {
+          //   this.props.navigator.push({
+          //     screen: "CP.IAPScreen",
+          //     title: "商城",
+          //   });
+          // }
+        },
+        {
+          image: require("./img/banner02.png"),
+          // press: () => {
+          //   this.props.navigator.push({
+          //     screen: "CP.MallScreen",
+          //     title: "积分商城",
+          //   });
+          // }
         }
-        // {
-        //   image: require("./img/banner2.png"),
-        //   press: () => {
-        //     this.props.navigator.push({
-        //       screen: "CP.MallScreen",
-        //       title: "积分商城",
-        //     });
-        //   }
-        // }
       ]
     };
   }

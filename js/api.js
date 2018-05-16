@@ -70,6 +70,11 @@ export function APIRequest(path, json, bToken = false, bPayReq = false, bRelogin
     if (bToken) {
       json["token"] = _token;
     }
+
+    if (json["auth"]) {
+      delete json["auth"];
+    }
+    
     let propList = Object.keys(json);
     let checkStr = "";
     propList.sort();
@@ -78,6 +83,7 @@ export function APIRequest(path, json, bToken = false, bPayReq = false, bRelogin
       checkStr += json[keyVal];
     }
     checkStr += "shuzhu1305";
+
     let authStr = md5(checkStr).toUpperCase();
     json["auth"] = authStr;
 

@@ -35,7 +35,7 @@ class MoneyLabel extends Component<Props> {
       withBgBtn: false,
       btnType: "none",
       type: "diamond",
-      adjustsFontSizeToFit: true
+      adjustsFontSizeToFit: false
     };
 
     constructor(props: Object) {
@@ -57,7 +57,7 @@ class MoneyLabel extends Component<Props> {
 
     renderCount = (): Component => {
       return  (
-        <Text style={styles.label} numberOfLines={1} adjustsFontSizeToFit={this.props.adjustsFontSizeToFit}>
+        <Text style={styles.label} numberOfLines={2} adjustsFontSizeToFit={this.props.adjustsFontSizeToFit}>
           {this.props.count}
         </Text>
       );

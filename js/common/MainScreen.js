@@ -155,7 +155,7 @@ export class MainScreen extends React.Component<Props, States> {
   _renderHeaderTabBar = (props: Object): Component => {
     return <TabBar style={{
       transform: [{translateY: this.state.tabY}],
-      backgroundColor: "#292d36"
+      backgroundColor: F8Colors.mainBgColor2
     }}
     labelStyle={{color: "#d1d3e8", margin:1}}
     scrollEnabled={false}

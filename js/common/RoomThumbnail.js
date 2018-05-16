@@ -1,9 +1,8 @@
 //@flow
 "use strict";
 
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
 import React, { Component } from "react";
-import { Text } from "./F8Text";
 import { showModal } from "./../navigator";
 import { connect } from "react-redux";
 
@@ -99,7 +98,7 @@ class RoomThumbnail extends Component<Props> {
       <View>
         <View style={[styles.consumeContainer, this._hasActivity() ? {} : styles.bottomBorderStyle]}>
           <Text style={styles.consumeLabel}>
-            {this.props.currCost}<Image style={{width: 15, height: 15}} source={require("./img/Diamonds.png")}/>每次
+            {this.props.currCost}<Image style={{width: 15, height: 15}} source={require("./img/gold.png")}/>每次
           </Text>
         </View>
         <View style={[styles.actContainer, styles.bottomBorderStyle]}>
