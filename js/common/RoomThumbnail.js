@@ -112,7 +112,9 @@ class RoomThumbnail extends Component<Props> {
   renderUnavaibleStatus = (): Component => {
     if (this.props.unavaible) {
       return (
-        <Image style={styles.statusImg} source={require("./img/whz.png")}/>
+        <View style={styles.statusLabelContainer}>
+          <Text style={[styles.statusLabel, {color: "red"}]}>维护中</Text>
+        </View>
       );
     }
 
@@ -122,7 +124,9 @@ class RoomThumbnail extends Component<Props> {
   renderQueueStatus = (): Component => {
     if (this.props.queuing) {
       return (
-        <Image style={styles.statusImg} source={require("./img/pdz.png")}/>
+        <View style={styles.statusLabelContainer}>
+          <Text style={styles.statusLabel}>排队中</Text>
+        </View>
       );
     }
 
@@ -144,7 +148,7 @@ class RoomThumbnail extends Component<Props> {
         <View>
           <View style={[styles.topInfoContainer, styles.topBorderStyle]}>
             <Text style={[styles.label]}> { this.props.roomID }号 </Text>
-            <Text style={[styles.label, {color: this.props.bPlaying ? "red" : "green" }]}> { this.props.bPlaying ? "游戏中" : "空闲"} </Text>
+            <Text style={[styles.label, {color: this.props.bPlaying || this.props.unavaible ? "red" : "green" }]}> { this.props.unavaible ? "维护中" : this.props.bPlaying ? "游戏中" : "空闲"} </Text>
           </View>
         </View>
         {this.renderInfo()}
@@ -206,11 +210,18 @@ const styles = StyleSheet.create({
     //alignContent:"center",
     backgroundColor: "#000000"
   },
-  statusImg: {
-    flex: 0,
-    width: 80,
-    height: 15,
-    resizeMode: "stretch"
+  statusLabelContainer: {
+    backgroundColor: "#00000088",
+    borderRadius: 15,
+    padding: 10,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  statusLabel: {
+    color: "white",
+    fontWeight: "bold"
   },
   topBorderStyle: {
     borderTopLeftRadius: 10,
