@@ -47,11 +47,11 @@ configureStore(
 
     let { token, account } = store.getState().user;
     let bLogin = token && token.length != 0;
-    codePushSync();
 
     if (bLogin) {
       RNTalkingdataGame.setAccountName(account, account);
       RNBugly.setUserIdentifier(account);
+      codePushSync();
     }
 
     Navigation.startTabBasedApp({
