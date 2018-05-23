@@ -7,6 +7,7 @@ import type { Action, ThunkAction, Dispatch } from "./types";
 import { toastShow } from "./../util";
 import { dismissModal } from "./../navigator";
 import { NimUtils } from "react-native-netease-im";
+import { isSafeString } from "../forbid";
 
 async function _getAccountHistory(): Promise<Object>{
   try {
@@ -187,12 +188,28 @@ async function _changeNickname(nickname: string): Promise<Action> {
 function changeNickname(nickname: string): ThunkAction {
   return (dispatch: Dispatch): Object => {
     console.log("changeNickname:" + nickname);
+
+    if (nickname.length === 0) {
+      toastShow("昵称不能为空");
+      return;
+    }
+
+    if (!isSafeString(nickname)) {
+      toastShow("昵称中有不恰当的字");
+      return;
+    }
+
     let responese = _changeNickname(nickname);
-    responese.then((result: Object): any => dispatch({
-      type: "ACCOUNT_UPDATE_NICKNAME",
-      nickname: nickname,
-    }),
+    responese.then((): any => {
+      toastShow("修改昵称成功");
+      dispatch({
+        type: "ACCOUNT_UPDATE_NICKNAME",
+        nickname: nickname,
+      });
+      dispatch(freshMoney());
+    },
     (err: Error) => {
+      toastShow("修改昵称失败:" + err.message);
       console.warn("changeNickname failed reason=" + err.message);
     });
 

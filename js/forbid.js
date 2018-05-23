@@ -16,4 +16,15 @@ function getSafeString(content: string) {
   return content;
 }
 
-module.exports = {getSafeString};
+function isSafeString(content: string) {
+  for (var j = 0; j < forbidList.length; j++) {
+    let forbid = forbidList[j];
+    if (content.search(forbid) != -1) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+module.exports = {getSafeString, isSafeString};

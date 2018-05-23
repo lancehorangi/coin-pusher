@@ -78,7 +78,7 @@ function user(state: State = initialState, action: Action): State {
       entityID: action.accountInfo.entityID,
       headUrl: action.accountInfo.headUrl,
       entityState: action.accountInfo.entityState,
-      renameFree: action.accountInfo.renameFree
+      renameFree: action.accountInfo.renameFree != 1
     };
   }
 
