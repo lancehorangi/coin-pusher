@@ -169,4 +169,43 @@ function toggleBGM(enable: boolean): Action {
   };
 }
 
-module.exports = { getAccountHistory, heartRequest, freshMoney, freshItems, feedback, toggleBGM };
+async function _changeNickname(nickname: string): Promise<Action> {
+  try {
+    console.log("_changeNickname:" + nickname);
+    let response = await APIRequest("account/rename.action", {name: nickname}, true);
+
+    if(response.StatusCode != API_RESULT.STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  }
+}
+
+function changeNickname(nickname: string): ThunkAction {
+  return (dispatch: Dispatch): Object => {
+    console.log("changeNickname:" + nickname);
+    let responese = _changeNickname(nickname);
+    responese.then((result: Object): any => dispatch({
+      type: "ACCOUNT_UPDATE_NICKNAME",
+      nickname: nickname,
+    }),
+    (err: Error) => {
+      console.warn("changeNickname failed reason=" + err.message);
+    });
+
+    return responese;
+  };
+}
+
+module.exports = {
+  getAccountHistory,
+  heartRequest,
+  freshMoney,
+  freshItems,
+  feedback,
+  toggleBGM,
+  changeNickname
+};

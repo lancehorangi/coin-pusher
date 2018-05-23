@@ -7,7 +7,7 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity
+  ActivityIndicator
 } from "react-native";
 import { List, ListItem, Avatar } from "react-native-elements";
 import { connect } from "react-redux";
@@ -16,6 +16,7 @@ import F8Colors from "./F8Colors";
 import { isIphoneX, AlertPrompt } from "./../util";
 import ModalOK from "./ModalOK";
 import ImgButton from "./ImgButton";
+import { changeNickname } from "../actions";
 
 const IPHONE_X_HEAD = 30;
 
@@ -27,7 +28,8 @@ class MineScreen extends ScreenComponent {
     super(props);
 
     this.state = {
-      bShowHint: false
+      bShowHint: false,
+      bChangingName: false
     };
   }
 
@@ -75,14 +77,25 @@ class MineScreen extends ScreenComponent {
   }
 
   renderHead = (): Component => {
+    let changeName = this.state.bChangingName ? (
+      <ActivityIndicator style={{
+        marginLeft: 2, width: 20, height: 20
+      }}
+      animating size="small" color='white'/>
+    ) : (
+      <ImgButton style={{
+        marginLeft: 2, width: 20, height: 20
+      }}
+      onPress={this.pressChangeName}
+      icon={require("./img/change.png")}/>
+    );
+
     return (
       <View style={styles.header}>
         <Avatar
           large
           rounded
-          //icon={{name: 'history', color: 'white'}}
           source={{uri:this.props.headUrl}}
-          //overlayContainerStyle={{backgroundColor: 'grey'}}
           activeOpacity={0.7}
           containerStyle={{width:80, height:80, marginTop: 20, marginLeft:20}}
         />
@@ -99,11 +112,7 @@ class MineScreen extends ScreenComponent {
             alignItems: "center"
           }}>
             <Text style={{color:"white", fontSize:20}}>{this.props.nickName}</Text>
-            <ImgButton style={{
-              marginLeft: 2, width: 20, height: 20
-            }}
-            onPress={this.pressChangeName}
-            icon={require("./img/change.png")}/>
+            {changeName}
           </View>
           <Text style={{color:"white", fontSize:15}}>{"ID:" + this.props.accountID}</Text>
           <Text style={{color:"white", fontSize:15}}>{this.getCardDesc()}</Text>
@@ -220,11 +229,18 @@ class MineScreen extends ScreenComponent {
   pressChangeName = () => {
     AlertPrompt(
       "请输入想要修改的昵称",
-      null,
+      this.props.renameFree ? "第一次修改昵称免费" : "本次修改昵称需要花费800钻石",
       "修改",
       "取消",
-      (text: string) => {
-
+      async (text: string): any => {
+        try {
+          await this.setState({bChangingName: true});
+          await this.props.dispatch(changeNickname(text));
+        } catch (e) {
+          //
+        } finally {
+          this.setState({bChangingName: false});
+        }
       }
     );
   }
@@ -320,6 +336,7 @@ function select(store: Object): Object {
     headUrl: store.user.headUrl,
     items: store.user.items,
     accountID: store.user.id,
+    renameFree: store.user.renameFree
   };
 }
 

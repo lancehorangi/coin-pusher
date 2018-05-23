@@ -22,7 +22,8 @@ export type State = {
   id: ?number,
   status: ?number,
   bgmEnabled: boolean,
-  countDown: number
+  countDown: number,
+  renameFree: boolean
 };
 
 const initialState = {
@@ -40,7 +41,8 @@ const initialState = {
   id: 0,
   status: 0,
   bgmEnabled: true,
-  countDown: 120
+  countDown: 120,
+  renameFree: false
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -73,7 +75,8 @@ function user(state: State = initialState, action: Action): State {
       integral: action.accountInfo.integral,
       entityID: action.accountInfo.entityID,
       headUrl: action.accountInfo.headUrl,
-      entityState: action.accountInfo.entityState
+      entityState: action.accountInfo.entityState,
+      renameFree: action.accountInfo.renameFree
     };
   }
 
@@ -118,6 +121,13 @@ function user(state: State = initialState, action: Action): State {
       ...state,
       items: action.items,
     };
+  }
+
+  if (action.type === "ACCOUNT_UPDATE_NICKNAME") {
+    return {
+      ...state,
+      nickName: action.nickname
+    }
   }
 
   if (action.type === "ROOM_QUEUE_SUCC") {

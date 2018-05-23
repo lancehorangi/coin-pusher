@@ -97,6 +97,10 @@ export type Action =
   | {
       type: "CLEAR_CHAT_MSGS"
     }
+  | {
+      type: "ACCOUNT_UPDATE_NICKNAME",
+      nickname: string
+    }
 ;
 
 export type Dispatch = (
