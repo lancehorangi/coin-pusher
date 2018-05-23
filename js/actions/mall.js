@@ -9,6 +9,7 @@ import { freshMoney, freshItems } from "./user";
 import RNPayfubao from "react-native-payfubao";
 import { PFBparaID, PFBAppID, PFBKey, notifyUrl } from "./../env";
 import uuid from "react-native-uuid";
+import DeviceInfo from "react-native-device-info";
 
 async function _getChargeList(): Promise<Object> {
   try {
@@ -84,7 +85,8 @@ async function _mallBuy(itemID: number, appleID: number, cost: number): Promise<
     console.log("PFB status=" + JSON.stringify(result));
 
     let apple = result.result == 106 ? 1 : 0;
-    let response = await APIRequest("pay/order", {itemID, orderNo, apple}, true, true);
+    let channel = DeviceInfo.getApplicationName();
+    let response = await APIRequest("pay/order", {itemID, orderNo, apple, channel}, true, true);
 
     if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
