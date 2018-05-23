@@ -229,7 +229,7 @@ class MineScreen extends ScreenComponent {
   pressChangeName = () => {
     AlertPrompt(
       "请输入想要修改的昵称",
-      this.props.renameFree ? "第一次修改昵称免费" : "本次修改昵称需要花费800钻石",
+      this.props.renameFree ? "第一次修改昵称免费" : "本次修改昵称需要花费1000钻石",
       "修改",
       "取消",
       async (text: string): any => {
