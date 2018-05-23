@@ -200,6 +200,14 @@ function changeNickname(nickname: string): ThunkAction {
   };
 }
 
+function finishFirstHint(index: number): Action {
+  return {
+    type: "UPDATE_GAME_FIRST_HINT",
+    index,
+    value: true
+  };
+}
+
 module.exports = {
   getAccountHistory,
   heartRequest,
@@ -207,5 +215,6 @@ module.exports = {
   freshItems,
   feedback,
   toggleBGM,
-  changeNickname
+  changeNickname,
+  finishFirstHint
 };

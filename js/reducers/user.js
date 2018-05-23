@@ -23,7 +23,8 @@ export type State = {
   status: ?number,
   bgmEnabled: boolean,
   countDown: number,
-  renameFree: boolean
+  renameFree: boolean,
+  firstHint: Array<Object>
 };
 
 const initialState = {
@@ -42,7 +43,8 @@ const initialState = {
   status: 0,
   bgmEnabled: true,
   countDown: 120,
-  renameFree: false
+  renameFree: false,
+  firstHint: [false, false]
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -127,7 +129,7 @@ function user(state: State = initialState, action: Action): State {
     return {
       ...state,
       nickName: action.nickname
-    }
+    };
   }
 
   if (action.type === "ROOM_QUEUE_SUCC") {
@@ -142,6 +144,22 @@ function user(state: State = initialState, action: Action): State {
     return {
       ...state,
       bgmEnabled: action.bgmEnabled
+    };
+  }
+
+  if (action.type === "INIT_LOCAL_VALUES") {
+    return {
+      ...state,
+      firstHint: state.firstHint ? state.firstHint : [false, false]
+    };
+  }
+
+  if (action.type === "UPDATE_GAME_FIRST_HINT") {
+    let {firstHint} = state;
+    firstHint[action.index] = action.value;
+    return {
+      ...state,
+      firstHint
     };
   }
 

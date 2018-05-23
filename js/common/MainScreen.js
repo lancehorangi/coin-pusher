@@ -31,7 +31,6 @@ import CustomMainScreenTabMsgButton from "./CustomMainScreenTabMsgButton";
 import { showModal } from "./../navigator";
 import F8Colors from "./F8Colors";
 
-
 const initialLayout = {
   height: 0,
   width: Dimensions.get("window").width,

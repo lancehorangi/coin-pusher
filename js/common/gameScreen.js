@@ -32,7 +32,8 @@ import {
   clearChatMsg,
   switchWiper,
   roomNotify,
-  feedback
+  feedback,
+  finishFirstHint
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
@@ -45,6 +46,7 @@ import RoomHistory from "./RoomHistory";
 import ImgButton from "./ImgButton";
 import PlayButton from "./PlayButton";
 import ModalRoomNotify from "./ModalRoomNotify";
+import ModalFirstHint from "./ModalFirstHint";
 import { dismissModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
@@ -52,6 +54,7 @@ import { API_ENUM, API_RESULT, GAME_STATE } from "../api";
 import { PlayBGM, StopBGM, PlayCoinSound, PlayGetCoinSound } from "../sound";
 import Permissions from "react-native-permissions";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { FIRST_HINT_PLAY, FIRST_HINT_QUEUE } from "../const";
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 
@@ -81,7 +84,9 @@ type States = {
   bShowHint: boolean,
   bShowRoomNotify: boolean,
   centerInfo: string,
-  countDown: number
+  countDown: number,
+  firstHintType: number,
+  bShowFirstHint: boolean
 };
 
 class GameScreen extends ScreenComponent<Props, States> {
@@ -101,7 +106,8 @@ class GameScreen extends ScreenComponent<Props, States> {
       bShowChatList: true,
       bShowHint: false,
       centerInfo: "",
-      countDown: 120
+      countDown: 120,
+      bShowFirstHint: false
     };
     this._isMounted = false;
     this._profitAnimMgr = null;
@@ -191,6 +197,9 @@ class GameScreen extends ScreenComponent<Props, States> {
         PlayBGM();
       }
 
+      if (!this.props.firstHint[FIRST_HINT_PLAY]) {
+        await this.setState({bShowFirstHint:true, firstHintType:FIRST_HINT_PLAY});
+      }
     } catch (e) {
       //toastShow("进入房间失败:" + e.message);
       toastShow("房间已有玩家,请排队");
@@ -204,6 +213,10 @@ class GameScreen extends ScreenComponent<Props, States> {
           "取消",
           (): any => this._queueReq()
         );
+      }
+
+      if (!this.props.firstHint[FIRST_HINT_QUEUE]) {
+        await this.setState({bShowFirstHint:true, firstHintType:FIRST_HINT_QUEUE});
       }
       return;
 
@@ -915,6 +928,15 @@ class GameScreen extends ScreenComponent<Props, States> {
           }}
         />
 
+        <ModalFirstHint
+          visible={this.state.bShowFirstHint}
+          type={this.state.firstHintType}
+          onPressClose={async (): any => {
+            await this.props.dispatch(finishFirstHint(this.state.firstHintType));
+            await this.setState({bShowFirstHint: false});
+          }}
+        />
+
         {this.renderVideo()}
         {this.renderCenterInfo()}
 
@@ -1150,7 +1172,8 @@ function select(store: Object): Object {
     status: store.user.entityState,
     userRoomID: store.user.roomID,
     enabledBGM: store.user.bgmEnabled,
-    chatList: store.chat.chatList
+    chatList: store.chat.chatList,
+    firstHint: store.user.firstHint
   };
 }
 

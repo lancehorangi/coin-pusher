@@ -101,6 +101,14 @@ export type Action =
       type: "ACCOUNT_UPDATE_NICKNAME",
       nickname: string
     }
+  | {
+      type: "INIT_LOCAL_VALUES"
+    }
+  | {
+      type: "UPDATE_GAME_FIRST_HINT",
+      index: number,
+      value: boolean
+    }
 ;
 
 export type Dispatch = (
