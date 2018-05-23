@@ -206,6 +206,10 @@ function changeNickname(nickname: string): ThunkAction {
         type: "ACCOUNT_UPDATE_NICKNAME",
         nickname: nickname,
       });
+      dispatch({
+        type: "ACCOUNT_UPDATE_RENAME_FREE",
+        value: false
+      });
       dispatch(freshMoney());
     },
     (err: Error) => {

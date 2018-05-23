@@ -109,6 +109,10 @@ export type Action =
       index: number,
       value: boolean
     }
+  | {
+      type: "ACCOUNT_UPDATE_RENAME_FREE",
+      value: boolean
+    }
 ;
 
 export type Dispatch = (

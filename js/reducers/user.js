@@ -82,6 +82,13 @@ function user(state: State = initialState, action: Action): State {
     };
   }
 
+  if (action.type === "ACCOUNT_UPDATE_RENAME_FREE") {
+    return {
+      ...state,
+      renameFree: action.value
+    };
+  }
+
   if(action.type === "CHECKIN_INFO") {
     return {
       ...state,
