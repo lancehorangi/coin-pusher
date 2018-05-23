@@ -948,8 +948,8 @@ class GameScreen extends ScreenComponent<Props, States> {
             {this.renderVideoHeader()}
           </View>
           <View>
-            {this.renderGainEffect()}
             {this.renderChat()}
+            {this.renderGainEffect()}          
             {this.renderBottomSideBtns()}
             {this.renderBottom()}
           </View>
