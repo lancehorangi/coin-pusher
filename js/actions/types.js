@@ -113,6 +113,10 @@ export type Action =
       type: "ACCOUNT_UPDATE_RENAME_FREE",
       value: boolean
     }
+  | {
+      type: "UPDATE_BANNER_INFO",
+      bannerList: Array<string>
+    }
 ;
 
 export type Dispatch = (

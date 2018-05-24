@@ -28,39 +28,19 @@ declare type itemType = {
 
 type Props = {
   dispatch: (action: any) => Promise<any>,
-  navigator: navigatorType
+  navigator: navigatorType,
+  bannerList: Array<Object>
 };
 
 type state = {
-  activeSlide: number,
-  entries: Array<Object>
+  activeSlide: number
 };
 
 class BannerCarousel extends Component<Props, state> {
   constructor(props: Object) {
     super(props);
     this.state = {
-      activeSlide: 0,
-      entries: [
-        {
-          image: require("./img/banner01.png"),
-          // press: () => {
-          //   this.props.navigator.push({
-          //     screen: "CP.IAPScreen",
-          //     title: "商城",
-          //   });
-          // }
-        },
-        {
-          image: require("./img/banner02.png"),
-          // press: () => {
-          //   this.props.navigator.push({
-          //     screen: "CP.MallScreen",
-          //     title: "积分商城",
-          //   });
-          // }
-        }
-      ]
+      activeSlide: 0
     };
   }
 
@@ -72,9 +52,10 @@ _renderItem = ({
     <TouchableOpacity
       style={styles.image}
       activeOpacity={1}
-      onPress={item.press}>
+      // onPress={item.press}
+    >
       <Image style={{width:WIN_WIDTH, height:BANNER_HEIGHT, resizeMode: "stretch"}}
-        source={ item.image }
+        source={ {uri:item} }
         loadingIndicatorSource={<ActivityIndicator size='small' color='white' />}
       />
     </TouchableOpacity>
@@ -82,7 +63,8 @@ _renderItem = ({
 }
 
 pagination = (): Element<typeof View> => {
-  const { entries, activeSlide } = this.state;
+  const { activeSlide } = this.state;
+  const { bannerList } = this.props;
   return (
     <View stule={{
       position: "absolute",
@@ -93,7 +75,7 @@ pagination = (): Element<typeof View> => {
       alignContent: "center",
     }}>
       <Pagination
-        dotsLength={entries.length}
+        dotsLength={bannerList.length}
         activeDotIndex={activeSlide}
         containerStyle={{
           backgroundColor: "transparent",
@@ -124,7 +106,7 @@ render (): Element<typeof View> {
   return (
     <View style={styles.container}>
       <Carousel
-        data={this.state.entries}
+        data={this.props.bannerList}
         renderItem={this._renderItem}
         sliderWidth={WIN_WIDTH}
         itemWidth={WIN_WIDTH}
@@ -156,6 +138,7 @@ function select(store: Object): Object {
   return {
     token: store.user.token,
     navigator: store.appNavigator.navigator,
+    bannerList: store.lobby.bannerList
   };
 }
 

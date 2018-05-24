@@ -251,6 +251,34 @@ function getRoomHistory(id: number): ThunkAction {
   };
 }
 
+async function _getBanner(): Promise<Object> {
+  try {
+    let response = await APIRequest("account/getBanner.action", {}, true);
+
+    if(response.StatusCode != API_RESULT.STATUS_OK){
+      throw Error(response.ReasonPhrase);
+    }
+
+    return response;
+  } catch(e) {
+    throw Error(e.message);
+  }
+}
+
+function getBanner(): ThunkAction {
+  return (dispatch: Dispatch): Object => {
+    const response = _getBanner();
+    response.then((result: Object): any => {
+      dispatch({
+        type: "UPDATE_BANNER_INFO",
+        bannerList: result.bannerList,
+      });
+    });
+
+    return response;
+  };
+}
+
 module.exports = {
   showRoomList,
   enterRoom,
@@ -259,5 +287,6 @@ module.exports = {
   getRoomHistory,
   connectMeeting,
   roomInfo,
-  queueRoom
+  queueRoom,
+  getBanner
 };
