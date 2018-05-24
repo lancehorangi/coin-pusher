@@ -7,7 +7,7 @@ import type { Action, ThunkAction, Dispatch } from "./types";
 import { toastShow } from "./../util";
 import { freshMoney, freshItems } from "./user";
 import RNPayfubao from "react-native-payfubao";
-import { PFBparaID, PFBAppID, PFBKey, notifyUrl } from "./../env";
+import { PFBparaID, PFBAppID, PFBKey, getNotifyUrl } from "./../env";
 import uuid from "react-native-uuid";
 import DeviceInfo from "react-native-device-info";
 
@@ -80,7 +80,7 @@ async function _mallBuy(itemID: number, appleID: number, cost: number): Promise<
     //0:支付宝   1:微信   2:银联
     let appleCost = cost * 100;
     let result = await RNPayfubao.sendWithRepeatStatus(PFBparaID, PFBAppID, PFBKey,
-      "1", appleCost.toString(), orderNo, notifyUrl, appleID.toString(), ["1"]);
+      "1", appleCost.toString(), orderNo, getNotifyUrl(), appleID.toString(), ["1"]);
 
     console.log("PFB status=" + JSON.stringify(result));
 
@@ -96,7 +96,7 @@ async function _mallBuy(itemID: number, appleID: number, cost: number): Promise<
       await RNPayfubao.payWithBody(JSON.parse(response.data));
     }
     else {
-      await RNPayfubao.beginApplePayWithAppleID(appleID.toString(), appleCost.toString(), orderNo, notifyUrl);
+      await RNPayfubao.beginApplePayWithAppleID(appleID.toString(), appleCost.toString(), orderNo, getNotifyUrl());
     }
   } catch(e) {
     throw Error(e.message);

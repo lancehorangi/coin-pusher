@@ -4,7 +4,7 @@ import { Dimensions, Platform, AlertIOS } from "react-native";
 import codePush from "react-native-code-push";
 import RNBugly from "react-native-bugly";
 import DeviceInfo from "react-native-device-info";
-import { updateToggleAddress } from "./env";
+import { updateToggleAddress, getCodePushKey } from "./env";
 import JPush from "jpush-react-native";
 import RNProgressHud from "react-native-progress-display";
 
@@ -153,6 +153,7 @@ export async function codePushSync() {
       _codePushUpdating = true;
       console.log("codePushSync enabled");
       await codePush.sync({
+        deploymentKey: getCodePushKey(),
         updateDialog: {
           appendReleaseDescription: true,
           descriptionPrefix: "更新内容:",

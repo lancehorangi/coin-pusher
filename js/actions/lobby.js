@@ -245,6 +245,8 @@ function getRoomHistory(id: number): ThunkAction {
         type: "ROOM_HISTORY_INFO",
         roomGameHistory: result.list,
       });
+    }, (err: Error) => {
+      console.warn("getRoomHistory:" + err.message);
     });
 
     return response;
@@ -273,6 +275,8 @@ function getBanner(): ThunkAction {
         type: "UPDATE_BANNER_INFO",
         bannerList: result.bannerList,
       });
+    }, (err: Error) => {
+      console.warn("getBanner:" + err.message);
     });
 
     return response;

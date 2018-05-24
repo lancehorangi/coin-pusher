@@ -26,6 +26,7 @@ import { logIn } from "../actions";
 import Toast from "react-native-root-toast";
 import { isIphoneX, toastShow } from "./../util";
 import ScreenComponent from "./ScreenComponent";
+import { setDevMode, getDevMode } from "../env";
 
 const IPHONE_X_HEAD = 30;
 const WIN_WIDTH = Dimensions.get("window").width,
@@ -104,6 +105,16 @@ class LoginScreen extends ScreenComponent<Props, Stats> {
   }
 
   onPhoneChange = (phone: string) => {
+    if (phone === "99999999999") {
+      setDevMode(!getDevMode());
+      if (getDevMode()) {
+        toastShow("切换到测试环境");
+      }
+      else {
+        toastShow("切换到正式环境");
+      }
+    }
+
     this.setState({phone});
   }
 
