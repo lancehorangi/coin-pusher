@@ -24,7 +24,8 @@ export type State = {
   bgmEnabled: boolean,
   countDown: number,
   renameFree: boolean,
-  firstHint: Array<Object>
+  firstHint: Array<Object>,
+  isGM: boolean
 };
 
 const initialState = {
@@ -44,7 +45,8 @@ const initialState = {
   bgmEnabled: true,
   countDown: 120,
   renameFree: false,
-  firstHint: [false, false]
+  firstHint: [false, false],
+  isGM: false
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -78,7 +80,8 @@ function user(state: State = initialState, action: Action): State {
       entityID: action.accountInfo.entityID,
       headUrl: action.accountInfo.headUrl,
       entityState: action.accountInfo.entityState,
-      renameFree: action.accountInfo.renameFree != 1
+      renameFree: action.accountInfo.renameFree != 1,
+      isGM: action.accountInfo.gm === 1
     };
   }
 

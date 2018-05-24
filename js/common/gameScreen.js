@@ -156,6 +156,10 @@ class GameScreen extends ScreenComponent<Props, States> {
         dismissModal("您已自动退出房间");
       }
 
+      if (!this.state.bPlaying && resultRoomInfo.info.entityID == 0) {
+        this.reqEnterRoom();
+      }
+
       await this.props.dispatch(getChatHistory(roomID));
       let roomNotifyResult = await this.props.dispatch(roomNotify());
       if (roomNotifyResult.specialReward) {
@@ -168,7 +172,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       result = await this.props.dispatch(roomInfo(roomID));
 
       //机台处在非正常状态
-      if (result.info.state !== 0) {
+      if (result.info.state !== 0 && !this.props.isGM) {
         dismissModal("此房间暂不可用");
         return;
       }
@@ -949,7 +953,7 @@ class GameScreen extends ScreenComponent<Props, States> {
           </View>
           <View>
             {this.renderChat()}
-            {this.renderGainEffect()}          
+            {this.renderGainEffect()}
             {this.renderBottomSideBtns()}
             {this.renderBottom()}
           </View>
@@ -1173,7 +1177,8 @@ function select(store: Object): Object {
     userRoomID: store.user.roomID,
     enabledBGM: store.user.bgmEnabled,
     chatList: store.chat.chatList,
-    firstHint: store.user.firstHint
+    firstHint: store.user.firstHint,
+    isGM: store.user.isGM
   };
 }
 
