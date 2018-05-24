@@ -1,5 +1,8 @@
 "use strict";
-import { serverURL, payServerUrl } from "./env";
+import { getServerUrl,
+  getPayServerUrl,
+  getNotifyUrl
+} from "./env";
 import md5 from "js-md5";
 import { getStoreDispatch } from "./configureListener";
 import { loggedOut } from "./actions";
@@ -74,7 +77,7 @@ export function APIRequest(path, json, bToken = false, bPayReq = false, bRelogin
     if (json["auth"]) {
       delete json["auth"];
     }
-    
+
     let propList = Object.keys(json);
     let checkStr = "";
     propList.sort();
@@ -91,7 +94,7 @@ export function APIRequest(path, json, bToken = false, bPayReq = false, bRelogin
       console.log("Start api req: path=" + path + ", json" + JSON.stringify(json) + ", checkStr=" + checkStr);
     }
 
-    let sUrl = bPayReq ? payServerUrl : serverURL;
+    let sUrl = bPayReq ? getPayServerUrl() : getServerUrl();
 
     fetch(sUrl + path, {
       body:JSON.stringify(json),

@@ -19,11 +19,7 @@ function getStoreDispatch() {
 }
 
 function getStore() {
-  if(_store) {
-    return _store;
-  }
-
-  return null;
+  return _store;
 }
 
 function configureListener(store): void {
@@ -160,11 +156,13 @@ let _appState = AppState.currentState;
 let _handleAppStateChange = (nextAppState) => {
   if (_appState.match(/inactive|background/) && nextAppState === "active") {
     console.log("App has come to the foreground!");
-    codePushSync();
+    if (_store && _store.getState().user.token && _store.getState().user.token.length != 0) {
+      codePushSync();
+    }
   }
   _appState = nextAppState;
 };
 
 AppState.addEventListener("change", _handleAppStateChange);
 
-module.exports = {configureListener, getStoreDispatch, getStore};
+module.exports = {configureListener, getStoreDispatch, getStore, _store};

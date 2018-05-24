@@ -74,14 +74,8 @@ class ProfitAnimationMgr extends Component<Props, States> {
 const styles = StyleSheet.create({
   container: {
     flex: 0,
-    //width: "50%",
-    //justifyContent: "space-between",
     alignContent: "center",
-    alignItems: "center",
-    //backgroundColor: "#ee494388",
-    //height: 80
-    //paddingHorizontal: 10,
-    //flexDirection: "row",
+    alignItems: "center"
   }
 });
 

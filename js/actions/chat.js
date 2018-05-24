@@ -5,6 +5,7 @@
 import { APIRequest, API_RESULT } from "../api";
 import type { Action, ThunkAction, Dispatch } from "./types";
 import { toastShow } from "./../util";
+import { getSafeString } from "../forbid";
 
 async function _getChatHistory(roomID: number, readIdx: number = 0): Promise<Object> {
   try {
@@ -41,7 +42,10 @@ function getChatHistory(roomID: number): ThunkAction {
 
 async function _chatReq(roomID: number, content: string): Promise<Object>{
   try {
-    let response = await APIRequest("room/chat.action", { roomID, content }, true);
+    let safeContent = getSafeString(content);
+    console.log("Safe Content:" + safeContent);
+
+    let response = await APIRequest("room/chat.action", { roomID, content:safeContent }, true);
 
     if(response.StatusCode != API_RESULT.STATUS_OK){
       throw Error(response.ReasonPhrase);
