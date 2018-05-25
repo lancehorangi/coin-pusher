@@ -185,6 +185,8 @@ export async function codePushSync() {
         console.log("codePushSync:" + progress.receivedBytes + " of " + progress.totalBytes + " received.");
         RNProgressHud.showProgressWithStatus(progress.receivedBytes / progress.totalBytes, "正在下载更新...");
       });
+
+      codePush.notifyAppReady();
     }
   } catch (e) {
     //
@@ -197,6 +199,14 @@ export async function codePushSync() {
   }
 
   return;
+}
+
+export function installCodePush() {
+  // codePush.getUpdateMetadata(codePush.UpdateState.LATEST).then((update) => {
+  //   if (update && update.failedInstall) {
+  //     update.install(codePush.InstallMode.IMMEDIATE);
+  //   }
+  // });
 }
 
 export function BuglyUpdateVersion() {

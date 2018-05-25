@@ -10,6 +10,7 @@ import ScreenComponent from "./ScreenComponent";
 import F8Colors from "./F8Colors";
 import codePush from "react-native-code-push";
 import DeviceInfo from "react-native-device-info";
+import { codePushSync, installCodePush } from "../util"
 
 class OptionScreen extends ScreenComponent {
   constructor(props) {
@@ -42,6 +43,11 @@ class OptionScreen extends ScreenComponent {
     this.props.dispatch(loggedOut());
   }
 
+  pressCheckUpdate = async () => {
+    await codePushSync();
+    // installCodePush();
+  }
+
   renderBtn = () => {
     return (
       <List containerStyle={styles.listContainer}>
@@ -69,9 +75,18 @@ class OptionScreen extends ScreenComponent {
         />
 
         <ListItem
-          containerStyle={{borderTopWidth: 0, borderBottomWidth: 1, borderBottomColor: F8Colors.mainBgColor2, backgroundColor:"#ee4943"}}
+          containerStyle={{borderTopWidth: 0, borderBottomWidth: 1, borderBottomColor: F8Colors.mainBgColor2}}
           titleStyle={{color: "#d1d3e8", fontSize: 15}}
           key={3}
+          title={"检测新版本"}
+          hideChevron={true}
+          onPress={this.pressCheckUpdate}
+        />
+
+        <ListItem
+          containerStyle={{borderTopWidth: 0, borderBottomWidth: 1, borderBottomColor: F8Colors.mainBgColor2, backgroundColor:"#ee4943"}}
+          titleStyle={{color: "#d1d3e8", fontSize: 15}}
+          key={4}
           title={"退出登录"}
           hideChevron={true}
           onPress={this.pressLogout}
