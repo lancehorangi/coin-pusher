@@ -156,6 +156,7 @@ export async function codePushSync() {
       num = await codePush.sync({
         deploymentKey: getCodePushKey(),
         updateDialog: {
+          ignoreFailedUpdates: false,
           appendReleaseDescription: true,
           descriptionPrefix: "更新内容:",
           mandatoryContinueButtonLabel: "更新",
