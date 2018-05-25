@@ -134,6 +134,7 @@ export function getCurrFormat(count: number) {
 }
 
 export async function codePushSync() {
+  let num;
   try {
     let response = await fetch( updateToggleAddress, {
       method: "GET",
@@ -152,7 +153,7 @@ export async function codePushSync() {
     if ((toggleData[name] && toggleData[name]["enabled"]) || __DEV__) {
       _codePushUpdating = true;
       console.log("codePushSync enabled");
-      await codePush.sync({
+      num = await codePush.sync({
         deploymentKey: getCodePushKey(),
         updateDialog: {
           appendReleaseDescription: true,
@@ -191,6 +192,7 @@ export async function codePushSync() {
   } catch (e) {
     //
     console.error("err:" + e.message);
+    throw e;
   } finally {
     BuglyUpdateVersion();
     RNProgressHud.dismiss();
@@ -198,15 +200,21 @@ export async function codePushSync() {
     showCacheAlert();
   }
 
-  return;
+  return num;
 }
 
-export function installCodePush() {
-  // codePush.getUpdateMetadata(codePush.UpdateState.LATEST).then((update) => {
-  //   if (update && update.failedInstall) {
-  //     update.install(codePush.InstallMode.IMMEDIATE);
-  //   }
-  // });
+export async function installCodePush() {
+  try {
+    let update = await codePush.getUpdateMetadata(codePush.UpdateState.LATEST);
+
+    console.log("installCodePush:" + update.failedInstall);
+    if (update && update.failedInstall)
+    {
+      update.install(codePush.InstallMode.IMMEDIATE);
+    }
+  } catch (e) {
+    throw e;
+  }
 }
 
 export function BuglyUpdateVersion() {
