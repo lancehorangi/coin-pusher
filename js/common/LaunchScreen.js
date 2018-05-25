@@ -110,17 +110,6 @@ class LaunchScreen extends ScreenComponent {
 
   async logIn()
   {
-    //NimUtils.getCacheSize().then(size => Alert.alert(size))
-    //NimSession.login("test001", "340045a515dc689897ad77adf3c06346").then(size => Alert.alert(size), e => Alert.alert(e.message));
-
-    // let response = await fetch(serverURL + 'account/getToken',{
-    //   method: 'post',
-    //   headers: {
-    //     'Content-Type' : 'application/x-www-form-urlencoded'
-    //   },
-    //   body: JSON.stringify({account:'test124', password:'test124'})
-    //   });
-
     await this.props.dispatch(logIn("test135", "test135"));
   }
 

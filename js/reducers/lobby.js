@@ -9,11 +9,13 @@ import type { Action } from "../actions/types";
 export type State = {
   list: null | Array<Object>,
   roomType?: number,
-  baseCost?: number
+  baseCost?: number,
+  bannerList: Array<string>
 };
 
 const initialState = {
   list: null,
+  bannerList: []
 };
 
 function lobby(state: State = initialState, action: Action): State {
@@ -34,6 +36,14 @@ function lobby(state: State = initialState, action: Action): State {
 
   if(action.type === "LOGGED_OUT"){
     return initialState;
+  }
+
+  if (action.type === "UPDATE_BANNER_INFO") {
+    let {bannerList} = action;
+    return {
+      ...state,
+      bannerList
+    };
   }
 
   return state;

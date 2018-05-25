@@ -97,6 +97,26 @@ export type Action =
   | {
       type: "CLEAR_CHAT_MSGS"
     }
+  | {
+      type: "ACCOUNT_UPDATE_NICKNAME",
+      nickname: string
+    }
+  | {
+      type: "INIT_LOCAL_VALUES"
+    }
+  | {
+      type: "UPDATE_GAME_FIRST_HINT",
+      index: number,
+      value: boolean
+    }
+  | {
+      type: "ACCOUNT_UPDATE_RENAME_FREE",
+      value: boolean
+    }
+  | {
+      type: "UPDATE_BANNER_INFO",
+      bannerList: Array<string>
+    }
 ;
 
 export type Dispatch = (

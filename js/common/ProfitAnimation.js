@@ -67,7 +67,7 @@ class ProfitAnimation extends Component<Props> {
       return {
         opacity: anim.interpolate({
           inputRange: [0, TO_VALUE / 3, TO_VALUE / 3 * 2, TO_VALUE],
-          outputRange: [0, 1, 1, 0],
+          outputRange: [1, 1, 1, 0],
           extrapolate: "clamp"
         }),
         transform: [
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    top: 0,
+    top: -20,
     flex: 0,
     height: HEIGHT,
     minWidth: WIDTH,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
-    backgroundColor: "#ee494388",
+    backgroundColor: "#ee4943aa",
     //paddingHorizontal: 10,
     flexDirection: "row",
   },

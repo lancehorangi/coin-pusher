@@ -19,7 +19,7 @@ import * as WeChat from "react-native-wechat";
 import { NimUtils } from "react-native-netease-im";
 
 // Config
-import { talkingdataID, wxID, appTitle } from "./env";
+import { talkingdataID, wxID } from "./env";
 
 //console.disableYellowBox = true;
 Text.defaultProps.allowFontScaling = false;
@@ -44,14 +44,15 @@ configureStore(
     //init native event listener
     configureListener(store);
     configureAPIToken(store.getState().user.token, store.getState().user.id);
-
+    store.dispatch({type: "INIT_LOCAL_VALUES"});
+    
     let { token, account } = store.getState().user;
     let bLogin = token && token.length != 0;
-    codePushSync();
 
     if (bLogin) {
       RNTalkingdataGame.setAccountName(account, account);
       RNBugly.setUserIdentifier(account);
+      codePushSync();
     }
 
     Navigation.startTabBasedApp({
@@ -61,7 +62,7 @@ configureStore(
           screen: "CP.MainScreen",
           icon: require("./common/img/buttons/hall.png"),
           selectedIcon: require("./common/img/buttons/hall_2.png"),
-          title: appTitle,
+          title: "富豪马戏团",
           navigatorStyle: {
             navBarHidden: false
           },
