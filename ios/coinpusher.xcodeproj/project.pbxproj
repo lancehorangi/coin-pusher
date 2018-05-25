@@ -1991,7 +1991,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cpg.mjone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cp.mjone;
 				PRODUCT_NAME = coinpusher;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2024,7 +2024,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cpg.mjone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cp.mjone;
 				PRODUCT_NAME = coinpusher;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
