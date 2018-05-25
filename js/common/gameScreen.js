@@ -31,19 +31,22 @@ import {
   chatReq,
   clearChatMsg,
   switchWiper,
-  roomNotify
+  roomNotify,
+  feedback,
+  finishFirstHint
 } from "../actions";
 import ScreenComponent from "./ScreenComponent";
 import MoneyLabel from "./MoneyLabel";
 import ProfitAnimationMgr from "./ProfitAnimationMgr";
 import Spinner from "react-native-spinkit";
 import ChatList from "./ChatList";
-import { isIphoneX, toastShow, getMachineName, PlatformAlert } from "./../util";
+import { isIphoneX, toastShow, getMachineName, PlatformAlert, AlertPrompt } from "./../util";
 import ModalOK from "./ModalOK";
 import RoomHistory from "./RoomHistory";
 import ImgButton from "./ImgButton";
 import PlayButton from "./PlayButton";
 import ModalRoomNotify from "./ModalRoomNotify";
+import ModalFirstHint from "./ModalFirstHint";
 import { dismissModal } from "./../navigator";
 import KSYVideo from "react-native-ksyvideo";
 import { Avatar } from "react-native-elements";
@@ -51,6 +54,7 @@ import { API_ENUM, API_RESULT, GAME_STATE } from "../api";
 import { PlayBGM, StopBGM, PlayCoinSound, PlayGetCoinSound } from "../sound";
 import Permissions from "react-native-permissions";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { FIRST_HINT_PLAY, FIRST_HINT_QUEUE } from "../const";
 const WIN_WIDTH = Dimensions.get("window").width,
   WIN_HEIGHT = Dimensions.get("window").height;
 
@@ -72,6 +76,7 @@ type States = {
   bLoading: boolean,
   autoPlay: boolean,
   bPlaying: boolean,
+  bSending: boolean,
   queuing: boolean,
   bShowChatTextInput: boolean,
   chatMsg: string,
@@ -79,7 +84,9 @@ type States = {
   bShowHint: boolean,
   bShowRoomNotify: boolean,
   centerInfo: string,
-  countDown: number
+  countDown: number,
+  firstHintType: number,
+  bShowFirstHint: boolean
 };
 
 class GameScreen extends ScreenComponent<Props, States> {
@@ -92,13 +99,15 @@ class GameScreen extends ScreenComponent<Props, States> {
       autoPlay: false,
       bPlaying: false,
       queuing: false,
+      bSending: false,
       bShowChatTextInput: false,
       bShowRoomNotify: false,
       chatMsg: "",
       bShowChatList: true,
       bShowHint: false,
       centerInfo: "",
-      countDown: 120
+      countDown: 120,
+      bShowFirstHint: false
     };
     this._isMounted = false;
     this._profitAnimMgr = null;
@@ -147,6 +156,10 @@ class GameScreen extends ScreenComponent<Props, States> {
         dismissModal("您已自动退出房间");
       }
 
+      if (!this.state.bPlaying && resultRoomInfo.info.entityID == 0) {
+        this.reqEnterRoom();
+      }
+
       await this.props.dispatch(getChatHistory(roomID));
       let roomNotifyResult = await this.props.dispatch(roomNotify());
       if (roomNotifyResult.specialReward) {
@@ -159,7 +172,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       result = await this.props.dispatch(roomInfo(roomID));
 
       //机台处在非正常状态
-      if (result.info.state !== 0) {
+      if (result.info.state !== 0 && !this.props.isGM) {
         dismissModal("此房间暂不可用");
         return;
       }
@@ -188,6 +201,9 @@ class GameScreen extends ScreenComponent<Props, States> {
         PlayBGM();
       }
 
+      if (!this.props.firstHint[FIRST_HINT_PLAY]) {
+        await this.setState({bShowFirstHint:true, firstHintType:FIRST_HINT_PLAY});
+      }
     } catch (e) {
       //toastShow("进入房间失败:" + e.message);
       toastShow("房间已有玩家,请排队");
@@ -201,6 +217,10 @@ class GameScreen extends ScreenComponent<Props, States> {
           "取消",
           (): any => this._queueReq()
         );
+      }
+
+      if (!this.props.firstHint[FIRST_HINT_QUEUE]) {
+        await this.setState({bShowFirstHint:true, firstHintType:FIRST_HINT_QUEUE});
       }
       return;
 
@@ -649,6 +669,35 @@ class GameScreen extends ScreenComponent<Props, States> {
 
   renderVideoHeader = (): Component => {
     let {roomInfo} = this.props;
+    let feedbackBtn;
+
+    if (this.state.bPlaying) {
+      feedbackBtn = (
+        <TouchableOpacity style={styles.feedbackBtn}
+          onPress={async (): any => {
+            let content = getMachineName(roomInfo.roomID) + "出现问题, 官方将及时修复";
+            AlertPrompt(
+              "报修",
+              content,
+              "发送",
+              "取消",
+              (text: string) => {
+                let pattern = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+                if (!pattern.test(text)) {
+                  Alert.alert("请输入正确的手机号");
+                  return;
+                }
+
+                this.props.dispatch(feedback(text, content));
+              }
+            );
+          }}>
+          <Text style={{color: "white"}}>报修</Text>
+        </TouchableOpacity>
+      );
+    }
+
+
     if (roomInfo && roomInfo.entityID != 0) {
       return (
         <View style={styles.videoHeaderContainer}>
@@ -676,6 +725,7 @@ class GameScreen extends ScreenComponent<Props, States> {
               </Text>
             </View>
           </View>
+          {feedbackBtn}
         </View>
       );
     }
@@ -736,8 +786,13 @@ class GameScreen extends ScreenComponent<Props, States> {
             returnKeyType={"send"}
             maxLength={50}
             onSubmitEditing={ async (): any => {
+              if (this.state.bSending) {
+                return;
+              }
+
+              await this.setState({bSending: true});
               await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
-              await this.setState({bShowChatTextInput: false});
+              await this.setState({bShowChatTextInput: false, bSending: false});
             }}
             onChangeText={async (text: string): any => {
               this.setState({chatMsg: text});
@@ -747,8 +802,13 @@ class GameScreen extends ScreenComponent<Props, States> {
             accessibilityTraits="button"
             onPress={async (): any => {
               console.log("room/chat.action chat:" + this.state.chatMsg);
+              if (this.state.bSending) {
+                return;
+              }
+
+              await this.setState({bSending: true});
               await this.props.dispatch(chatReq(this.props.roomID, this.state.chatMsg));
-              await this.setState({bShowChatTextInput: false});
+              await this.setState({bShowChatTextInput: false, bSending: false});
             }}
             activeOpacity={0.5}
             style={styles.sendChatBtn}
@@ -872,6 +932,15 @@ class GameScreen extends ScreenComponent<Props, States> {
           }}
         />
 
+        <ModalFirstHint
+          visible={this.state.bShowFirstHint}
+          type={this.state.firstHintType}
+          onPressClose={async (): any => {
+            await this.props.dispatch(finishFirstHint(this.state.firstHintType));
+            await this.setState({bShowFirstHint: false});
+          }}
+        />
+
         {this.renderVideo()}
         {this.renderCenterInfo()}
 
@@ -883,8 +952,8 @@ class GameScreen extends ScreenComponent<Props, States> {
             {this.renderVideoHeader()}
           </View>
           <View>
-            {this.renderGainEffect()}
             {this.renderChat()}
+            {this.renderGainEffect()}
             {this.renderBottomSideBtns()}
             {this.renderBottom()}
           </View>
@@ -1019,6 +1088,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
     flexDirection: "row",
+    width: "100%",
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center"
@@ -1032,6 +1102,18 @@ const styles = StyleSheet.create({
   playerInfoContainer: {
     height: 40,
     flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00000088",
+    paddingHorizontal: 5,
+    minWidth: 50,
+    borderRadius: 30
+  },
+  feedbackBtn: {
+    //height: 40,
+    marginRight: 15,
+    padding: 5,
+    justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
     backgroundColor: "#00000088",
@@ -1094,7 +1176,9 @@ function select(store: Object): Object {
     status: store.user.entityState,
     userRoomID: store.user.roomID,
     enabledBGM: store.user.bgmEnabled,
-    chatList: store.chat.chatList
+    chatList: store.chat.chatList,
+    firstHint: store.user.firstHint,
+    isGM: store.user.isGM
   };
 }
 

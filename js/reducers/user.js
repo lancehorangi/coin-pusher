@@ -22,7 +22,10 @@ export type State = {
   id: ?number,
   status: ?number,
   bgmEnabled: boolean,
-  countDown: number
+  countDown: number,
+  renameFree: boolean,
+  firstHint: Array<Object>,
+  isGM: boolean
 };
 
 const initialState = {
@@ -40,7 +43,10 @@ const initialState = {
   id: 0,
   status: 0,
   bgmEnabled: true,
-  countDown: 120
+  countDown: 120,
+  renameFree: false,
+  firstHint: [false, false],
+  isGM: false
 };
 
 function user(state: State = initialState, action: Action): State {
@@ -73,7 +79,16 @@ function user(state: State = initialState, action: Action): State {
       integral: action.accountInfo.integral,
       entityID: action.accountInfo.entityID,
       headUrl: action.accountInfo.headUrl,
-      entityState: action.accountInfo.entityState
+      entityState: action.accountInfo.entityState,
+      renameFree: action.accountInfo.renameFree != 1,
+      isGM: action.accountInfo.gm === 1
+    };
+  }
+
+  if (action.type === "ACCOUNT_UPDATE_RENAME_FREE") {
+    return {
+      ...state,
+      renameFree: action.value
     };
   }
 
@@ -120,6 +135,13 @@ function user(state: State = initialState, action: Action): State {
     };
   }
 
+  if (action.type === "ACCOUNT_UPDATE_NICKNAME") {
+    return {
+      ...state,
+      nickName: action.nickname
+    };
+  }
+
   if (action.type === "ROOM_QUEUE_SUCC") {
     return {
       ...state,
@@ -132,6 +154,22 @@ function user(state: State = initialState, action: Action): State {
     return {
       ...state,
       bgmEnabled: action.bgmEnabled
+    };
+  }
+
+  if (action.type === "INIT_LOCAL_VALUES") {
+    return {
+      ...state,
+      firstHint: state.firstHint ? state.firstHint : [false, false]
+    };
+  }
+
+  if (action.type === "UPDATE_GAME_FIRST_HINT") {
+    let {firstHint} = state;
+    firstHint[action.index] = action.value;
+    return {
+      ...state,
+      firstHint
     };
   }
 

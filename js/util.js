@@ -1,11 +1,15 @@
 import Toast from "react-native-root-toast";
+import { getStore, getStoreDispatch, _store } from "./configureListener";
 import { Dimensions, Platform, AlertIOS } from "react-native";
 import codePush from "react-native-code-push";
 import RNBugly from "react-native-bugly";
 import DeviceInfo from "react-native-device-info";
-import { updateToggleAddress } from "./env";
+import { updateToggleAddress, getCodePushKey } from "./env";
 import JPush from "jpush-react-native";
 import RNProgressHud from "react-native-progress-display";
+
+let _codePushUpdating = false;
+let _cacheAlert = null;
 
 export function isIphoneX() {
   const dimen = Dimensions.get("window");
@@ -25,6 +29,11 @@ export function PlatformAlert(
   yesCallback: () => mixed,
   noCallback: ?() => mixed) {
   if (Platform.OS === "ios") {
+    if (_codePushUpdating) {
+      _cacheAlert = {title, content, yesLabel, noLabel, yesCallback, noCallback};
+      return;
+    }
+
     AlertIOS.alert(
       title,
       content,
@@ -37,6 +46,48 @@ export function PlatformAlert(
           text: noLabel,
           onPress: noCallback ? noCallback : null,
           style: "cancel",
+        },
+      ]
+    );
+  }
+}
+
+function showCacheAlert() {
+  if (_cacheAlert) {
+    let {title, content, yesLabel, noLabel, yesCallback, noCallback} = _cacheAlert;
+    PlatformAlert(
+      title,
+      content,
+      yesLabel,
+      noLabel,
+      yesCallback,
+      noCallback
+    );
+    _cacheAlert = null;
+  }
+}
+
+export function AlertPrompt(
+  title: string,
+  content: string,
+  yesLabel: string,
+  noLabel: string,
+  yesCallback: () => mixed,
+  noCallback: ?() => mixed
+) {
+  if (Platform.OS === "ios") {
+    AlertIOS.prompt(
+      title,
+      content,
+      [
+        {
+          text: noLabel,
+          onPress: noCallback ? noCallback : null,
+          style: "cancel",
+        },
+        {
+          text: yesLabel,
+          onPress: yesCallback,
         },
       ]
     );
@@ -83,6 +134,7 @@ export function getCurrFormat(count: number) {
 }
 
 export async function codePushSync() {
+  let num;
   try {
     let response = await fetch( updateToggleAddress, {
       method: "GET",
@@ -99,9 +151,12 @@ export async function codePushSync() {
     console.log("codePushSync toggleData:" + JSON.stringify(toggleData));
 
     if ((toggleData[name] && toggleData[name]["enabled"]) || __DEV__) {
+      _codePushUpdating = true;
       console.log("codePushSync enabled");
-      await codePush.sync({
+      num = await codePush.sync({
+        deploymentKey: getCodePushKey(),
         updateDialog: {
+          ignoreFailedUpdates: false,
           appendReleaseDescription: true,
           descriptionPrefix: "更新内容:",
           mandatoryContinueButtonLabel: "更新",
@@ -119,6 +174,8 @@ export async function codePushSync() {
         switch (syncStatus) {
         case codePush.SyncStatus.DOWNLOADING_PACKAGE:
           // Show "downloading" modal
+          // RNProgressHud.showProgressWithStatus(0, "正在下载更新...");
+          RNProgressHud.showWithStatus("准备开始下载更新...");
           break;
         case codePush.SyncStatus.INSTALLING_UPDATE:
           // Hide "downloading" modal
@@ -130,15 +187,35 @@ export async function codePushSync() {
         console.log("codePushSync:" + progress.receivedBytes + " of " + progress.totalBytes + " received.");
         RNProgressHud.showProgressWithStatus(progress.receivedBytes / progress.totalBytes, "正在下载更新...");
       });
+
+      codePush.notifyAppReady();
     }
   } catch (e) {
     //
+    console.error("err:" + e.message);
+    throw e;
   } finally {
     BuglyUpdateVersion();
     RNProgressHud.dismiss();
+    _codePushUpdating = false;
+    showCacheAlert();
   }
 
-  return;
+  return num;
+}
+
+export async function installCodePush() {
+  try {
+    let update = await codePush.getUpdateMetadata(codePush.UpdateState.LATEST);
+
+    console.log("installCodePush:" + update.failedInstall);
+    if (update && update.failedInstall)
+    {
+      update.install(codePush.InstallMode.IMMEDIATE);
+    }
+  } catch (e) {
+    throw e;
+  }
 }
 
 export function BuglyUpdateVersion() {

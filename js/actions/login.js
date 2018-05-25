@@ -208,15 +208,6 @@ function getAccountInfo(bAlert: boolean = true): ThunkAction {
     response.then((result: Object): any => {
       dispatch({
         type: "ACCOUNT_INFO",
-        // nickName: result.nickName,
-        // roomID: result.roomID,
-        // meetingName: result.roomID,
-        // diamond: result.diamond,
-        // gold: result.gold,
-        // integral: result.integral,
-        // entityID: result.entityID,
-        // headUrl: result.url,
-        // entityState: result.entityState
         accountInfo: result.info
       });
 

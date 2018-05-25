@@ -44,14 +44,15 @@ configureStore(
     //init native event listener
     configureListener(store);
     configureAPIToken(store.getState().user.token, store.getState().user.id);
-
+    store.dispatch({type: "INIT_LOCAL_VALUES"});
+    
     let { token, account } = store.getState().user;
     let bLogin = token && token.length != 0;
-    codePushSync();
 
     if (bLogin) {
       RNTalkingdataGame.setAccountName(account, account);
       RNBugly.setUserIdentifier(account);
+      codePushSync();
     }
 
     Navigation.startTabBasedApp({

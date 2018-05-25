@@ -21,7 +21,8 @@ import {
   getCheckinInfo,
   freshItems,
   freshMoney,
-  showRoomList
+  showRoomList,
+  getBanner
 } from "./../actions";
 import BannerCarousel from "./BannerCarousel";
 import RoomList from "./RoomList";
@@ -30,7 +31,6 @@ import CustomMainScreenTabButton from "./CustomMainScreenTabButton";
 import CustomMainScreenTabMsgButton from "./CustomMainScreenTabMsgButton";
 import { showModal } from "./../navigator";
 import F8Colors from "./F8Colors";
-
 
 const initialLayout = {
   height: 0,
@@ -114,6 +114,7 @@ export class MainScreen extends React.Component<Props, States> {
       this.props.dispatch(freshMoney());
       this.props.dispatch(freshItems());
       this.props.dispatch(refreshMsgs());
+      this.props.dispatch(getBanner());
       this._refreshRoomList(this.state.index);
       break;
     case "willDisappear":
