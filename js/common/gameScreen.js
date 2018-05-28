@@ -675,7 +675,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       feedbackBtn = (
         <TouchableOpacity style={styles.feedbackBtn}
           onPress={async (): any => {
-            let content = getMachineName(roomInfo.roomID) + "出现问题, 官方将及时修复";
+            let content = getMachineName(roomInfo.roomID) + "出现问题, 官方将及时修复\n请输入手机号:";
             AlertPrompt(
               "报修",
               content,
