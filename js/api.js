@@ -141,9 +141,6 @@ export function APIRequest(path, json, bToken = false, bPayReq = false, bRelogin
             return resolve(response.json);
           }
         }
-
-        console.warn("API Request HTTP failed, response=" + response.ok);
-        return reject(Error("API:" + path + ", status code=" + response.status));
       }, (e) => {
         console.warn("API Request Json failed, response=" + e.message);
         return reject(Error(e.message));
