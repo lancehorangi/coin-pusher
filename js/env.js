@@ -47,7 +47,7 @@ let _env = {
   compatibleStoreVersion: "0.10",
   updateToggleAddress: "https://circus.oss-cn-hangzhou.aliyuncs.com/toggle.json",
   PFBparaID: "60100111",
-  PFBAppID: "12141",
+  PFBAppID: "12367",
   PFBKey: "10cf545073595d3e50d46eaa52b37bec",
   codePushStageKey: "rPwFPpkVR_SrUzN6eAxA0IjGtxICbf415778-a89a-4469-9d3f-0bb68692a475",
   codePushProductKey: "HSAwqzrXyJ1DifUxOao7b5PpjWEBbf415778-a89a-4469-9d3f-0bb68692a475"
