@@ -249,7 +249,7 @@ export class MainScreen extends React.Component<Props, States> {
       this.props.dispatch(freshItems());
 
     } catch (e) {
-      Alert.alert("account:" + this.props.account + ", token:" + this.props.token + ", err=" + e.message);
+      console.warn("initInfo err, account:" + this.props.account + ", token:" + this.props.token + ", err=" + e.message);
     } finally {
       //
     }
