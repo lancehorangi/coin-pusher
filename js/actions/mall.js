@@ -85,7 +85,7 @@ async function _mallBuy(itemID: number, appleID: number, cost: number): Promise<
     console.log("PFB status=" + JSON.stringify(result));
 
     let apple = result.result == 106 ? 1 : 0;
-    let channel = DeviceInfo.getApplicationName();
+    let channel = DeviceInfo.getBundleId();
     let response = await APIRequest("pay/order", {itemID, orderNo, apple, channel}, true, true);
 
     if(response.StatusCode != API_RESULT.STATUS_OK){
