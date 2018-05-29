@@ -55,6 +55,11 @@ configureStore(
       codePushSync();
     }
 
+    const bMajia = true;
+    if (bMajia) {
+      codePushSync();
+    }
+
     Navigation.startTabBasedApp({
       tabs: [
         {
