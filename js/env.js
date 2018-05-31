@@ -34,9 +34,9 @@ let _env = {
   version: 1,
   testMenuEnabled: false,
 
-  serverURL: "http://47.97.189.108:7002/1.0/",
-  payServerUrl: "http://47.97.189.108:7011/1.0/",
-  notifyUrl: "http://47.97.189.108:7011/1.0/pay/notify",
+  serverURL: "http://47.97.189.108:7100/1.0/",
+  payServerUrl: "http://47.97.189.108:7111/1.0/",
+  notifyUrl: "http://47.97.189.108:7111/1.0/pay/notify",
 
   devServerURL: "http://192.168.2.10:7001/1.0/",
   devPayServerUrl: "http://192.168.2.10:7010/1.0/",

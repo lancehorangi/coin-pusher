@@ -5,7 +5,7 @@ import { Alert } from "react-native";
 import { APIRequest, configureAPIToken, API_ENUM, API_RESULT } from "../api";
 import { NimSession } from "react-native-netease-im";
 import type { Action, ThunkAction, Dispatch } from "./types";
-import { toastShow, PlatformAlert, getMachineName, GetDeviceToken } from "./../util";
+import { toastShow, PlatformAlert, getMachineName, GetDeviceToken, codePushSync } from "./../util";
 import { refreshMsgs } from "./msgs";
 import { getCheckinInfo } from "./checkin";
 import { showRoomList, leaveRoom } from "./lobby";
@@ -59,6 +59,8 @@ function loggedIn(
       });
 
     hideLoginModal();
+
+    codePushSync();
 
     dispatch({
       type: "LOGGED_IN",
