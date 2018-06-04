@@ -879,7 +879,7 @@ class GameScreen extends ScreenComponent<Props, States> {
   renderCenterInfo = (): Component => {
     let {roomInfo} = this.props;
 
-    if (this.state.countDown <= 60 && this.state.bPlaying) {
+    if (this.state.countDown <= 30 && this.state.bPlaying) {
       return (
         <View style={styles.centerInfoContainer}>
           <View style={styles.centerInfoTextContainer}>

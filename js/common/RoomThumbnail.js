@@ -98,7 +98,7 @@ class RoomThumbnail extends Component<Props> {
       <View>
         <View style={[styles.consumeContainer, this._hasActivity() ? {} : styles.bottomBorderStyle]}>
           <Text style={styles.consumeLabel}>
-            {this.props.currCost}<Image style={{width: 15, height: 15}} source={require("./img/gold.png")}/>每次
+            {this.props.currCost}<Image style={{width: 11, height: 11}} source={require("./img/gold.png")}/>每次
           </Text>
         </View>
         <View style={[styles.actContainer, styles.bottomBorderStyle]}>
@@ -195,7 +195,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   consumeContainer: {
-    backgroundColor: "#000000"
+    backgroundColor: "#000000",
+    justifyContent: "center"
   },
   consumeLabel: {
     color: "white",
@@ -221,7 +222,8 @@ const styles = StyleSheet.create({
   },
   statusLabel: {
     color: "white",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    fontSize: 30
   },
   topBorderStyle: {
     borderTopLeftRadius: 10,
