@@ -177,6 +177,12 @@ class GameScreen extends ScreenComponent<Props, States> {
         return;
       }
 
+      //观看队列已满
+      if (result.info.usable) {
+        dismissModal("达到最大观战人数上限");
+        return;
+      }
+
       if (result.info.entityID !== this.props.entityID) {
         await this.props.dispatch(enterRoom(roomID));
       }
