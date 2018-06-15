@@ -3,9 +3,16 @@
 
 import { Alert } from "react-native";
 import { APIRequest, configureAPIToken, API_ENUM, API_RESULT } from "../api";
-import { NimSession } from "react-native-netease-im";
+// @ANDROID_TODO
+// import { NimSession } from "react-native-netease-im";
+// @ANDROID_TODO END
 import type { Action, ThunkAction, Dispatch } from "./types";
-import { toastShow, PlatformAlert, getMachineName, GetDeviceToken } from "./../util";
+import {
+  toastShow,
+  PlatformAlert,
+  getMachineName,
+  GetDeviceToken
+} from "./../util";
 import { refreshMsgs } from "./msgs";
 import { getCheckinInfo } from "./checkin";
 import { showRoomList, leaveRoom } from "./lobby";
@@ -15,15 +22,16 @@ import { freshItems } from "./user";
 async function _logIn(username: string, pwd: string): Promise<Object> {
   try {
     let response = await APIRequest("account/getToken", {
-      account:username, password:pwd
+      account: username,
+      password: pwd
     });
 
-    if(response.StatusCode != API_RESULT.STATUS_OK){
+    if (response.StatusCode != API_RESULT.STATUS_OK) {
       throw Error(response.ReasonPhrase);
     }
 
     return response;
-  } catch(e) {
+  } catch (e) {
     throw Error(e.message);
   }
 }
@@ -31,12 +39,14 @@ async function _logIn(username: string, pwd: string): Promise<Object> {
 function logIn(account: string, pwd: string): ThunkAction {
   return (dispatch: Dispatch): Object => {
     const response = _logIn(account, pwd);
-    response.then((result: Object): any => {
-      dispatch(loggedIn(result.account, result.token));
-    },
-    (err: Error) => {
-      Alert.alert("登录失败(" + err.message + ")");
-    });
+    response.then(
+      (result: Object): any => {
+        dispatch(loggedIn(result.account, result.token));
+      },
+      (err: Error) => {
+        Alert.alert("登录失败(" + err.message + ")");
+      }
+    );
 
     return response;
   };
@@ -46,17 +56,24 @@ function loggedIn(
   account: string,
   token: string,
   id: ?number,
-  source: ?string): ThunkAction {
-  return ((dispatch: Dispatch): any => {
-    NimSession.logout();
+  source: ?string
+): ThunkAction {
+  return (dispatch: Dispatch): any => {
+    // @ANDROID_TODO
+    // NimSession.logout();
+    // @ANDROID_TODO END
     console.log("Netease IM login account=" + account + ", token=" + token);
 
-    NimSession.login(account, token)
-      .then(() => {
-        console.log("Netease IM login succ");
-      }, (e: Error) => {
-        console.warn("Netease IM login failed=" + e.message);
-      });
+    // @ANDROID_TODO
+    // NimSession.login(account, token).then(
+    //   () => {
+    //     console.log("Netease IM login succ");
+    //   },
+    //   (e: Error) => {
+    //     console.warn("Netease IM login failed=" + e.message);
+    //   }
+    // );
+    // @ANDROID_TODO END
 
     hideLoginModal();
 
@@ -75,12 +92,14 @@ function loggedIn(
     dispatch(showRoomList(0));
 
     return;
-  });
+  };
 }
 
 function loggedOut(): Action {
   configureAPIToken(null, null);
-  NimSession.logout();
+  // @ANDROID_TODO
+  // NimSession.logout();
+  // @ANDROID_TODO END
 
   showLoginModal();
 
@@ -92,15 +111,15 @@ function loggedOut(): Action {
 async function _mobileCodeReq(mobilePhone: string): Promise<Object> {
   try {
     let response = await APIRequest("account/phoneRegist", {
-      phone:mobilePhone
+      phone: mobilePhone
     });
 
-    if(response.StatusCode != API_RESULT.STATUS_OK){
+    if (response.StatusCode != API_RESULT.STATUS_OK) {
       throw Error(response.ReasonPhrase);
     }
 
     return response;
-  } catch(e) {
+  } catch (e) {
     throw Error(e.message);
   }
 }
@@ -108,32 +127,39 @@ async function _mobileCodeReq(mobilePhone: string): Promise<Object> {
 function mobileCodeReq(mobilePhone: string): ThunkAction {
   return (): Object => {
     const response = _mobileCodeReq(mobilePhone);
-    response.then((): any => {
-      toastShow("验证码发送成功");
-    },
-    (err: Error) => {
-      //Alert.alert(err.message)
-      toastShow("验证码发送失败:" + err.message);
-    });
+    response.then(
+      (): any => {
+        toastShow("验证码发送成功");
+      },
+      (err: Error) => {
+        //Alert.alert(err.message)
+        toastShow("验证码发送失败:" + err.message);
+      }
+    );
 
     return response;
   };
 }
 
-async function _mobileLogin(mobilePhone: string, code: string): Promise<Object> {
+async function _mobileLogin(
+  mobilePhone: string,
+  code: string
+): Promise<Object> {
   try {
     let jpushDevice = await GetDeviceToken();
     console.log("jpushDevice:" + jpushDevice);
     let response = await APIRequest("account/phoneLogin", {
-      phone:mobilePhone, code:code, jpushDevice
+      phone: mobilePhone,
+      code: code,
+      jpushDevice
     });
 
-    if(response.StatusCode != API_RESULT.STATUS_OK){
+    if (response.StatusCode != API_RESULT.STATUS_OK) {
       throw Error(response.ReasonPhrase);
     }
 
     return response;
-  } catch(e) {
+  } catch (e) {
     throw Error(e.message);
   }
 }
@@ -141,14 +167,16 @@ async function _mobileLogin(mobilePhone: string, code: string): Promise<Object> 
 function mobileLogin(mobilePhone: string, code: string): ThunkAction {
   return (dispatch: Dispatch): Object => {
     const response = _mobileLogin(mobilePhone, code);
-    response.then((result: Object): any => {
-      toastShow("登录成功");
-      dispatch(loggedIn(result.account, result.token, result.id));
-    },
-    (err: Error) => {
-      //Alert.alert(err.message)
-      toastShow("登录失败:" + err.message);
-    });
+    response.then(
+      (result: Object): any => {
+        toastShow("登录成功");
+        dispatch(loggedIn(result.account, result.token, result.id));
+      },
+      (err: Error) => {
+        //Alert.alert(err.message)
+        toastShow("登录失败:" + err.message);
+      }
+    );
 
     return response;
   };
@@ -158,15 +186,16 @@ async function _wxLogin(code: string): Promise<Object> {
   try {
     let jpushDevice = await GetDeviceToken();
     let response = await APIRequest("account/wxLogin", {
-      code, jpushDevice
+      code,
+      jpushDevice
     });
 
-    if(response.StatusCode != API_RESULT.STATUS_OK){
+    if (response.StatusCode != API_RESULT.STATUS_OK) {
       throw Error(response.ReasonPhrase);
     }
 
     return response;
-  } catch(e) {
+  } catch (e) {
     throw Error(e.message);
   }
 }
@@ -174,14 +203,16 @@ async function _wxLogin(code: string): Promise<Object> {
 function wxLogin(code: string): ThunkAction {
   return (dispatch: Dispatch): Object => {
     const response = _wxLogin(code);
-    response.then((result: Object): any => {
-      console.log();
-      dispatch(loggedIn(result.account, result.token, result.id));
-    },
-    (err: Error) => {
-      //Alert.alert(err.message)
-      toastShow("登录失败:" + err.message);
-    });
+    response.then(
+      (result: Object): any => {
+        console.log();
+        dispatch(loggedIn(result.account, result.token, result.id));
+      },
+      (err: Error) => {
+        //Alert.alert(err.message)
+        toastShow("登录失败:" + err.message);
+      }
+    );
 
     return response;
   };
@@ -191,12 +222,12 @@ async function _getAccountInfo(): Promise<Object> {
   try {
     let response = await APIRequest("account/accountInfo", {}, true);
 
-    if(response.StatusCode != API_RESULT.STATUS_OK){
+    if (response.StatusCode != API_RESULT.STATUS_OK) {
       throw Error(response.ReasonPhrase);
     }
 
     return response;
-  } catch(e) {
+  } catch (e) {
     throw Error(e.message);
   }
 }
@@ -205,78 +236,100 @@ function getAccountInfo(bAlert: boolean = true): ThunkAction {
   return (dispatch: Dispatch): Object => {
     const response = _getAccountInfo();
 
-    response.then((result: Object): any => {
-      dispatch({
-        type: "ACCOUNT_INFO",
-        accountInfo: result.info
-      });
+    response.then(
+      (result: Object): any => {
+        dispatch({
+          type: "ACCOUNT_INFO",
+          accountInfo: result.info
+        });
 
-      if (bAlert) {
-        if (result.info.roomID != 0 && result.info.entityState === API_ENUM.ES_Game) {
-          PlatformAlert(
-            "提醒",
-            "检测到您上次在" + getMachineName(result.info.roomID) + "游戏是否要继续?",
-            "继续",
-            "取消",
-            () => {
-              showModal({
-                screen: "CP.GameScreen",
-                title: "游戏",
-                passProps: {roomID:result.info.roomID},
-                navigatorStyle: { navBarHidden: true },
-                navigatorButtons: {},
-                animationType: "none"
-              });
-            },
-            () => {
-              dispatch(leaveRoom());
-            }
-          );
+        if (bAlert) {
+          if (
+            result.info.roomID != 0 &&
+            result.info.entityState === API_ENUM.ES_Game
+          ) {
+            PlatformAlert(
+              "提醒",
+              "检测到您上次在" +
+                getMachineName(result.info.roomID) +
+                "游戏是否要继续?",
+              "继续",
+              "取消",
+              () => {
+                showModal({
+                  screen: "CP.GameScreen",
+                  title: "游戏",
+                  passProps: { roomID: result.info.roomID },
+                  navigatorStyle: { navBarHidden: true },
+                  navigatorButtons: {},
+                  animationType: "none"
+                });
+              },
+              () => {
+                dispatch(leaveRoom());
+              }
+            );
+          } else if (
+            result.info.roomID != 0 &&
+            result.info.entityState === API_ENUM.ES_QueueTimeout
+          ) {
+            PlatformAlert(
+              "提醒",
+              "检测到您上次在" +
+                getMachineName(result.info.roomID) +
+                "排队并且已经超时是否要继续?",
+              "继续",
+              "取消",
+              () => {
+                showModal({
+                  screen: "CP.GameScreen",
+                  title: "游戏",
+                  passProps: { roomID: result.info.roomID },
+                  navigatorStyle: { navBarHidden: true },
+                  navigatorButtons: {},
+                  animationType: "none"
+                });
+              }
+            );
+          } else if (
+            result.info.roomID != 0 &&
+            result.info.entityState === API_ENUM.ES_Queue
+          ) {
+            PlatformAlert(
+              "提醒",
+              "检测到您上次在" +
+                getMachineName(result.info.roomID) +
+                "排队是否要进入该房间?",
+              "进入",
+              "取消",
+              () => {
+                showModal({
+                  screen: "CP.GameScreen",
+                  title: "游戏",
+                  passProps: { roomID: result.info.roomID },
+                  navigatorStyle: { navBarHidden: true },
+                  navigatorButtons: {},
+                  animationType: "none"
+                });
+              }
+            );
+          }
         }
-        else if (result.info.roomID != 0 && result.info.entityState === API_ENUM.ES_QueueTimeout) {
-          PlatformAlert(
-            "提醒",
-            "检测到您上次在" + getMachineName(result.info.roomID) + "排队并且已经超时是否要继续?",
-            "继续",
-            "取消",
-            () => {
-              showModal({
-                screen: "CP.GameScreen",
-                title: "游戏",
-                passProps: {roomID:result.info.roomID},
-                navigatorStyle: { navBarHidden: true },
-                navigatorButtons: {},
-                animationType: "none"
-              });
-            }
-          );
-        }
-        else if (result.info.roomID != 0 && result.info.entityState === API_ENUM.ES_Queue) {
-          PlatformAlert(
-            "提醒",
-            "检测到您上次在" + getMachineName(result.info.roomID) + "排队是否要进入该房间?",
-            "进入",
-            "取消",
-            () => {
-              showModal({
-                screen: "CP.GameScreen",
-                title: "游戏",
-                passProps: {roomID:result.info.roomID},
-                navigatorStyle: { navBarHidden: true },
-                navigatorButtons: {},
-                animationType: "none"
-              });
-            }
-          );
-        }
+      },
+      (err: Error) => {
+        console.log("getAccountInfo err:" + err.message);
       }
-    },
-    (err: Error) => {
-      console.log("getAccountInfo err:" + err.message);
-    });
+    );
 
     return response;
   };
 }
 
-module.exports = { logIn, loggedOut, getAccountInfo, mobileCodeReq, mobileLogin, wxLogin };
+module.exports = {
+  logIn,
+  loggedOut,
+  getAccountInfo,
+  mobileCodeReq,
+  mobileLogin,
+  wxLogin
+};
