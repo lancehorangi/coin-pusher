@@ -4259,7 +4259,7 @@ react-native-animatable@^1.2.4:
 
 "react-native-bugly@git+https://git@github.com/canyara/react-native-bugly.git":
   version "1.0.0"
-  resolved "git+https://git@github.com/canyara/react-native-bugly.git#93c01b96dd9aa62e805c2824334ce529c710ff33"
+  resolved "git+https://git@github.com/canyara/react-native-bugly.git#b8711988b973463b21cba451c70c2698cbeea520"
 
 react-native-code-push@^5.2.1:
   version "5.2.1"
@@ -4306,7 +4306,7 @@ react-native-keyboard-aware-scroll-view@^0.4.4:
 
 "react-native-ksyvideo@git+https://git@github.com/canyara/react-native-video-player.git":
   version "1.1.0"
-  resolved "git+https://git@github.com/canyara/react-native-video-player.git#52301576c80abd0fe63d03996b497b9de33972ba"
+  resolved "git+https://git@github.com/canyara/react-native-video-player.git#53c8ebb2e87ad619cec73f7ebaf4f330e361a1f0"
 
 react-native-linear-gradient@^2.4.0:
   version "2.4.0"
@@ -4337,7 +4337,7 @@ react-native-navigation@^1.1.375:
 
 "react-native-payfubao@git+https://git@github.com/canyara/react-native-payfubao.git":
   version "1.0.0"
-  resolved "git+https://git@github.com/canyara/react-native-payfubao.git#c96f1033f1a5a7b9c09056c37498ffa4e47e9a29"
+  resolved "git+https://git@github.com/canyara/react-native-payfubao.git#d349b7d021a865515ec1d1af7b1ddc7b1fc32b8a"
 
 react-native-permissions@^1.1.1:
   version "1.1.1"
@@ -4399,7 +4399,7 @@ react-native-tab-view@^0.0.74:
 
 "react-native-talkingdata-game@git+https://git@github.com/canyara/react-native-talkingdata-game.git":
   version "1.0.0"
-  resolved "git+https://git@github.com/canyara/react-native-talkingdata-game.git#29d744eb32a0173251b136d0ca9783888704a004"
+  resolved "git+https://git@github.com/canyara/react-native-talkingdata-game.git#f9ac531400d7b2000e6daf6c645c5eb0b121759c"
 
 react-native-uuid@^1.4.9:
   version "1.4.9"
