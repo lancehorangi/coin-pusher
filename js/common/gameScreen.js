@@ -77,7 +77,7 @@ type States = {
   autoPlay: boolean,
   bPlaying: boolean,
   bSending: boolean,
-  queuing: boolean,
+  queueReqing: boolean,
   bShowChatTextInput: boolean,
   chatMsg: string,
   bShowChatList: boolean,
@@ -86,7 +86,8 @@ type States = {
   centerInfo: string,
   countDown: number,
   firstHintType: number,
-  bShowFirstHint: boolean
+  bShowFirstHint: boolean,
+  bShowOvertimeInfo: boolean
 };
 
 class GameScreen extends ScreenComponent<Props, States> {
@@ -98,7 +99,7 @@ class GameScreen extends ScreenComponent<Props, States> {
       bLoading: true,
       autoPlay: false,
       bPlaying: false,
-      queuing: false,
+      queueReqing: false,
       bSending: false,
       bShowChatTextInput: false,
       bShowRoomNotify: false,
@@ -107,7 +108,8 @@ class GameScreen extends ScreenComponent<Props, States> {
       bShowHint: false,
       centerInfo: "",
       countDown: 120,
-      bShowFirstHint: false
+      bShowFirstHint: false,
+      bShowOvertimeInfo: false
     };
     this._isMounted = false;
     this._profitAnimMgr = null;
@@ -177,6 +179,12 @@ class GameScreen extends ScreenComponent<Props, States> {
         return;
       }
 
+      //观看队列已满
+      if (result.info.usable) {
+        dismissModal("达到最大观战人数上限");
+        return;
+      }
+
       if (result.info.entityID !== this.props.entityID) {
         await this.props.dispatch(enterRoom(roomID));
       }
@@ -205,8 +213,13 @@ class GameScreen extends ScreenComponent<Props, States> {
         await this.setState({bShowFirstHint:true, firstHintType:FIRST_HINT_PLAY});
       }
     } catch (e) {
-      //toastShow("进入房间失败:" + e.message);
       toastShow("房间已有玩家,请排队");
+
+      let overtimeCD = 120;
+      setTimeout(() => {
+        this.setState({bShowOvertimeInfo: true});
+      }, overtimeCD * 1000);
+
       let {status} = this.props;
 
       if (API_ENUM.ES_QueueTimeout == status) {
@@ -401,13 +414,11 @@ class GameScreen extends ScreenComponent<Props, States> {
     } catch (e) {
       console.log("pressQueue e:" + e.message);
     }
-
-
   }
 
   _queueReq = async (): any => {
     //
-    await this.setState({queuing: true});
+    await this.setState({queueReqing: true});
     try {
       let { roomID } = this.props;
       await this.props.dispatch(queueRoom(roomID));
@@ -428,7 +439,7 @@ class GameScreen extends ScreenComponent<Props, States> {
         );
       }
     } finally {
-      this.setState({queuing: false});
+      this.setState({queueReqing: false});
     }
   }
 
@@ -510,7 +521,7 @@ class GameScreen extends ScreenComponent<Props, States> {
   _currQueueStatus = (): boolean => {
     let {status, roomInfo, userRoomID} = this.props;
 
-    if (API_ENUM.ES_Queue == status && userRoomID == roomInfo.roomID) {
+    if (API_ENUM.ES_Queue == status && roomInfo && userRoomID == roomInfo.roomID) {
       return true;
     }
 
@@ -580,7 +591,7 @@ class GameScreen extends ScreenComponent<Props, States> {
     }
     else {
       centerBtn = (
-        <PlayButton loading={this.state.queuing} value={800} type={"queue"} onPress={this.pressQueue}/>
+        <PlayButton loading={this.state.queueReqing} value={800} type={"queue"} onPress={this.pressQueue}/>
       );
     }
 
@@ -649,6 +660,37 @@ class GameScreen extends ScreenComponent<Props, States> {
         </View>
       );
     }
+  }
+
+  renderOvertimeInfo = (): Component => {
+    if (!this._currQueueStatus() && !this.state.bPlaying && this.state.bShowOvertimeInfo) {
+    // if (this.state.bShowOvertimeInfo) {
+      return (
+        <View style={styles.overtimeContainer}>
+          <Text style={{color:"white", fontSize:20}}>
+            {"旁观游戏不如亲自上手，现在就排队或寻找空闲机台吧。"}
+          </Text>
+          <View style={{flexDirection: "row", justifyContent: "space-around", width: "100%"}}>
+            <TouchableOpacity
+              accessibilityTraits="button"
+              onPress={this.pressQueue}
+              style={{borderRadius: 15, backgroundColor: F8Colors.mainBgColor2, padding: 15}}
+            >
+              <Text style={{textAlign: "center", color: "white"}}>排队</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              accessibilityTraits="button"
+              onPress={this.onPressClose}
+              style={{borderRadius: 15, backgroundColor: F8Colors.mainBgColor2, padding: 15}}
+            >
+              <Text style={{textAlign: "center", color: "white"}}>返回大厅</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
+
+    return null;
   }
 
   renderHistory = (): Component => {
@@ -879,7 +921,7 @@ class GameScreen extends ScreenComponent<Props, States> {
   renderCenterInfo = (): Component => {
     let {roomInfo} = this.props;
 
-    if (this.state.countDown <= 60 && this.state.bPlaying) {
+    if (this.state.countDown <= 30 && this.state.bPlaying) {
       return (
         <View style={styles.centerInfoContainer}>
           <View style={styles.centerInfoTextContainer}>
@@ -956,6 +998,7 @@ class GameScreen extends ScreenComponent<Props, States> {
             {this.renderGainEffect()}
             {this.renderBottomSideBtns()}
             {this.renderBottom()}
+            {this.renderOvertimeInfo()}
           </View>
         </View>
         {this.renderHistory()}
@@ -1161,6 +1204,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#000000EE",
     padding: 5
+  },
+  overtimeContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    justifyContent: "space-around",
+    alignItems: "center",
+    alignContent: "center",
+    width: WIN_WIDTH,
+    borderRadius: 25,
+    padding: 20,
+    // height: WIN_HEIGHT / 2,
+    backgroundColor: F8Colors.mainBgColor
   }
 });
 
